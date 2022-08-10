@@ -42,22 +42,30 @@ function App() {
     }
   }
 
-  useEffect( () => {
-    if(!ethereum){
-      sethaveMetamask(false);
-    }
-    ethereum.request({method : 'eth_requestAccounts'}).then(res => {
-      console.log(res);
-      setAccountAddress(res[0]);
-      ethereum.request({
+  async function checkIfWalletIsConnected(onConnected) {
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length > 0) {
+        const account = accounts[0];
+        setAccountAddress(account);
+        ethereum.request({
             method: "eth_getBalance",
-            params: [res[0], "latest"]
+            params: [account, "latest"]
           }).then((balance) => {
+            console.log("Already connected!")
             setAccountBalance(balance);
-          });
-      setIsConnected(true);
-    })
-  }, []);
+        });
+        setIsConnected(true);
+      }
+    }
+  }
+
+  useEffect( () => {
+      checkIfWalletIsConnected(setIsConnected);
+    }, []);
 
   return (
       <div className="App">
