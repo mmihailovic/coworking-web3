@@ -1,22 +1,35 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.16;
+pragma solidity ^0.8.0;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Token {
-    string public name = "BEO";
-    uint public totalSupply = 100;
+contract Token is ERC20 {
     address public owner;
-    mapping(address => uint) balances;
 
-    constructor() {
-        balances[msg.sender] = totalSupply;
+    constructor() ERC20("BEO Token","BEO"){
         owner = msg.sender;
+        _mint(msg.sender, 100 * (10 ** 18));
     }
 
-    function buy(address _address, uint amount) external {
-        require(balances[owner] >= amount);
+    mapping(address => uint256) stakingBalance;
+    
+    function stakeTokens(address _address, uint256 _amount) public {
+        require(_amount > 0 && balanceOf(_address) >= _amount);
+        stakingBalance[_address] += _amount;
 
-        balances[owner] -= amount;
-        balances[_address] += amount;
+        approve(msg.sender, _amount);
+        transferFrom(msg.sender, owner, _amount);
+    }
 
+    function unstakeTokens(address _address, uint256 _amount) external {
+        require(_amount > 0 && stakingBalance[_address] > _amount);
+
+        stakingBalance[_address] -= _amount;
+
+        approve(owner, _amount);
+        transferFrom(owner, msg.sender ,_amount);
+    }
+
+    function getStakingBalance(address _address) external view returns(uint256){
+        return stakingBalance[_address];
     }
 }
