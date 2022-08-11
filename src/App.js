@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
 import logo from './logo.svg'
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './App.css';
+import Mainpage from './components/Mainpage';
 
 function App() {
 
@@ -12,6 +14,8 @@ function App() {
   const [walletAddress, setWalletAddress] = useState("");
   const { ethereum } = window;
   const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { ethereum } = window;
@@ -24,7 +28,7 @@ function App() {
     checkMetamaskAvailability();
   }, []);
 
-  const connectWallet = async () => {
+  const ConnectWallet = async () => {
     try{
       if(!ethereum){
         sethaveMetamask(false);
@@ -37,6 +41,7 @@ function App() {
       setAccountAddress(accounts[0]);
       setAccountBalance(bal);
       setIsConnected(true);
+      navigate('/main');
     }catch (error){
       setIsConnected(false);
     }
@@ -59,6 +64,7 @@ function App() {
             setAccountBalance(balance);
         });
         setIsConnected(true);
+        navigate("/main");
       }
     }
   }
@@ -69,7 +75,7 @@ function App() {
 
   return (
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           {haveMetamask ? (
               <div className="App-header">
                 {isConnected ? (
@@ -100,7 +106,13 @@ function App() {
           ) : (
               <p>Please Install MataMask</p>
           )}
-        </header>
+        </header> */}
+        
+          <Routes>
+            <Route exac path="/" element={(<button onClick={ConnectWallet}>Login</button>)}/>
+            <Route path="/main" element={<Mainpage/>} />
+          </Routes>
+        
       </div>
   );
 }
