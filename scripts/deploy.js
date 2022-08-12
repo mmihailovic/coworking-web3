@@ -8,22 +8,13 @@ async function main() {
     deployer.address
   );
   
-  const Token = await hre.ethers.getContractFactory("Token");
-  const token = await Token.deploy("Hello, World!");
+  const Test = await hre.ethers.getContractFactory("Test");
+  const test = await Test.deploy();
 
-  const ManageUsers = await hre.ethers.getContractFactory("ManageUsers");
-  const manageUsers = await ManageUsers.deploy();
+  await test.deployed();
 
-  const ManageTransactions = await hre.ethers.getContractFactory("ManageTransactions");
-  const manageTransactions = await ManageTransactions.deploy();
-  
-  await token.deployed();
-  await manageUsers.deployed();
-  await manageTransactions.deployed();
+  console.log("Test deployed to:", test.address);
 
-  console.log("Token deployed to:", token.address);
-  console.log("ManageUsers deployed to:", manageUsers.address);
-  console.log("ManageTransactions deployed to:", manageTransactions.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
