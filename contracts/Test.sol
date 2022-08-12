@@ -37,4 +37,18 @@ contract Test{
         return (adr,imee,prez);
     }
 
+    function obrisiOsobu(uint _adresa) public {
+        uint index=100;
+        for(uint i=0; i<persons.length; i++)
+        {
+            if(persons[i].adresa==_adresa){
+                index = i;
+                break;
+            }
+        }
+        require(index<100);
+        persons[index] = persons[persons.length - 1];
+        persons.pop();
+    }
+
 }
