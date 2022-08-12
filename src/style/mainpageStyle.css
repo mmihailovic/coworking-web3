@@ -1,0 +1,11 @@
+.leftDiv {
+    display: inline-block;
+    background-color: lightyellow;
+    width: 50%;
+}
+
+.rightDiv {
+    display: inline-block;
+    background-color: lightgreen;
+    width: 50%
+}

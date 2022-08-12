@@ -110,7 +110,7 @@ function App() {
         
           <Routes>
             <Route exac path="/" element={(<button onClick={ConnectWallet}>Login</button>)}/>
-            <Route path="/main" element={<Mainpage/>} />
+            <Route path="/main" element={<Mainpage accountAddress={accountAddress}/>} />
           </Routes>
         
       </div>
