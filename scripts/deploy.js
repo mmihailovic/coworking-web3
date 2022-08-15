@@ -8,12 +8,23 @@ async function main() {
     deployer.address
   );
   
-  const Test = await hre.ethers.getContractFactory("Test");
-  const test = await Test.deploy();
+  // const Test = await hre.ethers.getContractFactory("Test");
+  // const test = await Test.deploy();
 
-  await test.deployed();
+  // await test.deployed();
 
-  console.log("Test deployed to:", test.address);
+  const Token = await hre.ethers.getContractFactory("Token");
+  const token = await Token.deploy();
+
+  await token.deployed();
+  console.log("Token deployed to:", token.address);
+
+  const TokenVendor = await hre.ethers.getContractFactory("Vendor");
+  const tokenVendor = await TokenVendor.deploy(token.address);
+
+  await tokenVendor.deployed();
+
+  console.log("Test deployed to:", tokenVendor.address);
 
 }
 

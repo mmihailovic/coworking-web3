@@ -7,7 +7,7 @@ const Cards = ({cards, onDelete}) => {
     <>
       {
         cards.map((card) => (
-          <Card key={card.adresa} card = {card} onDelete={onDelete}/>
+          <Card key={card.cardId} card = {card} onDelete={onDelete}/>
         ))
       }
     </>
