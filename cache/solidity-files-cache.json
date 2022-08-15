@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/zarko/Desktop/coworking/contracts/Rent.sol": {
-      "lastModificationDate": 1660300228602,
-      "contentHash": "2cc98cefccd8f261a03f0e7388e75a5b",
+    "/Users/markomihailovic/internship/contracts/Rent.sol": {
+      "lastModificationDate": 1660554771996,
+      "contentHash": "0c47d967d08a32970a91dc5f41d735ee",
       "sourceName": "contracts/Rent.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -29,7 +29,8 @@
         }
       },
       "imports": [
-        "./Token.sol"
+        "./Token.sol",
+        "./TokenVendor.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -39,9 +40,9 @@
         "USDC"
       ]
     },
-    "/Users/zarko/Desktop/coworking/contracts/Token.sol": {
-      "lastModificationDate": 1660218467068,
-      "contentHash": "4dfc54205554206c0a9cdafc2ace80fe",
+    "/Users/markomihailovic/internship/contracts/Token.sol": {
+      "lastModificationDate": 1660555037569,
+      "contentHash": "b80c156cac7f978dac229a8e4c3f8d11",
       "sourceName": "contracts/Token.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -76,8 +77,45 @@
         "Token"
       ]
     },
-    "/Users/zarko/Desktop/coworking/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-      "lastModificationDate": 1660298158280,
+    "/Users/markomihailovic/internship/contracts/TokenVendor.sol": {
+      "lastModificationDate": 1660550895744,
+      "contentHash": "75d10f922185f04e5f576dc82703d9c5",
+      "sourceName": "contracts/TokenVendor.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Token.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenVendor"
+      ]
+    },
+    "/Users/markomihailovic/internship/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1660122688263,
       "contentHash": "af7bd64e1cfefbf6cb07f2adc1a25392",
       "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       "solcConfig": {
@@ -115,8 +153,8 @@
         "ERC20"
       ]
     },
-    "/Users/zarko/Desktop/coworking/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1660298158433,
+    "/Users/markomihailovic/internship/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1660122688271,
       "contentHash": "ad7c2d0af148c8f9f097d65deeb4da6b",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
@@ -150,8 +188,8 @@
         "IERC20"
       ]
     },
-    "/Users/zarko/Desktop/coworking/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-      "lastModificationDate": 1660298158435,
+    "/Users/markomihailovic/internship/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1660122688271,
       "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
@@ -187,8 +225,8 @@
         "IERC20Metadata"
       ]
     },
-    "/Users/zarko/Desktop/coworking/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1660298158203,
+    "/Users/markomihailovic/internship/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1660122688260,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
