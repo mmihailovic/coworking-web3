@@ -13,11 +13,10 @@ contract Token is ERC20 {
     mapping(address => uint256) stakingBalance;
     
     function stakeTokens(address _address, uint256 _amount) public {
-        require(_amount > 0 && balanceOf(_address) >= _amount);
-        stakingBalance[_address] += _amount;
-
-        approve(msg.sender, _amount);
-        transferFrom(msg.sender, owner, _amount);
+        require(_amount > 0, "Izaberi veci od 0");
+        require(balanceOf(msg.sender) >= _amount, "Nemas toliko tokena!");
+        transferFrom(msg.sender, address(this), _amount);
+        stakingBalance[msg.sender] += _amount;
     }
 
     function unstakeTokens(address _address, uint256 _amount) external {
