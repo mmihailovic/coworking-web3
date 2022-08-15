@@ -20,13 +20,3 @@ contract TokenVendor {
         stakingBalance[msg.sender] -= _amount;
     }
 }
-1:00
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
-import "./Token.sol";
-import "./TokenVendor.sol";
-interface USDC {
-    function transfer(address dst, uint amount) external returns (bool);
-    function transferFrom(address src, address dst, uint amount) external returns(bool);
-    function balanceOf(address guy) external view returns (uint);
-}
