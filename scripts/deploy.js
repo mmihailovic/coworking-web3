@@ -19,8 +19,14 @@ async function main() {
   await token.deployed();
   console.log("Token deployed to:", token.address);
 
-  const TokenVendor = await hre.ethers.getContractFactory("Vendor");
-  const tokenVendor = await TokenVendor.deploy(token.address);
+  const Rent = await hre.ethers.getContractFactory("Token");
+  const rent = await Rent.deploy(token.address);
+
+  await rent.deployed();
+  console.log("Token deployed to:", token.address);
+
+  const TokenVendor = await hre.ethers.getContractFactory("TokenVendor");
+  const tokenVendor = await TokenVendor.deploy(token.address, rent.address);
 
   await tokenVendor.deployed();
 

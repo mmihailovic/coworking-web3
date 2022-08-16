@@ -1,10 +1,10 @@
 import { ethers } from 'ethers';
-import logo from './logo.svg'
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './App.css';
 import Mainpage from './components/Mainpage';
 import React from 'react';
+import LoginPage from './components/LoginPage';
 
 
 function App() {
@@ -77,41 +77,8 @@ function App() {
 
   return (
       <div className="App">
-        {/* <header className="App-header">
-          {haveMetamask ? (
-              <div className="App-header">
-                {isConnected ? (
-                    <div className="card">
-                      <div className="card-row">
-                        <h3>Wallet Address:</h3>
-                        <p>
-                          {accountAddress.slice(0, 4)}...
-                          {accountAddress.slice(38, 42)}
-                        </p>
-                      </div>
-                      <div className="card-row">
-                        <h3>Wallet Balance:</h3>
-                        <p>{accountBalance}</p>
-                      </div>
-                    </div>
-                ) : (
-                    <img src={logo} className="App-logo" alt="logo" />
-                )}
-                {isConnected ? (
-                    <p className="info">🎉 Connected Successfully</p>
-                ) : (
-                    <button className="btn" onClick={connectWallet}>
-                      Connect
-                    </button>
-                )}
-              </div>
-          ) : (
-              <p>Please Install MataMask</p>
-          )}
-        </header> */}
-        
           <Routes>
-            <Route exac path="/" element={(<button onClick={ConnectWallet}>Login</button>)}/>
+            <Route exac path="/" element={<LoginPage onClick={ConnectWallet}/>} />
             <Route path="/main" element={<Mainpage accountAddress={accountAddress}/>} />
           </Routes>
         

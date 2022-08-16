@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/proka/WebstormProjects/coworking/contracts/Test.sol": {
-      "lastModificationDate": 1660555317707,
-      "contentHash": "30456481670d4ceac6806bd79c32b894",
-      "sourceName": "contracts/Test.sol",
+    "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/Rent.sol": {
+      "lastModificationDate": 1660643316526,
+      "contentHash": "d6dec2454dbaff06ce98b544e3505db2",
+      "sourceName": "contracts/Rent.sol",
       "solcConfig": {
         "version": "0.8.16",
         "settings": {
@@ -28,16 +28,19 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "./Token.sol"
+      ],
       "versionPragmas": [
-        "0.8.16"
+        "^0.8.0"
       ],
       "artifacts": [
-        "Test"
+        "Rent",
+        "USDC"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/contracts/Token.sol": {
-      "lastModificationDate": 1660556356912,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/Token.sol": {
+      "lastModificationDate": 1660633778178,
       "contentHash": "3759fb2cc053fbdd2f13e435000aa3fd",
       "sourceName": "contracts/Token.sol",
       "solcConfig": {
@@ -73,8 +76,8 @@
         "Token"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-      "lastModificationDate": 1660556301715,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1660634545483,
       "contentHash": "af7bd64e1cfefbf6cb07f2adc1a25392",
       "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       "solcConfig": {
@@ -112,8 +115,8 @@
         "ERC20"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1660556301825,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1660634545497,
       "contentHash": "ad7c2d0af148c8f9f097d65deeb4da6b",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
@@ -147,8 +150,8 @@
         "IERC20"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-      "lastModificationDate": 1660556301833,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1660634545497,
       "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
@@ -184,8 +187,8 @@
         "IERC20Metadata"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1660556301646,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1660634545474,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -219,8 +222,81 @@
         "Context"
       ]
     },
-    "/Users/proka/WebstormProjects/coworking/contracts/Vendor.sol": {
-      "lastModificationDate": 1660557015194,
+    "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/TokenVendor.sol": {
+      "lastModificationDate": 1660643325926,
+      "contentHash": "c0abd38d3d980fed1705e75c95684556",
+      "sourceName": "contracts/TokenVendor.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Token.sol",
+        "./Rent.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenVendor"
+      ]
+    },
+    "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/Test.sol": {
+      "lastModificationDate": 1660310852022,
+      "contentHash": "30456481670d4ceac6806bd79c32b894",
+      "sourceName": "contracts/Test.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.16"
+      ],
+      "artifacts": [
+        "Test"
+      ]
+    },
+    "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/Vendor.sol": {
+      "lastModificationDate": 1660643141009,
       "contentHash": "7d9cf73840e21b0a6ebbc23c6c6bdab0",
       "sourceName": "contracts/Vendor.sol",
       "solcConfig": {
