@@ -3,16 +3,13 @@ import Cards from './Cards';
 import { useState } from 'react';
 import "../style/mainpageStyle.css"
 import { BigNumber, ethers } from 'ethers';
-import Test from '../artifacts/contracts/Test.sol/Test.json';
 import Token from '../artifacts/contracts/Token.sol/Token.json';
-import Vendor from '../artifacts/contracts/TokenVendor.sol/TokenVendor.json';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 
-const tokenAddress = "0x7E39C0196ce78D18D34320cc788a20A61bDd9FB1";
-const vendorAddress = "0xB7f195B44F1445C1AD15F2093aFB90e3C6920729";
-const rentAddres = "0x2c34585524eAC7c8658238E884D8a48d657Df05D";
+const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
+const rentAddres = "0x411C86079fDAd562EE390Bc94d43305fD25fA9c6";
 
 const Mainpage = ({ accountAddress }) => {
 
@@ -47,13 +44,25 @@ const Mainpage = ({ accountAddress }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
 
-      const vendorContract = new ethers.Contract(vendorAddress, Vendor.abi, signer);
+      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
       try{
-        const stakeBal = await vendorContract.getStakingBalance();
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+
+        const stakeBal = await rentContract.getStakingBalance(accounts[0]);
         //console.log(Math.trunc(ethers.utils.formatEther(stakeBal))+ ' stake ');
         const x = Math.trunc(ethers.utils.formatEther(stakeBal));
         setStakedTokens(x);
+
+        const rented = await rentContract.numberOfRentedPlacesForAddress(accounts[0]);
+        setRentedPlaces(rented.toNumber());
+
+        //const rentable = await rentContract.numberOfPlacesForAddress(BigNumber.from(10).pow(18).mul(stakedTokens));
+        //console.log("moze renta " + rentable.toNumber());
+        //setCanRent(rentable.toNumber());
+
       }catch(err){
         console.log("Err: " + err);
       }
@@ -84,7 +93,7 @@ const Mainpage = ({ accountAddress }) => {
     //promise();
      getTokenBalance();
      GetStakingBalance();
-     getRentInfo();
+     //getRentInfo();
   }, [])
 
   async function updateCanRent() {
@@ -94,7 +103,10 @@ const Mainpage = ({ accountAddress }) => {
       const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
 
       try{
-        const rentable = await rent.numberOfPlacesForAddress(BigNumber.from(10).pow(18).mul(stakedTokens));
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        const rentable = await rent.numberOfPlacesForAddress(accounts[0]);
         console.log("moze renta " + rentable.toNumber());
         setCanRent(rentable.toNumber());
       }catch(err){
@@ -114,7 +126,7 @@ const Mainpage = ({ accountAddress }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const token = new ethers.Contract(tokenAddress, Token.abi, signer)
-      const vendorContract = new ethers.Contract(vendorAddress, Vendor.abi, signer);
+      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
       var amount = document.getElementById("amount").value;
       let x = BigNumber.from(10).pow(18).mul(amount);
@@ -122,9 +134,10 @@ const Mainpage = ({ accountAddress }) => {
       console.log(amount);
       console.log(x.toString());
       try {
-        let request = await token.approve(vendorContract.address, x);
+        let request = await token.approve(rentContract.address, x);
 
-        request = await vendorContract.stakeTokens(x);
+        request = await rentContract.stakeTokens(x);
+        
 
         console.log("Cards length: " + cards.length);
 
@@ -161,14 +174,14 @@ const Mainpage = ({ accountAddress }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const token = new ethers.Contract(tokenAddress, Token.abi, signer);
-      const vendorContract = new ethers.Contract(vendorAddress, Vendor.abi, signer);
+      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
       var amount = document.getElementById("amount").value;
       let x = BigNumber.from(10).pow(18).mul(amount);
 
       try {
 
-        await vendorContract.unstakeTokens(x, BigNumber.from(parseInt(stakedTokens)));
+        await rentContract.unstakeTokens(x);
 
         let shouldDeleteCard = false;
         cards.forEach(card => {
@@ -255,7 +268,7 @@ const Mainpage = ({ accountAddress }) => {
         <input type="number" id="amount" className='mt-2 form-control'></input>
         <div className="mt-2 row">
           <div className='col-sm'>
-            <Button className='btn btn-primary' id="stakeBtn" onClick={StakeTokens}>Stacke</Button>
+            <Button className='btn btn-primary' id="stakeBtn" onClick={StakeTokens}>Stake</Button>
           </div>
           <div className='col-sm'>
             <Button className='btn btn-primary' id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
