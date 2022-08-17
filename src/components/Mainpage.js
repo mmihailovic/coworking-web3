@@ -5,11 +5,13 @@ import "../style/mainpageStyle.css"
 import { BigNumber, ethers } from 'ethers';
 import Token from '../artifacts/contracts/Token.sol/Token.json';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
+import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
-const rentAddres = "0x411C86079fDAd562EE390Bc94d43305fD25fA9c6";
+const rentAddres = "0xb1Aa824Be7ab0320Ce5Fd9f3Fc6aa780F5C9060A";
+const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 const Mainpage = ({ accountAddress }) => {
 
@@ -44,7 +46,7 @@ const Mainpage = ({ accountAddress }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
 
-      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
 
       try{
         const accounts = await window.ethereum.request({
@@ -93,7 +95,7 @@ const Mainpage = ({ accountAddress }) => {
     //promise();
      getTokenBalance();
      GetStakingBalance();
-     //getRentInfo();
+     getRentInfo();
   }, [])
 
   async function updateCanRent() {
@@ -120,6 +122,51 @@ const Mainpage = ({ accountAddress }) => {
     updateCanRent();
  }, [stakedTokens])
 
+ const waitAllowance = async (
+  contract,
+  account,
+  to,
+  allowanceNeeded,
+  timesLeft
+) => {
+  if (timesLeft > 1) {
+    const currentAllowance = await contract.allowance(account, to)
+    // console.log(`I want ${allowanceNeeded}, and current is ${currentAllowance} `)
+    const needed = BigNumber.from(allowanceNeeded)
+    const current = BigNumber.from(currentAllowance.toString())
+    if (current.gte(needed)) {
+      console.log('USAOOOOOOOO');
+      return;
+    }
+    await new Promise((res) => setTimeout(res, 1000))
+    await waitAllowance(contract, account, to, allowanceNeeded, timesLeft - 1)
+  }
+  throw new Error('wait allowance failed for many times.')
+}
+
+const checkTx = async(hash, provider) => {
+  console.log("USAO");
+  let receipt = null;
+  while(receipt == null)
+  {
+    try {
+      receipt = await provider.getTransactionReceipt(hash);
+
+      if (receipt === null) {
+        console.log(`Trying again to fetch txn receipt....`);
+
+        continue;
+      }
+
+      console.log(`Receipt confirmations:`, receipt.confirmations);
+
+    } catch (e) {
+      console.log(`Receipt error:`, e);
+      break;
+    }
+  }
+}
+
   const StakeTokens = async () => {
     if (typeof window.ethereum !== 'undefined') {
 
@@ -134,10 +181,15 @@ const Mainpage = ({ accountAddress }) => {
       console.log(amount);
       console.log(x.toString());
       try {
-        let request = await token.approve(rentContract.address, x);
-
-        request = await rentContract.stakeTokens(x);
         
+        let request = await token.approve(rentContract.address, x);
+        if(!request)throw new Error('Failed to approve transaction');
+
+        let res = await checkTx(request.hash, provider);
+        
+        request = await rentContract.stakeTokens(x);
+        res = await checkTx(request.hash, provider);
+        console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
 
@@ -240,7 +292,36 @@ const Mainpage = ({ accountAddress }) => {
   //   getPersons();
   // }, []);
 
+  const rentPlaces = async () => {
+    if (typeof window.ethereum !== 'undefined') {
 
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner(0);
+      const token = new ethers.Contract(tokenAddress, Token.abi, signer);
+      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const usdc = new ethers.Contract(usdcAddress, USDC.abi, signer);
+
+      var numOfPlaces = BigNumber.from(document.getElementById("numberOfPlaces").value);
+      var rentPeriod = BigNumber.from(document.getElementById("rentPeriod").value);
+
+
+      try {
+        let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
+        console.log(amount.toNumber())
+        let x = BigNumber.from(10).pow(6).mul(amount);
+
+        let request = await usdc.approve(rentContract.address, x);
+
+        await request.wait();
+
+        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod);
+        console.log("rentovao")
+        
+      } catch (err) {
+        console.log("Error RENT SEAT : ", err);
+      }
+    }
+  }
 
   return (
     <div>
@@ -282,14 +363,14 @@ const Mainpage = ({ accountAddress }) => {
           </div>
           <div className='mt-2 row'>
             <label className='col-sm'>Choose number of places:</label>
-            <input className='col-sm' type="number"></input>
+            <input className='col-sm'id="numberOfPlaces" type="number"></input>
           </div>
           <div className='mt-2 row'>
             <label className='col-sm'>Choose rent preiod:</label>
-            <input className='col-sm' type="number"></input>
+            <input className='col-sm' id="rentPeriod" type="number"></input>
           </div>
         </div>
-        <button className='btn col-3 btn-primary mt-2'>Rent</button>
+        <button className='btn col-3 btn-primary mt-2' onClick={rentPlaces}>Rent</button>
       </div>
 
       <div className='rightDiv'>

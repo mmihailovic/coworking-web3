@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/mihailjovanoski/WebstormProjects/coworking/contracts/Rent.sol": {
-      "lastModificationDate": 1660652920534,
-      "contentHash": "cd63676ed3a13db9b3f14e8c025d4011",
+      "lastModificationDate": 1660726950303,
+      "contentHash": "233f8a613202175198fbad461ecbe045",
       "sourceName": "contracts/Rent.sol",
       "solcConfig": {
         "version": "0.8.16",
