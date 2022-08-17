@@ -108,7 +108,7 @@ const Mainpage = ({ accountAddress }) => {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
-        const rentable = await rent.numberOfPlacesForAddress(accounts[0]);
+        const rentable = await rent.numberOfFreePlacesForAddress(accounts[0]);
         console.log("moze renta " + rentable.toNumber());
         setCanRent(rentable.toNumber());
       }catch(err){
@@ -185,10 +185,13 @@ const checkTx = async(hash, provider) => {
         let request = await token.approve(rentContract.address, x);
         if(!request)throw new Error('Failed to approve transaction');
 
-        let res = await checkTx(request.hash, provider);
+        //let res = await checkTx(request.hash, provider);
         
+        await request.wait();
+        console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(x);
-        res = await checkTx(request.hash, provider);
+        //res = await checkTx(request.hash, provider);
+        await request.wait();
         console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
