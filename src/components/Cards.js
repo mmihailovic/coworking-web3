@@ -2,12 +2,12 @@ import React from 'react'
 import Card from './Card'
 
 
-const Cards = ({cards, onDelete}) => {
+const Cards = ({cards}) => {
   return (
     <>
       {
         cards.map((card) => (
-          <Card key={card.cardId} card = {card} onDelete={onDelete}/>
+          <Card key={card.id} card = {card}/>
         ))
       }
     </>

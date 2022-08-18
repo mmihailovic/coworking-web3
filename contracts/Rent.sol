@@ -63,12 +63,10 @@ contract Rent {
         return numberOfPlacesForAddress(_address) - numberOfRentedPlacesForAddress(_address);
     }
     //function rentSeat(address payable _to, uint number_of_places, uint numberOfDays) payable public {
-    function rentSeat(uint number_of_places, uint numberOfDays) payable public {
+    function rentSeat(uint number_of_places, uint numberOfDays, uint fee) payable public {
         require(numberOfDays > 0, "Izaberi vise od 0 dana");
         require(number_of_places > 0, "Izaberi vise od 0 mesta");
         require(numberOfFreePlacesForAddress(msg.sender) >= number_of_places , "Nije moguce rentirati toliko mesta"); //provera da li je broj mesta za rezervaciju veci od 0
-        uint _amount = amount * number_of_places * numberOfDays / 30;
-        uint fee = _amount * (10 ** 6);
         require(usdc.balanceOf(msg.sender) >= fee , "you dont have enough funds"); //provera da li korisnik ima dovoljno para
         bool sent = usdc.transferFrom(msg.sender, owner, fee);  //transakcija izmedju korisnika
         require(sent, "Failed to send USDC"); //provera da li je transakcija uspela
@@ -83,17 +81,62 @@ contract Rent {
         // Hash na osnovu adrese vlasnika, adrese zakupca, rednog broja mesta koji se rezervise, trenutnog vremena, vremena isteka
         return keccak256(abi.encode(ownerOfSeat, counter, msg.sender, block.timestamp, expirationDate));
     }
-    function getUserHash(address _to) public view returns(bytes32[] memory)
-    {
-        bytes32 [] memory h;
-        uint256 cnt=0;
-        for(uint i =0 ; i<n ;i++)
-        {
-             if(radnaMesta[i].ownerOfSeat==_to && radnaMesta[i].expirationDate > block.timestamp) cnt++;
-                h[cnt++]=radnaMesta[i].hashUlaznice;
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
         }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
+    }
+    function getUserHash(address _address) public view returns(bytes32[] memory)
+    {
+        bytes32 [] memory h = new bytes32[](numberOfRentedPlacesForAddress(_address));
+        uint256 cnt=0;
+        for(uint i =0 ; i< radnaMesta.length ;i++)
+        {
+             if(radnaMesta[i].ownerOfSeat== _address && radnaMesta[i].expirationDate >= block.timestamp){
+                h[cnt] = radnaMesta[i].hashUlaznice;
+                cnt = cnt + 1;
+             }
+        }
+        string[] memory s = new string[](h.length);
+        for(uint i = 0;i < h.length;i++) {
+            s[i] = bytes32ToString(h[i]);
+        }
+        require(s.length > 0, "string je 0");
         return h;
     }
+    function getDate(address _to) public view returns(uint) {
+        for(uint i = 0;i < radnaMesta.length; i++) {
+            if(radnaMesta[i].ownerOfSeat == _to)
+               return radnaMesta[i].expirationDate;
+        }
+    }
+    function getHash(address _address) public view returns(bytes32) {
+        for(uint i = 0;i < radnaMesta.length; i++) {
+            if(radnaMesta[i].ownerOfSeat == _address && radnaMesta[i].expirationDate >= block.timestamp)
+                return radnaMesta[i].hashUlaznice;
+        }
+    }
+    function getRents() public view returns( uint[] memory, bytes32[] memory){
+        uint numberRented = numberOfRentedPlacesForAddress(msg.sender);
+        uint[] memory expirationDates  = new uint[](numberRented);
+        bytes32[] memory h = new bytes32[](numberRented);
+        for(uint i=0; i < radnaMesta.length; i++)
+        {
+            if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
+                RadnoMesto storage r = radnaMesta[i];
+                expirationDates[i] = r.expirationDate;
+                h[i] = r.hashUlaznice;
+            }
+        }
+        return (expirationDates,h);
+    }
+
     function ulaz(bytes32 userHash) external view returns(bool) {
         for(uint i = 0; i < radnaMesta.length;i++) {
             //if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp)
@@ -102,6 +145,9 @@ contract Rent {
         }
         return false;
     }
+
+
+    
     function unrent(uint numberOfPlaces, address _address) private {
         for(uint i = 0;i < radnaMesta.length; i++) {
             if(radnaMesta[i].ownerOfSeat == _address && block.timestamp <= radnaMesta[i].expirationDate) {

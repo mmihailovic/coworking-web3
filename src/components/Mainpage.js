@@ -10,8 +10,9 @@ import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
-const rentAddres = "0xb1Aa824Be7ab0320Ce5Fd9f3Fc6aa780F5C9060A";
+const rentAddres = "0x52DF7ce54dEE3B01aF137C3777f7F9F27fB77C73";
 const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
+
 
 const Mainpage = ({ accountAddress }) => {
 
@@ -20,6 +21,8 @@ const Mainpage = ({ accountAddress }) => {
   const [stakedTokens, setStakedTokens] = useState(0);
   const [rentedPlaces, setRentedPlaces] = useState();
   const [canRent, setCanRent] = useState();
+  const [tickets, setTickets] = useState([]);
+
 
 
   async function getTokenBalance() {
@@ -89,14 +92,43 @@ const Mainpage = ({ accountAddress }) => {
       }
     }
   }
+  const parseTickets = (expirationDates, hash) => {
+      let tmpArr = [];
+      for (let i = 0; i < hash.length; i++) {
+        tmpArr.push({
+          id: parseInt(i+1),
+          expirationDate: new Date(expirationDates[i]*1000).toLocaleDateString(),
+          hash: (hash[i]),
+        })
+      }
+      return tmpArr;
+  }
 
-  useEffect(() => {
-    //let [res1,res2,res3] = await Promise.all([getTokenBalance(), GetStakingBalance(), getRentInfo()]);
-    //promise();
-     getTokenBalance();
-     GetStakingBalance();
-     getRentInfo();
-  }, [])
+  async function getTickets() {
+    if(typeof window.ethereum !== 'undefined'){
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner(0);
+      const rent = new ethers.Contract(rentAddres, Rent.abi, provider);
+
+      try{
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        const [expirationDates, hash] = await rent.getRents({from: accounts[0]});
+        //await rented.wait();
+        for(let i=0; i< hash.length; i++){
+          var newDate = new Date(expirationDates[i]*1000);
+          console.log((newDate.toLocaleDateString()+" "+hash[i]));
+        }
+        console.log("rented "   + hash.length);
+        setTickets(parseTickets(expirationDates, hash));
+
+      }catch(err){
+        console.log("Err tickets: " + err);
+      }
+    }
+  }
+
 
   async function updateCanRent() {
     if(typeof window.ethereum !== 'undefined'){
@@ -118,54 +150,21 @@ const Mainpage = ({ accountAddress }) => {
   }
 
   useEffect(() => {
+    //let [res1,res2,res3] = await Promise.all([getTokenBalance(), GetStakingBalance(), getRentInfo()]);
+    //promise();
+     getTokenBalance();
+     GetStakingBalance();
+     getRentInfo();
+  }, [])
+
+  useEffect(() => {
     console.log(stakedTokens);
     updateCanRent();
  }, [stakedTokens])
 
- const waitAllowance = async (
-  contract,
-  account,
-  to,
-  allowanceNeeded,
-  timesLeft
-) => {
-  if (timesLeft > 1) {
-    const currentAllowance = await contract.allowance(account, to)
-    // console.log(`I want ${allowanceNeeded}, and current is ${currentAllowance} `)
-    const needed = BigNumber.from(allowanceNeeded)
-    const current = BigNumber.from(currentAllowance.toString())
-    if (current.gte(needed)) {
-      console.log('USAOOOOOOOO');
-      return;
-    }
-    await new Promise((res) => setTimeout(res, 1000))
-    await waitAllowance(contract, account, to, allowanceNeeded, timesLeft - 1)
-  }
-  throw new Error('wait allowance failed for many times.')
-}
-
-const checkTx = async(hash, provider) => {
-  console.log("USAO");
-  let receipt = null;
-  while(receipt == null)
-  {
-    try {
-      receipt = await provider.getTransactionReceipt(hash);
-
-      if (receipt === null) {
-        console.log(`Trying again to fetch txn receipt....`);
-
-        continue;
-      }
-
-      console.log(`Receipt confirmations:`, receipt.confirmations);
-
-    } catch (e) {
-      console.log(`Receipt error:`, e);
-      break;
-    }
-  }
-}
+  useEffect(() => {
+    getTickets();
+  }, [rentedPlaces])
 
   const StakeTokens = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -196,26 +195,26 @@ const checkTx = async(hash, provider) => {
 
         console.log("Cards length: " + cards.length);
 
-        let accountAddressExists = false;
-        cards.forEach(card => {
-          if (card.accountAddress == accountAddress) {
-            card.amount = '' + (Number(card.amount) + Number(amount));
-            accountAddressExists = true;
-            setCards([...cards]);
-          }
-        })
+        setBeoTokenBalance(beoTokenBalance - amount);
+        setStakedTokens(stakedTokens -(- amount));
+        // let accountAddressExists = false;
+        // cards.forEach(card => {
+        //   if (card.accountAddress == accountAddress) {
+        //     card.amount = '' + (Number(card.amount) + Number(amount));
+        //     accountAddressExists = true;
+        //     setCards([...cards]);
+        //   }
+        // })
 
-        if (!accountAddressExists) {
-          let card = {
-            cardId: cards.length + 1,  //kad se budu brisale kartice treba uzeti najveci id, a ne cards.length
-            accountAddress: accountAddress,
-            amount: amount
-          };
-          setBeoTokenBalance(beoTokenBalance - amount);
-          setStakedTokens(stakedTokens -(- amount));
+        // if (!accountAddressExists) {
+        //   let card = {
+        //     cardId: cards.length + 1,  //kad se budu brisale kartice treba uzeti najveci id, a ne cards.length
+        //     accountAddress: accountAddress,
+        //     amount: amount
+        //   };
           //console.log(stakedTokens);
-          setCards([...cards, card]);
-        }
+          //setCards([...cards, card]);
+        //}
 
       } catch (err) {
         console.log("Error: ", err);
@@ -236,18 +235,20 @@ const checkTx = async(hash, provider) => {
 
       try {
 
-        await rentContract.unstakeTokens(x);
+        let request = await rentContract.unstakeTokens(x);
 
-        let shouldDeleteCard = false;
-        cards.forEach(card => {
-          if (card.accountAddress == accountAddress) {
-            if (card.amount == amount) shouldDeleteCard = true;
-            card.amount = '' + (Number(card.amount) - Number(amount));
-            setCards([...cards]);
-          }
-        })
+        await request.wait();
 
-        if (shouldDeleteCard) setCards(cards.filter((card) => card.accountAddress !== accountAddress));
+        // let shouldDeleteCard = false;
+        // cards.forEach(card => {
+        //   if (card.accountAddress == accountAddress) {
+        //     if (card.amount == amount) shouldDeleteCard = true;
+        //     card.amount = '' + (Number(card.amount) - Number(amount));
+        //     setCards([...cards]);
+        //   }
+        // })
+
+        // if (shouldDeleteCard) setCards(cards.filter((card) => card.accountAddress !== accountAddress));
 
         setBeoTokenBalance(beoTokenBalance - (-amount));
         setStakedTokens(stakedTokens - amount);
@@ -317,8 +318,10 @@ const checkTx = async(hash, provider) => {
 
         await request.wait();
 
-        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod);
-        console.log("rentovao")
+        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
+        await result.wait();
+        console.log("rentovao");
+        setRentedPlaces(rentedPlaces + numOfPlaces);
         
       } catch (err) {
         console.log("Error RENT SEAT : ", err);
@@ -378,7 +381,7 @@ const checkTx = async(hash, provider) => {
 
       <div className='rightDiv'>
         {/* <p>Mainpage</p> */}
-        <Cards cards={cards} />
+        <Cards cards={tickets} />
       </div>
     </div>
   )
