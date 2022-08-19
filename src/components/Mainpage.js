@@ -203,14 +203,14 @@ const Mainpage = ({ accountAddress }) => {
         // await request.wait();
         // setLoading(false);
 
-        loadingAnimation(request, "Waiting for transaction approval ...");
+        await loadingAnimation(request, "Waiting for transaction approval ...");
 
 
         console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(x);
         //res = await checkTx(request.hash, provider);
         //await request.wait();
-        loadingAnimation(request, "Waiting for stake ...");
+        await loadingAnimation(request, "Waiting for stake ...");
         console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
@@ -258,7 +258,7 @@ const Mainpage = ({ accountAddress }) => {
         let request = await rentContract.unstakeTokens(x);
 
         //await request.wait();
-        loadingAnimation(request, "Waiting for unstake ...");
+        await loadingAnimation(request, "Waiting for unstake ...");
 
         // let shouldDeleteCard = false;
         // cards.forEach(card => {
@@ -338,11 +338,11 @@ const Mainpage = ({ accountAddress }) => {
         let request = await usdc.approve(rentContract.address, x);
 
         //await request.wait();
-        loadingAnimation(request, "Transfering USDC ...");
+        await loadingAnimation(request, "Transfering USDC ...");
 
         let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
         //await result.wait();
-        loadingAnimation(result, "Waiting for rent ...");
+        await loadingAnimation(result, "Waiting for rent ...");
 
         console.log("rentovao");
         setRentedPlaces(rentedPlaces + numOfPlaces);
