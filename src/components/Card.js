@@ -6,7 +6,7 @@ import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 const Card = ({card}) => {
 
   const [canEntry, setCanEntry] = useState(false);
-  const rentAddres = "0x52DF7ce54dEE3B01aF137C3777f7F9F27fB77C73";
+  const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
 
 
   async function getInfo() {
@@ -35,7 +35,7 @@ const Card = ({card}) => {
         <p>{card.expirationDate}</p>
       </div>
       <QRCode   
-            value={canEntry.toString()}
+            value={card.hash}
             size={150}
           />
     </div>

@@ -81,60 +81,27 @@ contract Rent {
         // Hash na osnovu adrese vlasnika, adrese zakupca, rednog broja mesta koji se rezervise, trenutnog vremena, vremena isteka
         return keccak256(abi.encode(ownerOfSeat, counter, msg.sender, block.timestamp, expirationDate));
     }
-    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
-        uint8 i = 0;
-        while(i < 32 && _bytes32[i] != 0) {
-            i++;
-        }
-        bytes memory bytesArray = new bytes(i);
-        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
-            bytesArray[i] = _bytes32[i];
-        }
-        return string(bytesArray);
-    }
-    function getUserHash(address _address) public view returns(bytes32[] memory)
+    function getUserHash() public view returns(bytes32[] memory)
     {
-        bytes32 [] memory h = new bytes32[](numberOfRentedPlacesForAddress(_address));
+        bytes32 [] memory h = new bytes32[](numberOfRentedPlacesForAddress(msg.sender));
         uint256 cnt=0;
         for(uint i =0 ; i< radnaMesta.length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== _address && radnaMesta[i].expirationDate >= block.timestamp){
+             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
                 h[cnt] = radnaMesta[i].hashUlaznice;
                 cnt = cnt + 1;
              }
         }
-        string[] memory s = new string[](h.length);
-        for(uint i = 0;i < h.length;i++) {
-            s[i] = bytes32ToString(h[i]);
-        }
-        require(s.length > 0, "string je 0");
         return h;
     }
-    function getDate(address _to) public view returns(uint) {
-        for(uint i = 0;i < radnaMesta.length; i++) {
-            if(radnaMesta[i].ownerOfSeat == _to)
-               return radnaMesta[i].expirationDate;
-        }
-    }
-    function getHash(address _address) public view returns(bytes32) {
-        for(uint i = 0;i < radnaMesta.length; i++) {
-            if(radnaMesta[i].ownerOfSeat == _address && radnaMesta[i].expirationDate >= block.timestamp)
-                return radnaMesta[i].hashUlaznice;
-        }
-    }
-    function getRents() public view returns( uint[] memory, bytes32[] memory){
-        uint numberRented = numberOfRentedPlacesForAddress(msg.sender);
-        uint[] memory expirationDates  = new uint[](numberRented);
-        bytes32[] memory h = new bytes32[](numberRented);
-        for(uint i=0; i < radnaMesta.length; i++)
-        {
-            if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
-                RadnoMesto storage r = radnaMesta[i];
-                expirationDates[i] = r.expirationDate;
-                h[i] = r.hashUlaznice;
+    function getExpireDate(uint cnt) public view returns(uint){
+        for(uint i = 0;i < radnaMesta.length;i++) {
+            if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp) {
+                if(cnt == 0)
+                    return radnaMesta[i].expirationDate;
+                cnt--;
             }
         }
-        return (expirationDates,h);
     }
 
     function ulaz(bytes32 userHash) external view returns(bool) {

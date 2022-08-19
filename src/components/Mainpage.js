@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
-const rentAddres = "0x52DF7ce54dEE3B01aF137C3777f7F9F27fB77C73";
+const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
 const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 
@@ -114,14 +114,19 @@ const Mainpage = ({ accountAddress }) => {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
-        const [expirationDates, hash] = await rent.getRents({from: accounts[0]});
-        //await rented.wait();
-        for(let i=0; i< hash.length; i++){
-          var newDate = new Date(expirationDates[i]*1000);
-          console.log((newDate.toLocaleDateString()+" "+hash[i]));
+        //const [expirationDates, hash] = await rent.getRents({from: accounts[0]});
+        const exDates = [];
+        const hashes = await rent.getUserHash({from: accounts[0]});
+        for(let i = 0;i < hashes.length; i++) {
+            exDates.push(BigNumber.from(await rent.getExpireDate(i, {from: accounts[0]})));
         }
-        console.log("rented "   + hash.length);
-        setTickets(parseTickets(expirationDates, hash));
+        //await rented.wait();
+        for(let i=0; i< hashes.length; i++){
+          var newDate = new Date(exDates[i]*1000);
+          console.log((newDate.toLocaleDateString()+" "+hashes[i]));
+        }
+        //console.log("rented "   + hash.length);
+        setTickets(parseTickets(exDates, hashes));
 
       }catch(err){
         console.log("Err tickets: " + err);
