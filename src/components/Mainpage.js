@@ -8,6 +8,7 @@ import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
+import Loader from './Loader';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
 const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
@@ -22,8 +23,15 @@ const Mainpage = ({ accountAddress }) => {
   const [rentedPlaces, setRentedPlaces] = useState();
   const [canRent, setCanRent] = useState();
   const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState();
+  const [msg, setMsg] = useState();
 
-
+  async function loadingAnimation(request, msg) {
+    setMsg(msg);
+    setLoading(true);
+    await request.wait();
+    setLoading(false);
+  }
 
   async function getTokenBalance() {
     if (typeof window.ethereum !== 'undefined') {
@@ -45,13 +53,13 @@ const Mainpage = ({ accountAddress }) => {
   }
 
   async function GetStakingBalance() {
-    if( typeof window.ethereum !== 'undefined') {
+    if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
 
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
 
-      try{
+      try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
@@ -68,67 +76,67 @@ const Mainpage = ({ accountAddress }) => {
         //console.log("moze renta " + rentable.toNumber());
         //setCanRent(rentable.toNumber());
 
-      }catch(err){
+      } catch (err) {
         console.log("Err: " + err);
       }
-      
+
     }
   }
 
   async function getRentInfo() {
-    if(typeof window.ethereum !== 'undefined'){
+    if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      try{
+      try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         const rented = await rent.numberOfRentedPlacesForAddress(accounts[0]);
         setRentedPlaces(rented.toNumber());
-      }catch(err){
+      } catch (err) {
         console.log("Err rent: " + err);
       }
     }
   }
   const parseTickets = (expirationDates, hash) => {
-      let tmpArr = [];
-      for (let i = 0; i < hash.length; i++) {
-        tmpArr.push({
-          id: parseInt(i+1),
-          expirationDate: new Date(expirationDates[i]*1000).toLocaleDateString(),
-          hash: (hash[i]),
-        })
-      }
-      return tmpArr;
+    let tmpArr = [];
+    for (let i = 0; i < hash.length; i++) {
+      tmpArr.push({
+        id: parseInt(i + 1),
+        expirationDate: new Date(expirationDates[i] * 1000).toLocaleDateString(),
+        hash: (hash[i]),
+      })
+    }
+    return tmpArr;
   }
 
   async function getTickets() {
-    if(typeof window.ethereum !== 'undefined'){
+    if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rent = new ethers.Contract(rentAddres, Rent.abi, provider);
 
-      try{
+      try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         //const [expirationDates, hash] = await rent.getRents({from: accounts[0]});
         const exDates = [];
-        const hashes = await rent.getUserHash({from: accounts[0]});
-        for(let i = 0;i < hashes.length; i++) {
-            exDates.push(BigNumber.from(await rent.getExpireDate(i, {from: accounts[0]})));
+        const hashes = await rent.getUserHash({ from: accounts[0] });
+        for (let i = 0; i < hashes.length; i++) {
+          exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
         }
         //await rented.wait();
-        for(let i=0; i< hashes.length; i++){
-          var newDate = new Date(exDates[i]*1000);
-          console.log((newDate.toLocaleDateString()+" "+hashes[i]));
+        for (let i = 0; i < hashes.length; i++) {
+          var newDate = new Date(exDates[i] * 1000);
+          console.log((newDate.toLocaleDateString() + " " + hashes[i]));
         }
         //console.log("rented "   + hash.length);
         setTickets(parseTickets(exDates, hashes));
 
-      }catch(err){
+      } catch (err) {
         console.log("Err tickets: " + err);
       }
     }
@@ -136,19 +144,19 @@ const Mainpage = ({ accountAddress }) => {
 
 
   async function updateCanRent() {
-    if(typeof window.ethereum !== 'undefined'){
+    if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      try{
+      try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         const rentable = await rent.numberOfFreePlacesForAddress(accounts[0]);
         console.log("moze renta " + rentable.toNumber());
         setCanRent(rentable.toNumber());
-      }catch(err){
+      } catch (err) {
         console.log("Err RENT: " + err);
       }
     }
@@ -157,15 +165,15 @@ const Mainpage = ({ accountAddress }) => {
   useEffect(() => {
     //let [res1,res2,res3] = await Promise.all([getTokenBalance(), GetStakingBalance(), getRentInfo()]);
     //promise();
-     getTokenBalance();
-     GetStakingBalance();
-     getRentInfo();
+    getTokenBalance();
+    GetStakingBalance();
+    getRentInfo();
   }, [])
 
   useEffect(() => {
     console.log(stakedTokens);
     updateCanRent();
- }, [stakedTokens])
+  }, [stakedTokens])
 
   useEffect(() => {
     getTickets();
@@ -185,23 +193,30 @@ const Mainpage = ({ accountAddress }) => {
       console.log(amount);
       console.log(x.toString());
       try {
-        
+
         let request = await token.approve(rentContract.address, x);
-        if(!request)throw new Error('Failed to approve transaction');
+        if (!request) throw new Error('Failed to approve transaction');
 
         //let res = await checkTx(request.hash, provider);
-        
-        await request.wait();
+
+        // setLoading(true);
+        // await request.wait();
+        // setLoading(false);
+
+        loadingAnimation(request, "Waiting for transaction approval ...");
+
+
         console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(x);
         //res = await checkTx(request.hash, provider);
-        await request.wait();
+        //await request.wait();
+        loadingAnimation(request, "Waiting for stake ...");
         console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
 
         setBeoTokenBalance(beoTokenBalance - amount);
-        setStakedTokens(stakedTokens -(- amount));
+        setStakedTokens(stakedTokens - (- amount));
         // let accountAddressExists = false;
         // cards.forEach(card => {
         //   if (card.accountAddress == accountAddress) {
@@ -217,8 +232,8 @@ const Mainpage = ({ accountAddress }) => {
         //     accountAddress: accountAddress,
         //     amount: amount
         //   };
-          //console.log(stakedTokens);
-          //setCards([...cards, card]);
+        //console.log(stakedTokens);
+        //setCards([...cards, card]);
         //}
 
       } catch (err) {
@@ -242,7 +257,8 @@ const Mainpage = ({ accountAddress }) => {
 
         let request = await rentContract.unstakeTokens(x);
 
-        await request.wait();
+        //await request.wait();
+        loadingAnimation(request, "Waiting for unstake ...");
 
         // let shouldDeleteCard = false;
         // cards.forEach(card => {
@@ -321,13 +337,16 @@ const Mainpage = ({ accountAddress }) => {
 
         let request = await usdc.approve(rentContract.address, x);
 
-        await request.wait();
+        //await request.wait();
+        loadingAnimation(request, "Transfering USDC ...");
 
         let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-        await result.wait();
+        //await result.wait();
+        loadingAnimation(result, "Waiting for rent ...");
+
         console.log("rentovao");
         setRentedPlaces(rentedPlaces + numOfPlaces);
-        
+
       } catch (err) {
         console.log("Error RENT SEAT : ", err);
       }
@@ -335,60 +354,62 @@ const Mainpage = ({ accountAddress }) => {
   }
 
   return (
-    <div>
-      <div className='leftDiv'>
-        <div className='d-flex justify-content-around'>
-          <img src={profileIcon}  alt="profile" />
-          <div className='d-flex flex-column'>
-            <div className='p-2'>
-              <label className='label label-info'>BEO:</label>
-              <label>{beoTokenBalance}</label>
+    <>
+      {loading ? <Loader loading={false} msg={msg} /> : <div>
+        <div className='leftDiv'>
+          <div className='d-flex justify-content-around'>
+            <img src={profileIcon} alt="profile" />
+            <div className='d-flex flex-column'>
+              <div className='p-2'>
+                <label className='label label-info'>BEO:</label>
+                <label>{beoTokenBalance}</label>
+              </div>
+              <div className='p-2'>
+                <label>Staked:</label>
+                <label>{stakedTokens}</label>
+              </div>
+              <div className='p-2'>
+                <label>Rented:</label>
+                <label>{rentedPlaces}</label>
+              </div>
             </div>
-            <div className='p-2'>
-              <label>Staked:</label>
-              <label>{stakedTokens}</label>
-            </div>
-            <div className='p-2'>
-              <label>Rented:</label>
-              <label>{rentedPlaces}</label>
-            </div>    
           </div>
-        </div>
-        <p>{accountAddress}</p>
-        {console.log('Account address: ' + accountAddress)}
-       
-        <input type="number" id="amount" className='mt-2 form-control'></input>
-        <div className="mt-2 row">
-          <div className='col-sm'>
-            <Button className='btn btn-primary' id="stakeBtn" onClick={StakeTokens}>Stake</Button>
-          </div>
-          <div className='col-sm'>
-            <Button className='btn btn-primary' id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
-          </div>
-        </div>
-        
-        <div className='mt-2 row'>
-          <div className='row'>
-            <label className='col-sm'>Total places available:</label>
-            <label className='col-sm'>{canRent}</label>
-          </div>
-          <div className='mt-2 row'>
-            <label className='col-sm'>Choose number of places:</label>
-            <input className='col-sm'id="numberOfPlaces" type="number"></input>
-          </div>
-          <div className='mt-2 row'>
-            <label className='col-sm'>Choose rent preiod:</label>
-            <input className='col-sm' id="rentPeriod" type="number"></input>
-          </div>
-        </div>
-        <button className='btn col-3 btn-primary mt-2' onClick={rentPlaces}>Rent</button>
-      </div>
+          <p>{accountAddress}</p>
+          {console.log('Account address: ' + accountAddress)}
 
-      <div className='rightDiv'>
-        {/* <p>Mainpage</p> */}
-        <Cards cards={tickets} />
-      </div>
-    </div>
+          <input type="number" id="amount" className='mt-2 form-control'></input>
+          <div className="mt-2 row">
+            <div className='col-sm'>
+              <Button className='btn btn-primary' id="stakeBtn" onClick={StakeTokens}>Stake</Button>
+            </div>
+            <div className='col-sm'>
+              <Button className='btn btn-primary' id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
+            </div>
+          </div>
+
+          <div className='mt-2 row'>
+            <div className='row'>
+              <label className='col-sm'>Total places available:</label>
+              <label className='col-sm'>{canRent}</label>
+            </div>
+            <div className='mt-2 row'>
+              <label className='col-sm'>Choose number of places:</label>
+              <input className='col-sm' id="numberOfPlaces" type="number"></input>
+            </div>
+            <div className='mt-2 row'>
+              <label className='col-sm'>Choose rent preiod:</label>
+              <input className='col-sm' id="rentPeriod" type="number"></input>
+            </div>
+          </div>
+          <button className='btn col-3 btn-primary mt-2' onClick={rentPlaces}>Rent</button>
+        </div>
+
+        <div className='rightDiv'>
+          {/* <p>Mainpage</p> */}
+          <Cards cards={tickets} />
+        </div>
+      </div>}
+    </>
   )
 }
 
