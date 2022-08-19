@@ -9,6 +9,7 @@ import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 import Loader from './Loader';
+import logo from '../mylogo.svg';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
 const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
@@ -355,7 +356,10 @@ const Mainpage = ({ accountAddress }) => {
 
   return (
     <>
-      {loading ? <Loader loading={false} msg={msg} /> : <div>
+      {loading ? <Loader loading={false} msg={msg} /> :     <div class='mainDiv'>
+      <div class='topDiv'>
+        <img src={logo} id = "headerLogo" />
+      </div>
         <div className='leftDiv'>
           <div className='d-flex justify-content-around'>
             <img src={profileIcon} alt="profile" />
