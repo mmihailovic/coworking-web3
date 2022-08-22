@@ -27,6 +27,9 @@ const Mainpage = ({ accountAddress }) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState();
   const [msg, setMsg] = useState();
+  const [stakingValue, setStakingValue] = useState();
+  const [rentPlaceCount, setRentPlaceCount] = useState();
+  const [rentPeriod, setRentPeriod] = useState();
 
   async function loadingAnimation(request, msg) {
     setMsg(msg);
@@ -177,28 +180,27 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer)
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      var amount = document.getElementById("inSpin").value;
-      let x = BigNumber.from(10).pow(18).mul(amount);
+      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
-      console.log(amount);
-      console.log(x.toString());
+      console.log(stakingValue);
+      console.log(amount.toString());
       try {
 
-        let request = await token.approve(rentContract.address, x);
+        let request = await token.approve(rentContract.address, amount);
         if (!request) throw new Error('Failed to approve transaction');
 
         await loadingAnimation(request, "Waiting for transaction approval ...");
 
 
         console.log("ZAVRSIO APPROVE");
-        request = await rentContract.stakeTokens(x);
+        request = await rentContract.stakeTokens(amount);
         await loadingAnimation(request, "Waiting for stake ...");
         console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
 
-        setBeoTokenBalance(beoTokenBalance - amount);
-        setStakedTokens(stakedTokens - (- amount));
+        setBeoTokenBalance(beoTokenBalance - stakingValue);
+        setStakedTokens(stakedTokens - (- stakingValue));
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -213,17 +215,16 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer);
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      var amount = document.getElementById("amount").value;
-      let x = BigNumber.from(10).pow(18).mul(amount);
+      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
       try {
 
-        let request = await rentContract.unstakeTokens(x);
+        let request = await rentContract.unstakeTokens(amount);
 
         await loadingAnimation(request, "Waiting for unstake ...");
 
-        setBeoTokenBalance(beoTokenBalance - (-amount));
-        setStakedTokens(stakedTokens - amount);
+        setBeoTokenBalance(beoTokenBalance - (-stakingValue));
+        setStakedTokens(stakedTokens - stakingValue);
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -239,31 +240,30 @@ const Mainpage = ({ accountAddress }) => {
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
       const usdc = new ethers.Contract(usdcAddress, USDC.abi, signer);
 
-      var numOfPlaces = BigNumber.from(document.getElementById("numberOfPlaces").value);
-      var rentPeriod = BigNumber.from(document.getElementById("rentPeriod").value);
-      console.log(numOfPlaces);
-      console.log(rentPeriod);
+      var numOfPlacesBN = BigNumber.from(rentPlaceCount);
+      var rentPeriodBN = BigNumber.from(rentPeriod);
+      console.log(numOfPlacesBN);
+      console.log(rentPeriodBN);
 
-      // try {
-      //   let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-      //   console.log(amount.toNumber())
-      //   let x = BigNumber.from(10).pow(6).mul(amount);
+      try {
+        let amount = numOfPlacesBN.mul(rentPeriodBN).mul(BigNumber.from(250)).div(30);
+        console.log(amount.toNumber())
+        let x = BigNumber.from(10).pow(6).mul(amount);
 
-      //   let request = await usdc.approve(rentContract.address, x);
+        let request = await usdc.approve(rentContract.address, x);
 
-      //   //await request.wait();
-      //   await loadingAnimation(request, "Transfering USDC ...");
+        await loadingAnimation(request, "Transfering USDC ...");
 
-      //   let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-      //   //await result.wait();
-      //   await loadingAnimation(result, "Waiting for rent ...");
+        let result = await rentContract.rentSeat(numOfPlacesBN, rentPeriodBN, x);
+        await loadingAnimation(result, "Waiting for rent ...");
 
-      //   console.log("rentovao");
-      //   setRentedPlaces(rentedPlaces + numOfPlaces);
+        console.log("rentovao");
+        setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
+        updateCanRent();
 
-      // } catch (err) {
-      //   console.log("Error RENT SEAT : ", err);
-      // }
+      } catch (err) {
+        console.log("Error RENT SEAT : ", err);
+      }
     }
   }
 
@@ -306,7 +306,7 @@ const Mainpage = ({ accountAddress }) => {
                 min={0}
                 step={1}
                 value={0}
-                onChange={num=>console.log(num)}
+                onChange={num=>setStakingValue(num)}
                 variant={'dark'}
                 size="sm"
               />
@@ -337,7 +337,7 @@ const Mainpage = ({ accountAddress }) => {
                 min={0}
                 step={1}
                 value={0}
-                onChange={num=>console.log(num)}
+                onChange={num=>setRentPlaceCount(num)}
                 variant={'dark'}
                 size="sm"
                 id="numberOfPlacesSpin"
@@ -353,7 +353,7 @@ const Mainpage = ({ accountAddress }) => {
                 min={0}
                 step={1}
                 value={0}
-                onChange={num=>console.log(num)}
+                onChange={num=>setRentPeriod(num)}
                 variant={'dark'}
                 size="sm"
                 id="rentPeriodSpin"
