@@ -257,26 +257,26 @@ const Mainpage = ({ accountAddress }) => {
       console.log(numOfPlacesBN);
       console.log(rentPeriodBN);
 
-      // try {
-      //   let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-      //   console.log(amount.toNumber())
-      //   let x = BigNumber.from(10).pow(6).mul(amount);
+      try {
+        let amount = numOfPlacesBN.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
+        console.log(amount.toNumber())
+        let x = BigNumber.from(10).pow(6).mul(amount);
 
-      let request = await usdc.approve(rentContract.address, x);
+        let request = await usdc.approve(rentContract.address, x);
 
-      //   //await request.wait();
-      //   await loadingAnimation(request, "Transfering USDC ...");
 
-      let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-      //await result.wait();
-      await loadingAnimation(result, "Waiting for rent ...");
+        await loadingAnimation(request, "Transfering USDC ...");
 
-      //   console.log("rentovao");
-      //   setRentedPlaces(rentedPlaces + numOfPlaces);
+        let result = await rentContract.rentSeat(numOfPlacesBN, rentPeriodBN, x);
 
-      // } catch (err) {
-      //   console.log("Error RENT SEAT : ", err);
-      // }
+        await loadingAnimation(result, "Waiting for rent ...");
+
+        console.log("rentovao");
+        setRentedPlaces(rentedPlaces + numOfPlacesBN);
+
+      } catch (err) {
+        console.log("Error RENT SEAT : ", err);
+      }
     }
   }
 
@@ -287,29 +287,18 @@ const Mainpage = ({ accountAddress }) => {
           <img src={logo} id="headerLogo" />
         </div>
         <div className='leftDiv'>
-          <div className='d-flex justify-content-around'>
-            <img src={profileIcon} alt="profile" />
-            <div className='d-flex flex-column'>
-              <div className='p-2'>
-                <label className='label label-info'>BEO:</label>
-                {/* <img src={coin}></img> */}
-                <label className='text'>{beoTokenBalance}</label>
-              </div>
-              <div className='p-2'>
-                <label>Staked:</label>
-                <label className='text'>{stakedTokens}</label>
-              </div>
-              <div className='p-2'>
-                <label>Rented:</label>
-                <label className='text'>{rentedPlaces}</label>
-              </div>
-              <div className='p-2'>
-                <p className='text'>Wallet Address : {accountAddress}</p>
-              </div>
+          <div className='d-flex profile-div'>
+            <img src={profile} alt="profile" className='picture' />
+            <div className='infoDiv'>
+              <p className='text myText'>BEO: {beoTokenBalance}</p>
+              <p className='text myText'>Staked: {stakedTokens}</p>
+              <p className='text myText'>Rented: {rentedPlaces}</p>
+              <p className='text myText'>Wallet Address : {accountAddress}</p>
             </div>
           </div>
+
           {console.log('Account address: ' + accountAddress)}
-          <hr></hr>
+          <hr className='line'></hr>
           {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
           <div className="mt-2 row" id="stake">
             <InputSpinner
@@ -333,7 +322,7 @@ const Mainpage = ({ accountAddress }) => {
               <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
             </div>
           </div>
-          <hr></hr>
+          <hr className='line'></hr>
 
           <div className='mt-2 row'>
             <div className='row' id="places">
