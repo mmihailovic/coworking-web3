@@ -13,6 +13,7 @@ import Loader from './Loader';
 import logo from '../mylogo.svg';
 
 import InputSpinner from 'react-bootstrap-input-spinner';
+import { useNavigate } from 'react-router-dom';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
 const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
@@ -29,6 +30,18 @@ const Mainpage = ({ accountAddress }) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState();
   const [msg, setMsg] = useState();
+  const [stakingValue, setStakingValue] = useState();
+  const [rentPlaceCount, setRentPlaceCount] = useState();
+  const [rentPeriod, setRentPeriod] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", accounts => {
+      console.log(accounts[0] + ' acc');
+      if (accounts[0] === accountAddress);
+      else navigate('/', { replace: true });
+    });
+  }, []);
 
   async function loadingAnimation(request, msg) {
     setMsg(msg);
@@ -179,28 +192,27 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer)
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      var amount = document.getElementById("inSpin").value;
-      let x = BigNumber.from(10).pow(18).mul(amount);
+      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
-      console.log(amount);
-      console.log(x.toString());
+      console.log(stakingValue);
+      console.log(amount.toString());
       try {
 
-        let request = await token.approve(rentContract.address, x);
+        let request = await token.approve(rentContract.address, amount);
         if (!request) throw new Error('Failed to approve transaction');
 
         await loadingAnimation(request, "Waiting for transaction approval ...");
 
 
         console.log("ZAVRSIO APPROVE");
-        request = await rentContract.stakeTokens(x);
+        request = await rentContract.stakeTokens(amount);
         await loadingAnimation(request, "Waiting for stake ...");
         console.log("stake gotov");
 
         console.log("Cards length: " + cards.length);
 
-        setBeoTokenBalance(beoTokenBalance - amount);
-        setStakedTokens(stakedTokens - (- amount));
+        setBeoTokenBalance(beoTokenBalance - stakingValue);
+        setStakedTokens(stakedTokens - (- stakingValue));
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -215,17 +227,16 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer);
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      var amount = document.getElementById("amount").value;
-      let x = BigNumber.from(10).pow(18).mul(amount);
+      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
       try {
 
-        let request = await rentContract.unstakeTokens(x);
+        let request = await rentContract.unstakeTokens(amount);
 
         await loadingAnimation(request, "Waiting for unstake ...");
 
-        setBeoTokenBalance(beoTokenBalance - (-amount));
-        setStakedTokens(stakedTokens - amount);
+        setBeoTokenBalance(beoTokenBalance - (-stakingValue));
+        setStakedTokens(stakedTokens - stakingValue);
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -241,126 +252,135 @@ const Mainpage = ({ accountAddress }) => {
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
       const usdc = new ethers.Contract(usdcAddress, USDC.abi, signer);
 
-      var numOfPlaces = BigNumber.from(document.getElementById("numberOfPlaces").value);
-      var rentPeriod = BigNumber.from(document.getElementById("rentPeriod").value);
-      console.log(numOfPlaces);
-      console.log(rentPeriod);
+      var numOfPlacesBN = BigNumber.from(rentPlaceCount);
+      var rentPeriodBN = BigNumber.from(rentPeriod);
+      console.log(numOfPlacesBN);
+      console.log(rentPeriodBN);
 
-      try {
-        let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-        console.log(amount.toNumber())
-        let x = BigNumber.from(10).pow(6).mul(amount);
+      // try {
+      //   let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
+      //   console.log(amount.toNumber())
+      //   let x = BigNumber.from(10).pow(6).mul(amount);
 
-        let request = await usdc.approve(rentContract.address, x);
+      let request = await usdc.approve(rentContract.address, x);
 
-        //await request.wait();
-        await loadingAnimation(request, "Transfering USDC ...");
+      //   //await request.wait();
+      //   await loadingAnimation(request, "Transfering USDC ...");
 
-        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-        //await result.wait();
-        await loadingAnimation(result, "Waiting for rent ...");
+      let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
+      //await result.wait();
+      await loadingAnimation(result, "Waiting for rent ...");
 
-        console.log("rentovao");
-        setRentedPlaces(rentedPlaces + numOfPlaces);
+      //   console.log("rentovao");
+      //   setRentedPlaces(rentedPlaces + numOfPlaces);
 
-      } catch (err) {
-        console.log("Error RENT SEAT : ", err);
-      }
+      // } catch (err) {
+      //   console.log("Error RENT SEAT : ", err);
+      // }
     }
   }
 
   return (
     <>
-      {loading ? <Loader loading={false} msg={msg} /> :
-        <div className='mainDiv'>
-          <div className='topDiv'>
-            <img src={logo} id="headerLogo" />
-          </div>
-          <div className='leftDiv'>
-
-            <div className='d-flex profile-div'>
-              <img src={profile} alt="profile" className='picture' />
-              <div className='infoDiv'>
-                <p className='text myText'>BEO: {beoTokenBalance}</p>
-                <p className='text myText'>Staked: {stakedTokens}</p>
-                <p className='text myText'>Rented: {rentedPlaces}</p>
-                <p className='text myText'>Wallet Address : {accountAddress}</p>
+      {loading ? <Loader loading={false} msg={msg} /> : <div className='mainDiv'>
+        <div className='topDiv'>
+          <img src={logo} id="headerLogo" />
+        </div>
+        <div className='leftDiv'>
+          <div className='d-flex justify-content-around'>
+            <img src={profileIcon} alt="profile" />
+            <div className='d-flex flex-column'>
+              <div className='p-2'>
+                <label className='label label-info'>BEO:</label>
+                {/* <img src={coin}></img> */}
+                <label className='text'>{beoTokenBalance}</label>
+              </div>
+              <div className='p-2'>
+                <label>Staked:</label>
+                <label className='text'>{stakedTokens}</label>
+              </div>
+              <div className='p-2'>
+                <label>Rented:</label>
+                <label className='text'>{rentedPlaces}</label>
+              </div>
+              <div className='p-2'>
+                <p className='text'>Wallet Address : {accountAddress}</p>
               </div>
             </div>
+          </div>
+          {console.log('Account address: ' + accountAddress)}
+          <hr></hr>
+          {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
+          <div className="mt-2 row" id="stake">
+            <InputSpinner
+              type={'int'}
+              precision={2}
+              max={100}
+              min={0}
+              step={1}
+              value={0}
+              onChange={num => setStakingValue(num)}
+              variant={'primary'}
+              size="sm"
+            />
+            <div className='col-sm'>
+              <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
+              {/* <Button variant="outline-light">Light</Button>{''} */}
+              {/* <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="light">Primary</button> */}
+              {/* <button data-mdb-ripple-color="primary" type="button" class="btn btn-light">Primary</button> */}
+            </div>
+            <div className='col-sm'>
+              <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
+            </div>
+          </div>
+          <hr></hr>
 
-            {console.log('Account address: ' + accountAddress)}
-            <hr className='line'></hr>
-            {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
-            <div className="mt-2 row" id="stake">
+          <div className='mt-2 row'>
+            <div className='row' id="places">
+              <label className='col-sm myText'>Total places available:</label>
+              <label className='col-sm myText'>{canRent}</label>
+            </div>
+            <div className='mt-2 row myText' id="numberOfPlaces">
+              <label className='col-sm myText'>Choose number of places:</label>
+              {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
               <InputSpinner
-                className='spinner'
                 type={'int'}
                 precision={2}
                 max={100}
                 min={0}
                 step={1}
                 value={0}
-                onChange={num => console.log(num)}
+                onChange={num => setRentPlaceCount(num)}
                 variant={'primary'}
                 size="sm"
+                id="numberOfPlacesSpin"
               />
-              <div className='col-sm'>
-                <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
-              </div>
-              <div className='col-sm'>
-                <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
-              </div>
             </div>
-            <hr className='line'></hr>
-
-            <div className='mt-2 row'>
-              <div className='row' id="places">
-                <label className='col-sm myText'>Total places available:</label>
-                <label className='col-sm myText'>{canRent}</label>
-              </div>
-              <div className='mt-2 row' id="numberOfPlaces">
-                <label className='col-sm myText'>Choose number of places:</label>
-                {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
-                <InputSpinner
-                  type={'int'}
-                  precision={2}
-                  max={100}
-                  min={0}
-                  step={1}
-                  value={0}
-                  onChange={num => console.log(num)}
-                  variant={'primary'}
-                  size="sm"
-                  id="numberOfPlacesSpin"
-                />
-              </div>
-              <div className='mt-2 row' id="rentPeriod">
-                <label className='col-sm myText'>Choose rent preiod:</label>
-                {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
-                <InputSpinner
-                  type={'int'}
-                  precision={2}
-                  max={100}
-                  min={0}
-                  step={1}
-                  value={0}
-                  onChange={num => console.log(num)}
-                  variant={'primary'}
-                  size="sm"
-                  id="rentPeriodSpin"
-                />
-              </div>
+            <div className='mt-2 row' id="rentPeriod">
+              <label className='col-sm myText'>Choose rent preiod:</label>
+              {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
+              <InputSpinner
+                type={'int'}
+                precision={2}
+                max={100}
+                min={0}
+                step={1}
+                value={0}
+                onChange={num => setRentPeriod(num)}
+                variant={'primary'}
+                size="sm"
+                id="rentPeriodSpin"
+              />
             </div>
-            <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
-
-
           </div>
+          <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
+        </div>
 
-          <div className='rightDiv'>
-            {/* <p>Mainpage</p> */}
-            <Cards cards={tickets} />
-          </div>
-        </div>}
+        <div className='rightDiv'>
+          {/* <p>Mainpage</p> */}
+          <Cards cards={tickets} />
+        </div>
+      </div>}
     </>
   )
 }
