@@ -1,0 +1,162 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #DDD;
+    font-family: 'Inknut Antiqua', serif;
+    font-family: 'Ravi Prakash', cursive;
+    font-family: 'Lora', serif;
+    font-family: 'Indie Flower', cursive;
+    font-family: 'Cabin', sans-serif;
+}
+
+.QR-text {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.item-QR {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.item-QR-left {
+    text-align: left;
+    margin-top: 20px;
+    margin-right: 15px;
+}
+
+.item {
+    width: 48%;
+    padding: 0 20px;
+    background: #fff;
+    overflow: hidden;
+    margin: 10px
+}
+
+.item-right,
+.container .item-left {
+    float: left;
+    padding: 20px
+}
+
+.item-right .item-left .item-QR {
+    display: inline-table;
+}
+
+.item-right {
+    padding: 79px 50px;
+    margin-right: 20px;
+    width: 25%;
+    position: relative;
+    height: 286px
+}
+
+.item-right .up-border,
+.container .item-right .down-border {
+    padding: 14px 15px;
+    background-color: #ddd;
+    border-radius: 50%;
+    position: absolute
+}
+
+.item-right .up-border {
+    top: -12px;
+    right: -36px;
+}
+
+.item-right .down-border {
+    bottom: -68px;
+    right: -36px;
+}
+
+.item-right .num {
+    font-size: 60px;
+    text-align: center;
+    color: #111
+}
+
+.item-right .day,
+.container .item-left .event {
+    color: #555;
+    font-size: 20px;
+    margin-bottom: 9px;
+}
+
+.item-right .day {
+    text-align: center;
+    font-size: 25px;
+}
+
+.valid {
+    font-size: 15px;
+}
+
+.item-left {
+    width: 71%;
+    padding: 34px 0px 19px 46px;
+    border-left: 3px dotted #999;
+}
+
+.item-left .title {
+    color: #111;
+    font-size: 34px;
+    margin-bottom: 12px
+}
+
+.item-left .sce {
+    margin-top: 5px;
+    display: block
+}
+
+.container .item-left .sce .icon,
+.container .item-left .sce p,
+.container .item-left .loc .icon,
+.container .item-left .loc p {
+    float: left;
+    word-spacing: 5px;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.item-left .sce .icon,
+.container .item-left .loc .icon {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #665
+}
+
+.item-left .loc {
+    display: block
+}
+
+.fix {
+    clear: both
+}
+
+.item .share {
+    color: #fff;
+    padding: 6px 14px;
+    float: right;
+    margin-top: 10px;
+    margin-right: 18px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer
+}
+
+.item .share {
+    background: #777
+}
+
+@media only screen and (max-width: 1150px) {
+    .item {
+        width: 100%;
+        margin-right: 20px
+    }
+}

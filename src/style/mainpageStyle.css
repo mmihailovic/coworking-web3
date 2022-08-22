@@ -1,6 +1,7 @@
 .leftDiv {
+    background-color: azure;
     display: inline-block;
-    width: 50%;
+    width: 30%;
     position: absolute;
     top: 200px;
     left: 10%;
@@ -8,10 +9,11 @@
 
 .rightDiv {
     display: inline-block;
-    background:linear-gradient(to bottom, #276fb7, #3c73c0);
-    width: 20%;
+    background-color: #DDD;
+    /* background: linear-gradient(to bottom, #276fb7, #3c73c0); */
+    width: 50%;
     position: absolute;
-    left: 70%;
+    left: 50%;
     top: 15%;
 }
 
@@ -20,12 +22,15 @@
     left: 5%;
     top: 3%;
 }
-.mainDiv{
-    background:linear-gradient(to bottom, #0f284a, #11315c);
+
+.mainDiv {
+    /* background: linear-gradient(to bottom, #0f284a, #11315c); */
     height: 100vh;
     width: 100vw;
+    background-color: #DDD;
 }
+
 .topDiv {
     height: 100px;
-    background:linear-gradient(to bottom, #0c2d4d, #123566);
+    background: linear-gradient(to bottom, #0c2d4d, #123566);
 }
