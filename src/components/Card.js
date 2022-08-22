@@ -38,8 +38,8 @@ const Card = ({ card }) => {
       <div className='item'>
         <div className='item-right'>
           <h3 className='valid'>Until:</h3>
-          <h2 className='num'>18</h2>
-          <p className='day'>sep</p>
+          <h2 className='num'>{date.getDate()}</h2>
+          <p className='day'>{date.toLocaleString('en-US',{month: 'short'})}</p>
           <span className='up-border'></span>
           <span className='down-border'></span>
         </div>

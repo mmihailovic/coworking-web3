@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import profileIcon from '../profileIcon.png';
 import Loader from './Loader';
 import logo from '../mylogo.svg';
+import InputSpinner from 'react-bootstrap-input-spinner';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
 const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
@@ -39,8 +40,6 @@ const Mainpage = ({ accountAddress }) => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const token = new ethers.Contract(tokenAddress, Token.abi, provider);
-      //const bal = await token.balanceOf(accountAddress);
-      //console.log(ethers.utils.formatEther(bal));
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
@@ -66,16 +65,11 @@ const Mainpage = ({ accountAddress }) => {
         });
 
         const stakeBal = await rentContract.getStakingBalance(accounts[0]);
-        //console.log(Math.trunc(ethers.utils.formatEther(stakeBal))+ ' stake ');
         const x = Math.trunc(ethers.utils.formatEther(stakeBal));
         setStakedTokens(x);
 
         const rented = await rentContract.numberOfRentedPlacesForAddress(accounts[0]);
         setRentedPlaces(rented.toNumber());
-
-        //const rentable = await rentContract.numberOfPlacesForAddress(BigNumber.from(10).pow(18).mul(stakedTokens));
-        //console.log("moze renta " + rentable.toNumber());
-        //setCanRent(rentable.toNumber());
 
       } catch (err) {
         console.log("Err: " + err);
@@ -123,18 +117,15 @@ const Mainpage = ({ accountAddress }) => {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
-        //const [expirationDates, hash] = await rent.getRents({from: accounts[0]});
         const exDates = [];
         const hashes = await rent.getUserHash({ from: accounts[0] });
         for (let i = 0; i < hashes.length; i++) {
           exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
         }
-        //await rented.wait();
         for (let i = 0; i < hashes.length; i++) {
           var newDate = new Date(exDates[i] * 1000);
           console.log((newDate.toLocaleDateString() + " " + hashes[i]));
         }
-        //console.log("rented "   + hash.length);
         setTickets(parseTickets(exDates, hashes));
 
       } catch (err) {
@@ -164,8 +155,6 @@ const Mainpage = ({ accountAddress }) => {
   }
 
   useEffect(() => {
-    //let [res1,res2,res3] = await Promise.all([getTokenBalance(), GetStakingBalance(), getRentInfo()]);
-    //promise();
     getTokenBalance();
     GetStakingBalance();
     getRentInfo();
@@ -188,7 +177,7 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer)
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
 
-      var amount = document.getElementById("amount").value;
+      var amount = document.getElementById("inSpin").value;
       let x = BigNumber.from(10).pow(18).mul(amount);
 
       console.log(amount);
@@ -198,19 +187,11 @@ const Mainpage = ({ accountAddress }) => {
         let request = await token.approve(rentContract.address, x);
         if (!request) throw new Error('Failed to approve transaction');
 
-        //let res = await checkTx(request.hash, provider);
-
-        // setLoading(true);
-        // await request.wait();
-        // setLoading(false);
-
         await loadingAnimation(request, "Waiting for transaction approval ...");
 
 
         console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(x);
-        //res = await checkTx(request.hash, provider);
-        //await request.wait();
         await loadingAnimation(request, "Waiting for stake ...");
         console.log("stake gotov");
 
@@ -218,25 +199,6 @@ const Mainpage = ({ accountAddress }) => {
 
         setBeoTokenBalance(beoTokenBalance - amount);
         setStakedTokens(stakedTokens - (- amount));
-        // let accountAddressExists = false;
-        // cards.forEach(card => {
-        //   if (card.accountAddress == accountAddress) {
-        //     card.amount = '' + (Number(card.amount) + Number(amount));
-        //     accountAddressExists = true;
-        //     setCards([...cards]);
-        //   }
-        // })
-
-        // if (!accountAddressExists) {
-        //   let card = {
-        //     cardId: cards.length + 1,  //kad se budu brisale kartice treba uzeti najveci id, a ne cards.length
-        //     accountAddress: accountAddress,
-        //     amount: amount
-        //   };
-        //console.log(stakedTokens);
-        //setCards([...cards, card]);
-        //}
-
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -258,19 +220,7 @@ const Mainpage = ({ accountAddress }) => {
 
         let request = await rentContract.unstakeTokens(x);
 
-        //await request.wait();
         await loadingAnimation(request, "Waiting for unstake ...");
-
-        // let shouldDeleteCard = false;
-        // cards.forEach(card => {
-        //   if (card.accountAddress == accountAddress) {
-        //     if (card.amount == amount) shouldDeleteCard = true;
-        //     card.amount = '' + (Number(card.amount) - Number(amount));
-        //     setCards([...cards]);
-        //   }
-        // })
-
-        // if (shouldDeleteCard) setCards(cards.filter((card) => card.accountAddress !== accountAddress));
 
         setBeoTokenBalance(beoTokenBalance - (-amount));
         setStakedTokens(stakedTokens - amount);
@@ -279,44 +229,6 @@ const Mainpage = ({ accountAddress }) => {
       }
     }
   }
-
-  // const parseBackend = (adrese, imena, prezimena) => {
-
-  //   let tmpArr = [];
-
-  //   for (let i = 0; i < imena.length; i++) {
-  //     tmpArr.push({
-  //       adresa: parseInt(adrese[i]),
-  //       ime: imena[i],
-  //       prezime: prezimena[i],
-  //     })
-  //   }
-
-  //   return tmpArr;
-  // }
-
-  // async function getPersons() {
-
-  //   if (typeof window.ethereum !== 'undefined') {
-
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum)
-  //     //console.log({ provider })
-  //     const contract = new ethers.Contract(adresaContracta, Test.abi, provider)
-
-  //     try {
-
-  //       const [adrese, imena, prezimena] = await contract.getPeople();
-  //       setCards(parseBackend(adrese,imena,prezimena));
-
-  //     } catch (err) {
-  //       console.log("Error: ", err)
-  //     }
-  //   }    
-  // }
-
-  // useEffect(() => {
-  //   getPersons();
-  // }, []);
 
   const rentPlaces = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -329,35 +241,36 @@ const Mainpage = ({ accountAddress }) => {
 
       var numOfPlaces = BigNumber.from(document.getElementById("numberOfPlaces").value);
       var rentPeriod = BigNumber.from(document.getElementById("rentPeriod").value);
+      console.log(numOfPlaces);
+      console.log(rentPeriod);
 
+      // try {
+      //   let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
+      //   console.log(amount.toNumber())
+      //   let x = BigNumber.from(10).pow(6).mul(amount);
 
-      try {
-        let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-        console.log(amount.toNumber())
-        let x = BigNumber.from(10).pow(6).mul(amount);
+      //   let request = await usdc.approve(rentContract.address, x);
 
-        let request = await usdc.approve(rentContract.address, x);
+      //   //await request.wait();
+      //   await loadingAnimation(request, "Transfering USDC ...");
 
-        //await request.wait();
-        await loadingAnimation(request, "Transfering USDC ...");
+      //   let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
+      //   //await result.wait();
+      //   await loadingAnimation(result, "Waiting for rent ...");
 
-        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-        //await result.wait();
-        await loadingAnimation(result, "Waiting for rent ...");
+      //   console.log("rentovao");
+      //   setRentedPlaces(rentedPlaces + numOfPlaces);
 
-        console.log("rentovao");
-        setRentedPlaces(rentedPlaces + numOfPlaces);
-
-      } catch (err) {
-        console.log("Error RENT SEAT : ", err);
-      }
+      // } catch (err) {
+      //   console.log("Error RENT SEAT : ", err);
+      // }
     }
   }
 
   return (
     <>
-      {loading ? <Loader loading={false} msg={msg} /> :     <div class='mainDiv'>
-      <div class='topDiv'>
+      {loading ? <Loader loading={false} msg={msg} /> :     <div className='mainDiv'>
+      <div className='topDiv'>
         <img src={logo} id = "headerLogo" />
       </div>
         <div className='leftDiv'>
@@ -366,46 +279,88 @@ const Mainpage = ({ accountAddress }) => {
             <div className='d-flex flex-column'>
               <div className='p-2'>
                 <label className='label label-info'>BEO:</label>
-                <label>{beoTokenBalance}</label>
+                {/* <img src={coin}></img> */}
+                <label className='text'>{beoTokenBalance}</label>
               </div>
               <div className='p-2'>
                 <label>Staked:</label>
-                <label>{stakedTokens}</label>
+                <label className='text'>{stakedTokens}</label>
               </div>
               <div className='p-2'>
                 <label>Rented:</label>
-                <label>{rentedPlaces}</label>
+                <label className='text'>{rentedPlaces}</label>
+              </div>
+              <div className='p-2'>
+                <p className='text'>Wallet Address : {accountAddress}</p>
               </div>
             </div>
           </div>
-          <p>{accountAddress}</p>
           {console.log('Account address: ' + accountAddress)}
-
-          <input type="number" id="amount" className='mt-2 form-control'></input>
-          <div className="mt-2 row">
+          <hr></hr>
+          {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
+          <div className="mt-2 row" id = "stake">
+          <InputSpinner
+                type={'int'}
+                precision={2}
+                max={100}
+                min={0}
+                step={1}
+                value={0}
+                onChange={num=>console.log(num)}
+                variant={'dark'}
+                size="sm"
+              />
             <div className='col-sm'>
-              <Button className='btn btn-primary' id="stakeBtn" onClick={StakeTokens}>Stake</Button>
+              <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
+              {/* <Button variant="outline-light">Light</Button>{''} */}
+              {/* <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="light">Primary</button> */}
+              {/* <button data-mdb-ripple-color="primary" type="button" class="btn btn-light">Primary</button> */}
             </div>
             <div className='col-sm'>
-              <Button className='btn btn-primary' id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
+              <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
             </div>
           </div>
+          <hr></hr>
 
           <div className='mt-2 row'>
-            <div className='row'>
+            <div className='row' id="places">
               <label className='col-sm'>Total places available:</label>
               <label className='col-sm'>{canRent}</label>
             </div>
-            <div className='mt-2 row'>
+            <div className='mt-2 row' id = "numberOfPlaces">
               <label className='col-sm'>Choose number of places:</label>
-              <input className='col-sm' id="numberOfPlaces" type="number"></input>
+              {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
+              <InputSpinner
+                type={'int'}
+                precision={2}
+                max={100}
+                min={0}
+                step={1}
+                value={0}
+                onChange={num=>console.log(num)}
+                variant={'dark'}
+                size="sm"
+                id="numberOfPlacesSpin"
+              />
             </div>
-            <div className='mt-2 row'>
+            <div className='mt-2 row' id = "rentPeriod">
               <label className='col-sm'>Choose rent preiod:</label>
-              <input className='col-sm' id="rentPeriod" type="number"></input>
+              {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
+              <InputSpinner
+                type={'int'}
+                precision={2}
+                max={100}
+                min={0}
+                step={1}
+                value={0}
+                onChange={num=>console.log(num)}
+                variant={'dark'}
+                size="sm"
+                id="rentPeriodSpin"
+              />
             </div>
           </div>
-          <button className='btn col-3 btn-primary mt-2' onClick={rentPlaces}>Rent</button>
+          <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
         </div>
 
         <div className='rightDiv'>
