@@ -3,6 +3,7 @@ import QRCode from 'react-qr-code';
 import { ethers } from 'ethers';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import "../style/cardStyle.css"
+import Button from 'react-bootstrap/Button';
 
 const Card = ({ card }) => {
 
@@ -39,7 +40,7 @@ const Card = ({ card }) => {
         <div className='item-right'>
           <h3 className='valid'>Until:</h3>
           <h2 className='num'>{date.getDate()}</h2>
-          <p className='day'>{date.toLocaleString('en-US',{month: 'short'})}</p>
+          <p className='day'>{date.toLocaleString('en-US', { month: 'short' })}</p>
           <span className='up-border'></span>
           <span className='down-border'></span>
         </div>
@@ -50,7 +51,7 @@ const Card = ({ card }) => {
 
           <div className='item-QR'>
             <div className='item-QR-left'>
-              <p className='QR-text'>Exipration date: {date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}</p>
+              <p className='QR-text'>Exipration date: {date.getDate() + "/" + Number(date.getMonth() - (-1)) + "/" + date.getFullYear()}</p>
               <p className='QR-text'>Address: Masarikova 5, Beograd 11000</p>
             </div>
             <div className='item-QR-right'>
@@ -59,7 +60,7 @@ const Card = ({ card }) => {
           </div>
 
           <div className='sce'>
-            <button className='share'>Share</button>
+            <Button variant="outline-dark" className='share'>Share</Button>
           </div>
         </div>
 

@@ -139,6 +139,10 @@ body {
     clear: both
 }
 
+.share {
+    border: black;
+}
+
 .item .share {
     color: #fff;
     padding: 6px 14px;
@@ -146,12 +150,12 @@ body {
     margin-top: 10px;
     margin-right: 18px;
     font-size: 18px;
-    border: none;
     cursor: pointer
 }
 
 .item .share {
-    background: #777
+    background: #0a6efd;
+    color: white;
 }
 
 @media only screen and (max-width: 1150px) {

@@ -7,9 +7,11 @@ import Token from '../artifacts/contracts/Token.sol/Token.json';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
-import profileIcon from '../profileIcon.png';
+// import profileIcon from '../profileIcon.png';
+import profile from '../profile.png'
 import Loader from './Loader';
 import logo from '../mylogo.svg';
+
 import InputSpinner from 'react-bootstrap-input-spinner';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
@@ -244,130 +246,121 @@ const Mainpage = ({ accountAddress }) => {
       console.log(numOfPlaces);
       console.log(rentPeriod);
 
-      // try {
-      //   let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-      //   console.log(amount.toNumber())
-      //   let x = BigNumber.from(10).pow(6).mul(amount);
+      try {
+        let amount = numOfPlaces.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
+        console.log(amount.toNumber())
+        let x = BigNumber.from(10).pow(6).mul(amount);
 
-      //   let request = await usdc.approve(rentContract.address, x);
+        let request = await usdc.approve(rentContract.address, x);
 
-      //   //await request.wait();
-      //   await loadingAnimation(request, "Transfering USDC ...");
+        //await request.wait();
+        await loadingAnimation(request, "Transfering USDC ...");
 
-      //   let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
-      //   //await result.wait();
-      //   await loadingAnimation(result, "Waiting for rent ...");
+        let result = await rentContract.rentSeat(numOfPlaces, rentPeriod, x);
+        //await result.wait();
+        await loadingAnimation(result, "Waiting for rent ...");
 
-      //   console.log("rentovao");
-      //   setRentedPlaces(rentedPlaces + numOfPlaces);
+        console.log("rentovao");
+        setRentedPlaces(rentedPlaces + numOfPlaces);
 
-      // } catch (err) {
-      //   console.log("Error RENT SEAT : ", err);
-      // }
+      } catch (err) {
+        console.log("Error RENT SEAT : ", err);
+      }
     }
   }
 
   return (
     <>
-      {loading ? <Loader loading={false} msg={msg} /> :     <div className='mainDiv'>
-      <div className='topDiv'>
-        <img src={logo} id = "headerLogo" />
-      </div>
-        <div className='leftDiv'>
-          <div className='d-flex justify-content-around'>
-            <img src={profileIcon} alt="profile" />
-            <div className='d-flex flex-column'>
-              <div className='p-2'>
-                <label className='label label-info'>BEO:</label>
-                {/* <img src={coin}></img> */}
-                <label className='text'>{beoTokenBalance}</label>
-              </div>
-              <div className='p-2'>
-                <label>Staked:</label>
-                <label className='text'>{stakedTokens}</label>
-              </div>
-              <div className='p-2'>
-                <label>Rented:</label>
-                <label className='text'>{rentedPlaces}</label>
-              </div>
-              <div className='p-2'>
-                <p className='text'>Wallet Address : {accountAddress}</p>
-              </div>
-            </div>
+      {loading ? <Loader loading={false} msg={msg} /> :
+        <div className='mainDiv'>
+          <div className='topDiv'>
+            <img src={logo} id="headerLogo" />
           </div>
-          {console.log('Account address: ' + accountAddress)}
-          <hr></hr>
-          {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
-          <div className="mt-2 row" id = "stake">
-          <InputSpinner
-                type={'int'}
-                precision={2}
-                max={100}
-                min={0}
-                step={1}
-                value={0}
-                onChange={num=>console.log(num)}
-                variant={'dark'}
-                size="sm"
-              />
-            <div className='col-sm'>
-              <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
-              {/* <Button variant="outline-light">Light</Button>{''} */}
-              {/* <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="light">Primary</button> */}
-              {/* <button data-mdb-ripple-color="primary" type="button" class="btn btn-light">Primary</button> */}
-            </div>
-            <div className='col-sm'>
-              <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
-            </div>
-          </div>
-          <hr></hr>
+          <div className='leftDiv'>
 
-          <div className='mt-2 row'>
-            <div className='row' id="places">
-              <label className='col-sm'>Total places available:</label>
-              <label className='col-sm'>{canRent}</label>
+            <div className='d-flex profile-div'>
+              <img src={profile} alt="profile" className='picture' />
+              <div className='infoDiv'>
+                <p className='text myText'>BEO: {beoTokenBalance}</p>
+                <p className='text myText'>Staked: {stakedTokens}</p>
+                <p className='text myText'>Rented: {rentedPlaces}</p>
+                <p className='text myText'>Wallet Address : {accountAddress}</p>
+              </div>
             </div>
-            <div className='mt-2 row' id = "numberOfPlaces">
-              <label className='col-sm'>Choose number of places:</label>
-              {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
-              <InputSpinner
-                type={'int'}
-                precision={2}
-                max={100}
-                min={0}
-                step={1}
-                value={0}
-                onChange={num=>console.log(num)}
-                variant={'dark'}
-                size="sm"
-                id="numberOfPlacesSpin"
-              />
-            </div>
-            <div className='mt-2 row' id = "rentPeriod">
-              <label className='col-sm'>Choose rent preiod:</label>
-              {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
-              <InputSpinner
-                type={'int'}
-                precision={2}
-                max={100}
-                min={0}
-                step={1}
-                value={0}
-                onChange={num=>console.log(num)}
-                variant={'dark'}
-                size="sm"
-                id="rentPeriodSpin"
-              />
-            </div>
-          </div>
-          <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
-        </div>
 
-        <div className='rightDiv'>
-          {/* <p>Mainpage</p> */}
-          <Cards cards={tickets} />
-        </div>
-      </div>}
+            {console.log('Account address: ' + accountAddress)}
+            <hr className='line'></hr>
+            {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
+            <div className="mt-2 row" id="stake">
+              <InputSpinner
+                className='spinner'
+                type={'int'}
+                precision={2}
+                max={100}
+                min={0}
+                step={1}
+                value={0}
+                onChange={num => console.log(num)}
+                variant={'primary'}
+                size="sm"
+              />
+              <div className='col-sm'>
+                <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
+              </div>
+              <div className='col-sm'>
+                <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
+              </div>
+            </div>
+            <hr className='line'></hr>
+
+            <div className='mt-2 row'>
+              <div className='row' id="places">
+                <label className='col-sm myText'>Total places available:</label>
+                <label className='col-sm myText'>{canRent}</label>
+              </div>
+              <div className='mt-2 row' id="numberOfPlaces">
+                <label className='col-sm myText'>Choose number of places:</label>
+                {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
+                <InputSpinner
+                  type={'int'}
+                  precision={2}
+                  max={100}
+                  min={0}
+                  step={1}
+                  value={0}
+                  onChange={num => console.log(num)}
+                  variant={'primary'}
+                  size="sm"
+                  id="numberOfPlacesSpin"
+                />
+              </div>
+              <div className='mt-2 row' id="rentPeriod">
+                <label className='col-sm myText'>Choose rent preiod:</label>
+                {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
+                <InputSpinner
+                  type={'int'}
+                  precision={2}
+                  max={100}
+                  min={0}
+                  step={1}
+                  value={0}
+                  onChange={num => console.log(num)}
+                  variant={'primary'}
+                  size="sm"
+                  id="rentPeriodSpin"
+                />
+              </div>
+            </div>
+            <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
+
+
+          </div>
+
+          <div className='rightDiv'>
+            {/* <p>Mainpage</p> */}
+            <Cards cards={tickets} />
+          </div>
+        </div>}
     </>
   )
 }
