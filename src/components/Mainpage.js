@@ -11,6 +11,7 @@ import profileIcon from '../profileIcon.png';
 import Loader from './Loader';
 import logo from '../mylogo.svg';
 import InputSpinner from 'react-bootstrap-input-spinner';
+import { useNavigate } from 'react-router-dom';
 
 const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
 const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
@@ -30,6 +31,15 @@ const Mainpage = ({ accountAddress }) => {
   const [stakingValue, setStakingValue] = useState();
   const [rentPlaceCount, setRentPlaceCount] = useState();
   const [rentPeriod, setRentPeriod] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", accounts => {
+      console.log(accounts[0] + ' acc');
+      if (accounts[0] === accountAddress) ;
+      else navigate('/', {replace: true});
+    });
+}, []);
 
   async function loadingAnimation(request, msg) {
     setMsg(msg);
