@@ -60,7 +60,7 @@ const Card = ({ card }) => {
           </div>
 
           <div className='sce'>
-            <Button variant="outline-dark" className='share'>Share</Button>
+            <Button variant="outline-light" className='share'>Share</Button>
           </div>
         </div>
 
