@@ -240,6 +240,7 @@ const Mainpage = ({ accountAddress }) => {
 
         setBeoTokenBalance(beoTokenBalance - (-stakingValue));
         setStakedTokens(stakedTokens - stakingValue);
+        getTickets();
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -275,7 +276,8 @@ const Mainpage = ({ accountAddress }) => {
         await loadingAnimation(result, "Waiting for rent ...");
 
         console.log("rentovao");
-        setRentedPlaces(rentedPlaces + numOfPlacesBN);
+        setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
+        updateCanRent();
 
       } catch (err) {
         console.log("Error RENT SEAT : ", err);
