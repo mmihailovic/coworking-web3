@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Cards from './Cards';
+import Stat from './Stat';
 import { useState } from 'react';
 import "../style/mainpageStyle.css"
 import { BigNumber, ethers } from 'ethers';
@@ -11,6 +12,8 @@ import Button from 'react-bootstrap/Button';
 import profile from '../profile.png'
 import Loader from './Loader';
 import logo from '../mylogo.svg';
+import { TbCircles, TbArmchair2 } from 'react-icons/tb';
+import { RiHandCoinLine } from 'react-icons/ri'
 
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
@@ -289,11 +292,18 @@ const Mainpage = ({ accountAddress }) => {
         <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />
+            <div className='row statDiv'>
+              <Stat title="BeoToken" val={beoTokenBalance} icon={TbCircles} />
+              <Stat title=" Staked" val={stakedTokens} icon={RiHandCoinLine} />
+              <Stat title="Rented" val={rentedPlaces} icon={TbArmchair2} />
+            </div>
+
             <div className='infoDiv'>
-              <p className='text myText'>BEO: {beoTokenBalance}</p>
+
+              {/* <p className='text myText'>BEO: {beoTokenBalance}</p>
               <p className='text myText'>Staked: {stakedTokens}</p>
               <p className='text myText'>Rented: {rentedPlaces}</p>
-              <p className='text myText'>Wallet Address : {accountAddress}</p>
+              <p className='text myText'>Wallet Address : {accountAddress}</p> */}
             </div>
           </div>
 
@@ -309,14 +319,11 @@ const Mainpage = ({ accountAddress }) => {
               step={1}
               value={0}
               onChange={num => setStakingValue(num)}
-              variant={'primary'}
+              variant={'dark'}
               size="sm"
             />
             <div className='col-sm'>
               <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
-              {/* <Button variant="outline-light">Light</Button>{''} */}
-              {/* <button type="button" class="btn btn-outline-primary" data-mdb-ripple-color="light">Primary</button> */}
-              {/* <button data-mdb-ripple-color="primary" type="button" class="btn btn-light">Primary</button> */}
             </div>
             <div className='col-sm'>
               <Button variant="outline-dark" id="unstakeBtn" onClick={UnstakeTokens}>Unstake</Button>
@@ -340,7 +347,7 @@ const Mainpage = ({ accountAddress }) => {
                 step={1}
                 value={0}
                 onChange={num => setRentPlaceCount(num)}
-                variant={'primary'}
+                variant={'dark'}
                 size="sm"
                 id="numberOfPlacesSpin"
               />
@@ -356,13 +363,13 @@ const Mainpage = ({ accountAddress }) => {
                 step={1}
                 value={0}
                 onChange={num => setRentPeriod(num)}
-                variant={'primary'}
+                variant={'dark'}
                 size="sm"
                 id="rentPeriodSpin"
               />
             </div>
           </div>
-          <Button variant="outline-dark" id="rentBtn" onClick={rentPlaces}>Rent</Button>
+          <Button variant="outline-dark" id="rentBtn" style={{ backgroundColor: "black", color: "#8b98ff" }} onClick={rentPlaces}>Rent</Button>
         </div>
 
         <div className='rightDiv'>
