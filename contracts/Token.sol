@@ -1,22 +1,12 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.16;
+pragma solidity ^0.8.2;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Token {
-    string public name = "BEO";
-    uint public totalSupply = 100;
+contract Token is ERC20 {
     address public owner;
-    mapping(address => uint) balances;
 
-    constructor() {
-        balances[msg.sender] = totalSupply;
+    constructor() ERC20("BEO Token","BEO"){
         owner = msg.sender;
-    }
-
-    function buy(address _address, uint amount) external {
-        require(balances[owner] >= amount);
-
-        balances[owner] -= amount;
-        balances[_address] += amount;
-
+        _mint(msg.sender, 100 * (10 ** 18));
     }
 }
