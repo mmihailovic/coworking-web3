@@ -8,12 +8,11 @@ describe("Token contract", function() {
         // TokenVendor = await ethers.getContractFactory("TokenVendor",owner);
         Rent = await ethers.getContractFactory("Rent",owner);
         token = await Token.deploy();
-        // tokenVendor = await TokenVendor.deploy(token.address);
+         // tokenVendor = await TokenVendor.deploy(token.address);
         // rent = await Rent.deploy(token.address, tokenVendor.address);
         rent = await Rent.deploy(token.address);
         await token.connect(owner).transfer(wallet1.address, ethers.BigNumber.from('2000000000000000000')); // 2 tokens
         await token.connect(owner).transfer(wallet2.address, ethers.BigNumber.from('3000000000000000000')); // 3 tokens
-
         await token.connect(wallet1).approve(rent.address, await token.balanceOf(wallet1.address));
         await token.connect(wallet2).approve(rent.address, await token.balanceOf(wallet2.address));
     })
@@ -32,10 +31,8 @@ describe("Token contract", function() {
         it('should stake token', async function() {
             await rent.connect(wallet1).stakeTokens(ethers.BigNumber.from('2000000000000000000'));
             await rent.connect(wallet2).stakeTokens(ethers.BigNumber.from('2000000000000000000'));
-
             expect(await token.balanceOf(wallet1.address)).to.equal(0);
             expect(await token.balanceOf(wallet2.address)).to.equal(ethers.BigNumber.from('1000000000000000000'));
-            
             expect(await rent.getStakingBalance(wallet1.address)).to.equal(ethers.BigNumber.from('2000000000000000000'));
             expect(await rent.getStakingBalance(wallet2.address)).to.equal(ethers.BigNumber.from('2000000000000000000'));
         })

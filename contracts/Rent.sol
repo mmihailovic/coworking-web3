@@ -31,7 +31,6 @@ contract Rent is VRFConsumerBaseV2{
 
     struct RadnoMesto {
         address ownerOfSeat;
-        //address renter;
         uint256 expirationDate;
         bytes32 hashUlaznice;
     }
@@ -74,31 +73,31 @@ contract Rent is VRFConsumerBaseV2{
         _;
     }
 
-
     function stakeTokens(uint256 _amount) external {
         require(_amount > 0, "Izaberi veci od 0");
         require(token.balanceOf(msg.sender) >= _amount, "Nemas toliko tokena!");
         token.transferFrom(msg.sender, address(this), _amount);
         stakingBalance[msg.sender] += _amount;
     }
-    function unstakeTokens(uint256 _amount) external {
+
+    function unstakeTokens(uint256 _amount,uint256 numberOfRentedTokens) external {
         require(_amount > 0," Izaberi veci od 0");
         require(stakingBalance[msg.sender] >= _amount, "Nemas toliko stakeovanih tokena!");
+        //uint8 rentedPlaces = numberOfRentedPlacesForAddress(msg.sender);
+        //uint8 numberOfRentedTokens = rentedPlaces * token.totalSupply() / n;
+        require(_amount <= stakingBalance[msg.sender] - numberOfRentedTokens, "Ne mozes toliko da unstakeujes tokena");
         token.transfer(msg.sender, _amount);
         stakingBalance[msg.sender] -= _amount;
-        uint places = numberOfPlacesForAddress(msg.sender);
-        uint rentedPlaces = numberOfRentedPlacesForAddress(msg.sender);
-        if(places < rentedPlaces) {
-            unrent(rentedPlaces - places, msg.sender);
-        }
     }
     function getStakingBalance(address _address) public view returns(uint) {
         return stakingBalance[_address];
     }
+
     function numberOfPlacesForAddress(address _address) public view returns (uint){
         // Koliko neko moze da iznajmi mesta
         return stakingBalance[_address] * n / token.totalSupply();
     }
+
     function numberOfRentedPlacesForAddress(address _address) public view returns (uint) {
         // Koliko je mesta iznajmio
         uint cnt = 0;
@@ -108,6 +107,7 @@ contract Rent is VRFConsumerBaseV2{
         }
         return cnt;
     }
+
     function numberOfFreePlacesForAddress(address _address) public view returns (uint){
         return numberOfPlacesForAddress(_address) - numberOfRentedPlacesForAddress(_address);
     }
@@ -118,7 +118,7 @@ contract Rent is VRFConsumerBaseV2{
         require(numberOfFreePlacesForAddress(msg.sender) >= number_of_places , "Nije moguce rentirati toliko mesta"); //provera da li je broj mesta za rezervaciju veci od 0
         require(usdc.balanceOf(msg.sender) >= fee , "you dont have enough funds"); //provera da li korisnik ima dovoljno para
         bool sent = usdc.transferFrom(msg.sender, owner, fee);  //transakcija izmedju korisnika
-        require(sent, "Failed to send USDC"); //provera da li je transakcija uspela
+        require(sent, "Failed to send USDC");
         // Registrovati korisnika da je iznajmio
         uint time = block.timestamp + numberOfDays * 1 days;
         requestRandomWords(number_of_places);
@@ -158,28 +158,13 @@ contract Rent is VRFConsumerBaseV2{
         }
     }
 
-    function ulaz(bytes32 userHash) external view returns(bool) {
-        for(uint i = 0; i < radnaMesta.length;i++) {
-            //if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp)
-            if(radnaMesta[i].expirationDate >= block.timestamp && radnaMesta[i].hashUlaznice == userHash)
-                return true;
-        }
-        return false;
+
+    function getAmount() public view returns(uint) {
+        return amount;
     }
 
-
-    
-    function unrent(uint numberOfPlaces, address _address) private {
-        for(uint i = 0;i < radnaMesta.length; i++) {
-            if(radnaMesta[i].ownerOfSeat == _address && block.timestamp <= radnaMesta[i].expirationDate) {
-                numberOfPlaces = numberOfPlaces - 1;
-                radnaMesta[i].expirationDate = block.timestamp - 1 days;
-            }
-            if(numberOfPlaces == 0) break;
-        }
+     function getNumberOfSeats() public view returns(uint) {
+        return n;
     }
-
-
-    
 
 }
