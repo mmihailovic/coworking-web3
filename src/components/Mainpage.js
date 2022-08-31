@@ -46,6 +46,36 @@ const Mainpage = ({ accountAddress }) => {
     });
   }, []);
 
+  useEffect(() => {
+    //console.log("aaaaaaaaaaaaaa " + tickets);
+    for (let i = 0; i < tickets.length; i++) {
+      insertTicketsWeb2(tickets[i].hash, tickets[i].expirationDate);
+      console.log(tickets[i].hash + "  aaa  " + tickets[i].expirationDate);
+    }
+  }, [tickets])
+
+  async function insertTicketsWeb2(hash, date) {
+
+    const dateParts = (date).split("/");
+    const endDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0] + 1);
+    console.log(JSON.stringify({ hash, endDate }))
+    fetch('https://coworking-khuti.ondigitalocean.app/api/insertTicket', {
+      method: 'POST',
+      headers: {
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, token',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hash, endDate }),
+    })
+      .then(response => {
+        console.log(response.text);
+
+      })
+  }
+
   async function loadingAnimation(request, msg) {
     setMsg(msg);
     setLoading(true);
