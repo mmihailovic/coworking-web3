@@ -6,16 +6,16 @@ import { ArrowRight } from 'react-bootstrap-icons';
 
 const Stat = ({ title, val, icon: Icon }) => {
     return (
-        <div class="col-xl-6 col-lg-5 mt-3" >
-            <div class="card card-stats mb-4 mb-xl-0" style={{ backgroundColor: "black" }}>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm">
-                            <h5 class="card-title text-uppercase text-white mb-0">{title}</h5>
-                            <span class="h2 font-weight-bold mb-0" style={{ color: "#8b98ff" }}>{val}</span>
+        <div className="col-xl-6 col-lg-5 mt-3" >
+            <div className="card card-stats mb-4 mb-xl-0" style={{ backgroundColor: "black" }}>
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-sm">
+                            <h5 className="card-title text-uppercase text-white mb-0">{title}</h5>
+                            <span className="h2 font-weight-bold mb-0" style={{ color: "#8b98ff" }}>{val}</span>
                         </div>
-                        <div class="col-sm" style={{ textAlign: "right" }}>
-                            <div class="icon icon-shape rounded-circle shadow" style={{ height: "auto", width: "auto", color: "black", backgroundColor: "#8b98ff" }}>
+                        <div className="col-sm" style={{ textAlign: "right" }}>
+                            <div className="icon icon-shape rounded-circle shadow" style={{ height: "auto", width: "auto", color: "black", backgroundColor: "#8b98ff" }}>
                                 <Icon size={30} />
                             </div>
                         </div>
