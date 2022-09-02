@@ -22,18 +22,20 @@ contract Rent is VRFConsumerBaseV2{
 
     address vrfCoordinator = 0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D;
     bytes32 keyHash = 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15;
-    uint32 callbackGasLimit = 100000;
-    
-    uint256[] public s_randomWords;
-    uint256 public s_requestId;
+    uint32 callbackGasLimit = 2500000;
+
     address s_owner;
     uint16 requestConfirmations = 3;
+
+    event RentPlaceEvent();
 
     struct RadnoMesto {
         address ownerOfSeat;
         uint256 expirationDate;
         bytes32 hashUlaznice;
     }
+
+    mapping(uint256 => RadnoMesto[]) public ulaznice;
     
     uint n = 100;
     RadnoMesto[] private radnaMesta;
@@ -53,24 +55,13 @@ contract Rent is VRFConsumerBaseV2{
         owner = msg.sender;
     }
 
-    function requestRandomWords(uint32 numWords) private onlyOwner {
-    // Will revert if subscription is not set and funded.
-    s_requestId = COORDINATOR.requestRandomWords(
-      keyHash,
-      s_subscriptionId,
-      requestConfirmations,
-      callbackGasLimit,
-      numWords
-    );
-    }
-
-    function fulfillRandomWords(uint256,uint256[] memory randomWords) internal override {
-        s_randomWords = randomWords;
-    }
-  
-    modifier onlyOwner() {
-        require(msg.sender == s_owner);
-        _;
+    function fulfillRandomWords(uint256 requestId,uint256[] memory randomWords) internal override {
+        RadnoMesto[] storage r = ulaznice[requestId];
+        for(uint i = 0; i < r.length; i++) {
+            r[i].hashUlaznice = hash(owner,i,r[i].expirationDate,randomWords[i]);
+            radnaMesta.push(r[i]);
+        }
+        emit RentPlaceEvent();
     }
 
     function stakeTokens(uint256 _amount) external {
@@ -80,11 +71,11 @@ contract Rent is VRFConsumerBaseV2{
         stakingBalance[msg.sender] += _amount;
     }
 
-    function unstakeTokens(uint256 _amount,uint256 numberOfRentedTokens) external {
+    function unstakeTokens(uint256 _amount) external {
         require(_amount > 0," Izaberi veci od 0");
         require(stakingBalance[msg.sender] >= _amount, "Nemas toliko stakeovanih tokena!");
-        //uint8 rentedPlaces = numberOfRentedPlacesForAddress(msg.sender);
-        //uint8 numberOfRentedTokens = rentedPlaces * token.totalSupply() / n;
+        uint rentedPlaces = numberOfRentedPlacesForAddress(msg.sender);
+        uint numberOfRentedTokens = rentedPlaces * token.totalSupply() / n;
         require(_amount <= stakingBalance[msg.sender] - numberOfRentedTokens, "Ne mozes toliko da unstakeujes tokena");
         token.transfer(msg.sender, _amount);
         stakingBalance[msg.sender] -= _amount;
@@ -121,19 +112,23 @@ contract Rent is VRFConsumerBaseV2{
         require(sent, "Failed to send USDC");
         // Registrovati korisnika da je iznajmio
         uint time = block.timestamp + numberOfDays * 1 days;
-        requestRandomWords(number_of_places);
-        uint32 cnt=0;
+        uint s_requestId = COORDINATOR.requestRandomWords(
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            number_of_places
+        );
         for(uint i = 0;i < number_of_places;i++){
-            cnt++;
-            radnaMesta.push(RadnoMesto(msg.sender, time,hash(owner,i,time,cnt)));
+            ulaznice[s_requestId].push(RadnoMesto(msg.sender, time,0));
         }
     }
 
     //Hash vraca niz hash-va
-    function hash(address ownerOfSeat, uint counter , uint256 expirationDate,uint32 num) private view returns(bytes32)
+    function hash(address ownerOfSeat, uint counter , uint256 expirationDate,uint256 randomWord) private view returns(bytes32)
     {
         // Hash na osnovu adrese vlasnika, adrese zakupca, rednog broja mesta koji se rezervise, trenutnog vremena, vremena isteka
-        return keccak256(abi.encode(ownerOfSeat, counter, msg.sender, block.timestamp, expirationDate,s_randomWords[num]));
+        return keccak256(abi.encode(ownerOfSeat, counter, msg.sender, block.timestamp, expirationDate,randomWord));
     }
     function getUserHash() public view returns(bytes32[] memory)
     {
