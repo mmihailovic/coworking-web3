@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 const Card = ({ card }) => {
 
   const [canEntry, setCanEntry] = useState(false);
-  const rentAddres = "0xDC80220B64c502b6140503F7CDe8B36877ad65bf";
+  const rentAddres = "0x22d53379588f09D0d68820671Fb6148A4A9e6925";
   const dateParts = (card.expirationDate).split("/");
   const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
   // console.log(dateParts);

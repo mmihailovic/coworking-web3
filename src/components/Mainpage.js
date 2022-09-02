@@ -19,7 +19,7 @@ import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
 const tokenAddress = "0x1CF9a07C05e5728F46F404553A52b29BaBc4CBad";
-const rentAddres = "0xDC80220B64c502b6140503F7CDe8B36877ad65bf";
+const rentAddres = "0x22d53379588f09D0d68820671Fb6148A4A9e6925";
 const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 
