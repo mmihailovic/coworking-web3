@@ -18,8 +18,8 @@ import { RiHandCoinLine } from 'react-icons/ri'
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-const tokenAddress = "0x22d78c20dc94dE0c7CA065B1FB3a20D957cD5CEA";
-const rentAddres = "0x9Fe5b9EAce479434255C8D74759Fc4dE7333D5Ba";
+const tokenAddress = "0x1CF9a07C05e5728F46F404553A52b29BaBc4CBad";
+const rentAddres = "0xDC80220B64c502b6140503F7CDe8B36877ad65bf";
 const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 
@@ -50,7 +50,7 @@ const Mainpage = ({ accountAddress }) => {
     //console.log("aaaaaaaaaaaaaa " + tickets);
     for (let i = 0; i < tickets.length; i++) {
       insertTicketsWeb2(tickets[i].hash, tickets[i].expirationDate);
-      console.log(tickets[i].hash + "  aaa  " + tickets[i].expirationDate);
+      //console.log(tickets[i].hash + "  aaa  " + tickets[i].expirationDate);
     }
   }, [tickets])
 
@@ -276,6 +276,19 @@ const Mainpage = ({ accountAddress }) => {
     }
   }
 
+  function listen(provider, numOfPlacesBN)
+  {
+    const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
+    var event = rentContract.on('RentPlaceEvent',function() {
+      //if (!error){
+        console.log("rentPLace EVENT  ");
+        setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
+        updateCanRent();
+        setLoading(false);
+      //}
+    });
+  }
+
   const rentPlaces = async () => {
     if (typeof window.ethereum !== 'undefined') {
 
@@ -305,8 +318,13 @@ const Mainpage = ({ accountAddress }) => {
         await loadingAnimation(result, "Waiting for rent ...");
 
         console.log("rentovao");
-        setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
-        updateCanRent();
+
+        setMsg("Wait for chainlink...");
+        setLoading(true);
+        listen(provider, numOfPlacesBN);
+
+        //setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
+        //updateCanRent();
 
       } catch (err) {
         console.log("Error RENT SEAT : ", err);
