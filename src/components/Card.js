@@ -8,6 +8,7 @@ import { FacebookIcon, FacebookShareButton } from 'react-share';
 import {WhatsappIcon, WhatsappShareButton} from 'react-share';
 import {ViberShareButton, ViberIcon} from 'react-share';
 import { CardList } from 'react-bootstrap-icons';
+import {EmailIcon,EmailShareButton} from 'react-share';
 
 const Card = ({ card }) => {
 
@@ -82,6 +83,12 @@ const Card = ({ card }) => {
             >
               <ViberIcon></ViberIcon>
             </ViberShareButton>
+            <EmailShareButton
+            url={'https://coworking-khuti.ondigitalocean.app/?hash='+card.hash}
+            >
+              <EmailIcon></EmailIcon>
+            </EmailShareButton>
+
           </div>
         </div>
 
