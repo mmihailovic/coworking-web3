@@ -25,7 +25,6 @@ const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 const Mainpage = ({ accountAddress }) => {
 
-  const [cards, setCards] = useState([]);
   const [beoTokenBalance, setBeoTokenBalance] = useState();
   const [stakedTokens, setStakedTokens] = useState(0);
   const [rentedPlaces, setRentedPlaces] = useState();
@@ -40,39 +39,50 @@ const Mainpage = ({ accountAddress }) => {
 
   useEffect(() => {
     window.ethereum.on("accountsChanged", accounts => {
-      console.log(accounts[0] + ' acc');
+      //console.log(accounts[0] + ' acc');
       if (accounts[0] === accountAddress);
       else navigate('/', { replace: true });
     });
   }, []);
 
   useEffect(() => {
-    //console.log("aaaaaaaaaaaaaa " + tickets);
     for (let i = 0; i < tickets.length; i++) {
       insertTicketsWeb2(tickets[i].hash, tickets[i].expirationDate);
-      //console.log(tickets[i].hash + "  aaa  " + tickets[i].expirationDate);
     }
   }, [tickets])
+
+
+  async function selectEmailWeb2(hash) {
+
+    return fetch('https://coworking-khuti.ondigitalocean.app/api/selectEmail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hash }),
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json().then(json => {
+            const ret = json[0].result;
+            return ret;
+          });
+        }
+      });
+  }
 
   async function insertTicketsWeb2(hash, date) {
 
     const dateParts = (date).split("/");
     const endDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0] + 1);
-    console.log(JSON.stringify({ hash, endDate }))
+    //console.log(JSON.stringify({ hash, endDate }))
     fetch('https://coworking-khuti.ondigitalocean.app/api/insertTicket', {
       method: 'POST',
       headers: {
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, token',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ hash, endDate }),
     })
-      .then(response => {
-        console.log(response.text);
-
-      })
   }
 
   async function loadingAnimation(request, msg) {
@@ -92,7 +102,7 @@ const Mainpage = ({ accountAddress }) => {
       });
       if (accounts[0] > 0) {
         const bal = await token.balanceOf(accounts[0]);
-        console.log(ethers.utils.formatEther(bal));
+        //console.log(ethers.utils.formatEther(bal));
         setBeoTokenBalance(Math.trunc(ethers.utils.formatEther(bal)));
       }
       else console.log("greska");
@@ -142,15 +152,17 @@ const Mainpage = ({ accountAddress }) => {
       }
     }
   }
-  const parseTickets = (expirationDates, hash) => {
+  const parseTickets = (expirationDates, hash, email) => {
     let tmpArr = [];
     for (let i = 0; i < hash.length; i++) {
       tmpArr.push({
         id: parseInt(i + 1),
         expirationDate: new Date(expirationDates[i] * 1000).toLocaleDateString(),
         hash: (hash[i]),
+        email: (email[i])
       })
     }
+
     return tmpArr;
   }
 
@@ -169,11 +181,20 @@ const Mainpage = ({ accountAddress }) => {
         for (let i = 0; i < hashes.length; i++) {
           exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
         }
+
+        let emailsArr = [];
+
         for (let i = 0; i < hashes.length; i++) {
           var newDate = new Date(exDates[i] * 1000);
-          console.log((newDate.toLocaleDateString() + " " + hashes[i]));
+          emailsArr.push("Not redeemed");
         }
-        setTickets(parseTickets(exDates, hashes));
+
+        for (let i = 0; i < hashes.length; i++) {
+          var email = await selectEmailWeb2(hashes[i]);
+          emailsArr[i] = email == "no_hashes" ? "Not redeemed" : email;
+        }
+
+        setTickets(parseTickets(exDates, hashes, emailsArr));
 
       } catch (err) {
         console.log("Err tickets: " + err);
@@ -193,7 +214,7 @@ const Mainpage = ({ accountAddress }) => {
           method: "eth_accounts",
         });
         const rentable = await rent.numberOfFreePlacesForAddress(accounts[0]);
-        console.log("moze renta " + rentable.toNumber());
+        //console.log("moze renta " + rentable.toNumber());
         setCanRent(rentable.toNumber());
       } catch (err) {
         console.log("Err RENT: " + err);
@@ -208,7 +229,7 @@ const Mainpage = ({ accountAddress }) => {
   }, [])
 
   useEffect(() => {
-    console.log(stakedTokens);
+    //console.log(stakedTokens);
     updateCanRent();
   }, [stakedTokens])
 
@@ -226,8 +247,8 @@ const Mainpage = ({ accountAddress }) => {
 
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
-      console.log(stakingValue);
-      console.log(amount.toString());
+      //console.log(stakingValue);
+      //console.log(amount.toString());
       try {
 
         let request = await token.approve(rentContract.address, amount);
@@ -236,12 +257,12 @@ const Mainpage = ({ accountAddress }) => {
         await loadingAnimation(request, "Waiting for transaction approval ...");
 
 
-        console.log("ZAVRSIO APPROVE");
+        //console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(amount);
         await loadingAnimation(request, "Waiting for stake ...");
-        console.log("stake gotov");
+        //console.log("stake gotov");
 
-        console.log("Cards length: " + cards.length);
+        //console.log("Cards length: " + cards.length);
 
         setBeoTokenBalance(beoTokenBalance - stakingValue);
         setStakedTokens(stakedTokens - (- stakingValue));
@@ -276,15 +297,14 @@ const Mainpage = ({ accountAddress }) => {
     }
   }
 
-  function listen(provider, numOfPlacesBN)
-  {
+  function listen(provider, numOfPlacesBN) {
     const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
-    var event = rentContract.on('RentPlaceEvent',function() {
+    var event = rentContract.on('RentPlaceEvent', function () {
       //if (!error){
-        console.log("rentPLace EVENT  ");
-        setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
-        updateCanRent();
-        setLoading(false);
+      //console.log("rentPLace EVENT  ");
+      setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
+      updateCanRent();
+      setLoading(false);
       //}
     });
   }
@@ -300,12 +320,12 @@ const Mainpage = ({ accountAddress }) => {
 
       var numOfPlacesBN = BigNumber.from(rentPlaceCount);
       var rentPeriodBN = BigNumber.from(rentPeriod);
-      console.log(numOfPlacesBN);
-      console.log(rentPeriodBN);
+      // console.log(numOfPlacesBN);
+      // console.log(rentPeriodBN);
 
       try {
         let amount = numOfPlacesBN.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-        console.log(amount.toNumber())
+        // console.log(amount.toNumber())
         let x = BigNumber.from(10).pow(6).mul(amount);
 
         let request = await usdc.approve(rentContract.address, x);
@@ -317,7 +337,7 @@ const Mainpage = ({ accountAddress }) => {
 
         await loadingAnimation(result, "Waiting for rent ...");
 
-        console.log("rentovao");
+        //console.log("rentovao");
 
         setMsg("Wait for chainlink...");
         setLoading(true);
