@@ -4,6 +4,11 @@ import { ethers } from 'ethers';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import "../style/cardStyle.css"
 import Button from 'react-bootstrap/Button';
+import { FacebookIcon, FacebookShareButton } from 'react-share';
+import {WhatsappIcon, WhatsappShareButton} from 'react-share';
+import {ViberShareButton, ViberIcon} from 'react-share';
+import { CardList } from 'react-bootstrap-icons';
+import {EmailIcon,EmailShareButton} from 'react-share';
 
 const Card = ({ card }) => {
 
@@ -60,7 +65,30 @@ const Card = ({ card }) => {
           </div>
 
           <div className='sce'>
-            <Button variant="outline-light" className='share'>Share</Button>
+          <FacebookShareButton 
+            url={'https://coworking-khuti.ondigitalocean.app/?hash='+card.hash}
+            quote={'nesto'}
+            hashtag='#BeoSpace'
+            >
+              <FacebookIcon logoFillColor="white"></FacebookIcon>
+            </FacebookShareButton>
+            
+            <WhatsappShareButton
+            url={'https://coworking-khuti.ondigitalocean.app/?hash='+card.hash}>
+              <WhatsappIcon></WhatsappIcon>
+            </WhatsappShareButton>
+            
+            <ViberShareButton
+            url={'https://coworking-khuti.ondigitalocean.app/?hash='+card.hash}
+            >
+              <ViberIcon></ViberIcon>
+            </ViberShareButton>
+            <EmailShareButton
+            url={'https://coworking-khuti.ondigitalocean.app/?hash='+card.hash}
+            >
+              <EmailIcon></EmailIcon>
+            </EmailShareButton>
+
           </div>
         </div>
 
