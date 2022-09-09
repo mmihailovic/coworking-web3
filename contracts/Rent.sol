@@ -12,22 +12,23 @@ interface USDC {
 contract Rent is VRFConsumerBaseV2{
     Token private token;
     USDC private usdc;
-    uint private amount = 250;
+    uint private amount = 250 * (10 ** 6);
+    uint private numDays = 30;
     VRFCoordinatorV2Interface COORDINATOR;
-    uint64 s_subscriptionId;
-    address vrfCoordinator = 0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D;
-    bytes32 keyHash = 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15;
-    uint32 callbackGasLimit = 2500000;
+    uint64 private s_subscriptionId;
+    address private vrfCoordinator = 0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D;
+    bytes32 private keyHash = 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15;
+    uint32 private callbackGasLimit = 2500000;
     address s_owner;
-    uint16 requestConfirmations = 3;
+    uint16 private requestConfirmations = 3;
     event RentPlaceEvent();
     struct RadnoMesto {
         address ownerOfSeat;
         uint256 expirationDate;
         bytes32 hashUlaznice;
     }
-    mapping(uint256 => RadnoMesto[]) public ulaznice;
-    uint n = 100;
+    mapping(uint256 => RadnoMesto[]) private ulaznice;
+    uint private n = 100;
     RadnoMesto[] private radnaMesta;
     address private owner;
     mapping(address => uint256) private stakingBalance;
@@ -84,11 +85,11 @@ contract Rent is VRFConsumerBaseV2{
     function numberOfFreePlacesForAddress(address _address) public view returns (uint){
         return numberOfPlacesForAddress(_address) - numberOfRentedPlacesForAddress(_address);
     }
-    //function rentSeat(address payable _to, uint number_of_places, uint numberOfDays) payable public {
-    function rentSeat(uint32 number_of_places, uint numberOfDays, uint fee) payable public {
+    function rentSeat(uint32 number_of_places, uint numberOfDays) payable public {
         require(numberOfDays > 0, "Izaberi vise od 0 dana");
         require(number_of_places > 0, "Izaberi vise od 0 mesta");
         require(numberOfFreePlacesForAddress(msg.sender) >= number_of_places , "Nije moguce rentirati toliko mesta"); //provera da li je broj mesta za rezervaciju veci od 0
+        uint fee = number_of_places * numberOfDays * amount / numDays;
         require(usdc.balanceOf(msg.sender) >= fee , "you dont have enough funds"); //provera da li korisnik ima dovoljno para
         bool sent = usdc.transferFrom(msg.sender, owner, fee);  //transakcija izmedju korisnika
         require(sent, "Failed to send USDC");
