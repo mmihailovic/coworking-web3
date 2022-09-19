@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/markomihailovic/internship/coworking/contracts/Rent.sol": {
-      "lastModificationDate": 1662714433656,
-      "contentHash": "dc4c78e649a9cb257acbcd535e64e714",
+      "lastModificationDate": 1663591875939,
+      "contentHash": "fdefd9452d33cedef9897ea6c15f7e4d",
       "sourceName": "contracts/Rent.sol",
       "solcConfig": {
         "version": "0.8.16",
@@ -31,7 +31,8 @@
       "imports": [
         "./Token.sol",
         "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol",
-        "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol"
+        "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -324,6 +325,41 @@
       "imports": [],
       "versionPragmas": [],
       "artifacts": []
+    },
+    "/Users/markomihailovic/internship/coworking/node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol": {
+      "lastModificationDate": 1661538930090,
+      "contentHash": "2337f0279507b5edf14a07067adf0d05",
+      "sourceName": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.16",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
     }
   }
 }
