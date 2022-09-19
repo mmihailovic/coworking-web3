@@ -16,7 +16,7 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
   const { ethereum } = window;
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const navigate = useNavigate();
 
@@ -26,9 +26,10 @@ function App() {
       if (!ethereum) {
         sethaveMetamask(false);
       }
-      sethaveMetamask(true);
+      else sethaveMetamask(true);
     };
     checkMetamaskAvailability();
+    if(haveMetamask) checkIfWalletIsConnected(setIsConnected);
   }, []);
 
   const ConnectWallet = async () => {
@@ -39,6 +40,7 @@ function App() {
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts',
       });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
       setAccountAddress(accounts[0]);
@@ -72,14 +74,10 @@ function App() {
     }
   }
 
-  useEffect( () => {
-      checkIfWalletIsConnected(setIsConnected);
-    }, []);
-
   return (
       <div className="App">
           <Routes>
-            <Route exac path="/" element={<LoginPage onClick={ConnectWallet}/>} />
+            <Route exac path="/" element={haveMetamask?<LoginPage onClick={ConnectWallet}/>:<p>Please install Metamask!</p>} />
             <Route path="/main" element={<Mainpage accountAddress={accountAddress}/>} />
           </Routes>
         

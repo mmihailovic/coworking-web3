@@ -8,13 +8,12 @@ import Token from '../artifacts/contracts/Token.sol/Token.json';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
-// import profileIcon from '../profileIcon.png';
 import profile from '../profile.png'
 import Loader from './Loader';
 import logo from '../mylogo.svg';
 import { TbCircles, TbArmchair2 } from 'react-icons/tb';
 import { RiHandCoinLine } from 'react-icons/ri'
-
+import Popup from './Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,9 +31,12 @@ const Mainpage = ({ accountAddress }) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState();
   const [msg, setMsg] = useState();
-  const [stakingValue, setStakingValue] = useState();
-  const [rentPlaceCount, setRentPlaceCount] = useState();
-  const [rentPeriod, setRentPeriod] = useState();
+  const [stakingValue, setStakingValue] = useState(0);
+  const [rentPlaceCount, setRentPlaceCount] = useState(0);
+  const [rentPeriod, setRentPeriod] = useState(0);
+  const [showPopup,setShowPopup] = useState(false);
+  const [text,setText] = useState();
+  const [popupTitle,setpopupTitle] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -168,7 +170,8 @@ const Mainpage = ({ accountAddress }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rent = new ethers.Contract(rentAddres, Rent.abi, provider);
-
+      setLoading(true);
+      setMsg("Loading tickets ... ");
       try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
@@ -192,6 +195,7 @@ const Mainpage = ({ accountAddress }) => {
         }
 
         setTickets(parseTickets(exDates, hashes, emailsArr));
+        setLoading(false);
 
       } catch (err) {
         console.log("Err tickets: " + err);
@@ -239,9 +243,9 @@ const Mainpage = ({ accountAddress }) => {
       const signer = provider.getSigner(0);
       const token = new ethers.Contract(tokenAddress, Token.abi, signer)
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
-
+      console.log(stakingValue);
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
-
+      console.log(amount);
       try {
 
         let request = await token.approve(rentContract.address, amount);
@@ -254,8 +258,16 @@ const Mainpage = ({ accountAddress }) => {
 
         setBeoTokenBalance(beoTokenBalance - stakingValue);
         setStakedTokens(stakedTokens - (- stakingValue));
+        setShowPopup(true);
+        setText('You have successfully staked ' + stakingValue + ' BEO');
+        setpopupTitle('Info');
+        setStakingValue(0);
       } catch (err) {
         console.log("Error: ", err);
+        setShowPopup(true);
+        setText(err.reason);
+        setpopupTitle('Error');
+        setStakingValue(0);
       }
     }
   }
@@ -267,8 +279,9 @@ const Mainpage = ({ accountAddress }) => {
       const signer = provider.getSigner(0);
       const token = new ethers.Contract(tokenAddress, Token.abi, signer);
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
-
+      console.log(stakingValue);
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
+      console.log(amount);
 
       try {
 
@@ -279,13 +292,21 @@ const Mainpage = ({ accountAddress }) => {
         setBeoTokenBalance(beoTokenBalance - (-stakingValue));
         setStakedTokens(stakedTokens - stakingValue);
         getTickets();
+        setShowPopup(true);
+        setText('You have successfully unstaked ' + stakingValue + ' BEO');
+        setpopupTitle('Info');
+        setStakingValue(0);
       } catch (err) {
         console.log("Error: ", err);
+        setShowPopup(true);
+        setText(err.reason);
+        setpopupTitle('Error');
+        setStakingValue(0);
       }
     }
   }
 
-  function listen(provider, numOfPlacesBN) {
+  function listen(provider, numOfPlacesBN, rentPeriodBN) {
     const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
     var event = rentContract.on('RentPlaceEvent', function () {
       //if (!error){
@@ -293,6 +314,11 @@ const Mainpage = ({ accountAddress }) => {
       setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
       updateCanRent();
       setLoading(false);
+      setShowPopup(true);
+      setText('You have successfully rented ' + numOfPlacesBN + ' places for ' + rentPeriodBN + ' days');
+      setpopupTitle('Info');
+      setRentPeriod(0);
+      setRentPlaceCount(0);
       //}
     });
   }
@@ -305,7 +331,8 @@ const Mainpage = ({ accountAddress }) => {
       const token = new ethers.Contract(tokenAddress, Token.abi, signer);
       const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
       const usdc = new ethers.Contract(usdcAddress, USDC.abi, signer);
-
+      console.log(rentPlaceCount);
+      console.log(rentPeriod);
       var numOfPlacesBN = BigNumber.from(rentPlaceCount);
       var rentPeriodBN = BigNumber.from(rentPeriod);
 
@@ -316,18 +343,23 @@ const Mainpage = ({ accountAddress }) => {
         let request = await usdc.approve(rentContract.address, amount);
 
 
-        await loadingAnimation(request, "Transfering USDC ...");
+        await loadingAnimation(request, "Waiting for transaction approval ...");
 
         let result = await rentContract.rentSeat(numOfPlacesBN, rentPeriodBN);
 
-        await loadingAnimation(result, "Waiting for rent ...");
+        await loadingAnimation(result, "Renting places ...");
 
-        setMsg("Wait for chainlink...");
+        setMsg("Generating tickets ...");
         setLoading(true);
-        listen(provider, numOfPlacesBN);
+        listen(provider, numOfPlacesBN, rentPeriodBN);
 
       } catch (err) {
         console.log("Error RENT SEAT : ", err);
+        setShowPopup(true);
+        setText(err.reason);
+        setpopupTitle('Error');
+        setRentPeriod(0);
+        setRentPlaceCount(0);
       }
     }
   }
@@ -346,19 +378,10 @@ const Mainpage = ({ accountAddress }) => {
               <Stat title=" Staked" val={stakedTokens} icon={RiHandCoinLine} />
               <Stat title="Rented" val={rentedPlaces} icon={TbArmchair2} />
             </div>
-
-            <div className='infoDiv'>
-
-              {/* <p className='text myText'>BEO: {beoTokenBalance}</p>
-              <p className='text myText'>Staked: {stakedTokens}</p>
-              <p className='text myText'>Rented: {rentedPlaces}</p>
-              <p className='text myText'>Wallet Address : {accountAddress}</p> */}
-            </div>
           </div>
 
           {console.log('Account address: ' + accountAddress)}
           <hr className='line'></hr>
-          {/* <input type="number" id="amount" className='mt-2 form-control'></input> */}
           <div className="mt-2 row" id="stake">
             <InputSpinner
               type={'int'}
@@ -371,6 +394,7 @@ const Mainpage = ({ accountAddress }) => {
               variant={'dark'}
               size="sm"
             />
+              <Popup trigger={showPopup} func = {setShowPopup} content = {text} title = {popupTitle}></Popup>
             <div className='col-sm'>
               <Button id="stakeBtn" variant="outline-dark" onClick={StakeTokens}>Stake</Button>
             </div>
@@ -387,7 +411,6 @@ const Mainpage = ({ accountAddress }) => {
             </div>
             <div className='mt-2 row myText' id="numberOfPlaces">
               <label className='col-sm myText'>Choose number of places:</label>
-              {/* <input className='col-sm' id="numberOfPlaces" type="number"></input> */}
               <InputSpinner
                 type={'int'}
                 precision={2}
@@ -402,8 +425,7 @@ const Mainpage = ({ accountAddress }) => {
               />
             </div>
             <div className='mt-2 row' id="rentPeriod">
-              <label className='col-sm myText'>Choose rent preiod:</label>
-              {/* <input className='col-sm' id="rentPeriod" type="number"></input> */}
+              <label className='col-sm myText'>Choose rent period:</label>
               <InputSpinner
                 type={'int'}
                 precision={2}

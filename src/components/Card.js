@@ -67,7 +67,7 @@ const Card = ({ card }) => {
             >
               <EmailIcon></EmailIcon>
             </EmailShareButton>
-
+            <button onClick={() => navigator.clipboard.writeText('https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash)}>Copy</button>
           </div>
         </div>
 
