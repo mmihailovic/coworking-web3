@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Cards from './Cards';
-import Stat from './Stat';
+import Cards from '../components/Cards';
+import Stat from '../components/Stat';
 import { useState } from 'react';
 import "../style/mainpageStyle.css"
 import { BigNumber, ethers } from 'ethers';
@@ -8,18 +8,17 @@ import Token from '../artifacts/contracts/Token.sol/Token.json';
 import Rent from '../artifacts/contracts/Rent.sol/Rent.json';
 import USDC from '../artifacts/contracts/Rent.sol/USDC.json';
 import Button from 'react-bootstrap/Button';
-import profile from '../profile.png'
-import Loader from './Loader';
-import logo from '../mylogo.svg';
+import profile from '../assets/profile.png'
+import Loader from '../components/Loader';
+import logo from '../assets/mylogo.svg';
 import { TbCircles, TbArmchair2 } from 'react-icons/tb';
 import { RiHandCoinLine } from 'react-icons/ri'
-import Popup from './Popup';
+import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-const tokenAddress = "0x200ad080289ce9C62FA0019F5b4B9462019d3FD4";
-const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";  
-const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
+import { selectEmailWeb2, insertTicketsWeb2 } from '../web2communication';
+
 
 
 const Mainpage = ({ accountAddress }) => {
@@ -52,39 +51,6 @@ const Mainpage = ({ accountAddress }) => {
     }
   }, [tickets])
 
-
-  async function selectEmailWeb2(hash) {
-
-    return fetch('https://coworking-khuti.ondigitalocean.app/api/selectEmail', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ hash }),
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json().then(json => {
-            const ret = json[0].result;
-            return ret;
-          });
-        }
-      });
-  }
-
-  async function insertTicketsWeb2(hash, date) {
-
-    const dateParts = (date).split("/");
-    const endDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0] + 1);
-    fetch('https://coworking-khuti.ondigitalocean.app/api/insertTicket', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ hash, endDate }),
-    })
-  }
-
   async function loadingAnimation(request, msg) {
     setMsg(msg);
     setLoading(true);
@@ -94,9 +60,8 @@ const Mainpage = ({ accountAddress }) => {
 
   async function getTokenBalance() {
     if (typeof window.ethereum !== 'undefined') {
-
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const token = new ethers.Contract(tokenAddress, Token.abi, provider);
+      const token = new ethers.Contract(process.env.REACT_APP_tokenAddress, Token.abi, provider);
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
@@ -111,9 +76,7 @@ const Mainpage = ({ accountAddress }) => {
   async function GetStakingBalance() {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner(0);
-
-      const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
+      const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, provider);
 
       try {
         const accounts = await window.ethereum.request({
@@ -138,7 +101,7 @@ const Mainpage = ({ accountAddress }) => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
-      const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const rent = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
 
       try {
         const accounts = await window.ethereum.request({
@@ -168,8 +131,7 @@ const Mainpage = ({ accountAddress }) => {
   async function getTickets() {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner(0);
-      const rent = new ethers.Contract(rentAddres, Rent.abi, provider);
+      const rent = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, provider);
       setLoading(true);
       setMsg("Loading tickets ... ");
       try {
@@ -185,13 +147,12 @@ const Mainpage = ({ accountAddress }) => {
         let emailsArr = [];
 
         for (let i = 0; i < hashes.length; i++) {
-          var newDate = new Date(exDates[i] * 1000);
           emailsArr.push("Not redeemed");
         }
 
         for (let i = 0; i < hashes.length; i++) {
           var email = await selectEmailWeb2(hashes[i]);
-          emailsArr[i] = email == "no_hashes" ? "Not redeemed" : email;
+          emailsArr[i] = email === "no_hashes" ? "Not redeemed" : email;
         }
 
         setTickets(parseTickets(exDates, hashes, emailsArr));
@@ -208,7 +169,7 @@ const Mainpage = ({ accountAddress }) => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
-      const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const rent = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
 
       try {
         const accounts = await window.ethereum.request({
@@ -241,8 +202,8 @@ const Mainpage = ({ accountAddress }) => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
-      const token = new ethers.Contract(tokenAddress, Token.abi, signer)
-      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const token = new ethers.Contract(process.env.REACT_APP_tokenAddress, Token.abi, signer)
+      const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
       console.log(stakingValue);
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
       console.log(amount);
@@ -277,8 +238,7 @@ const Mainpage = ({ accountAddress }) => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
-      const token = new ethers.Contract(tokenAddress, Token.abi, signer);
-      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
+      const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
       console.log(stakingValue);
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
       console.log(amount);
@@ -307,10 +267,9 @@ const Mainpage = ({ accountAddress }) => {
   }
 
   function listen(provider, numOfPlacesBN, rentPeriodBN) {
-    const rentContract = new ethers.Contract(rentAddres, Rent.abi, provider);
-    var event = rentContract.on('RentPlaceEvent', function () {
-      //if (!error){
-      //console.log("rentPLace EVENT  ");
+    const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, provider);
+
+    rentContract.on('RentPlaceEvent', function () {
       setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
       updateCanRent();
       setLoading(false);
@@ -319,7 +278,6 @@ const Mainpage = ({ accountAddress }) => {
       setpopupTitle('Info');
       setRentPeriod(0);
       setRentPlaceCount(0);
-      //}
     });
   }
 
@@ -328,9 +286,8 @@ const Mainpage = ({ accountAddress }) => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
-      const token = new ethers.Contract(tokenAddress, Token.abi, signer);
-      const rentContract = new ethers.Contract(rentAddres, Rent.abi, signer);
-      const usdc = new ethers.Contract(usdcAddress, USDC.abi, signer);
+      const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
+      const usdc = new ethers.Contract(process.env.REACT_APP_usdcAddress, USDC.abi, signer);
       console.log(rentPlaceCount);
       console.log(rentPeriod);
       var numOfPlacesBN = BigNumber.from(rentPlaceCount);

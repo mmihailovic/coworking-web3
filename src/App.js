@@ -3,9 +3,9 @@ import { ethers } from 'ethers';
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import './App.css';
-import Mainpage from './components/Mainpage';
+import Mainpage from './pages/Mainpage';
 import React from 'react';
-import LoginPage from './components/LoginPage';
+import LoginPage from './pages/LoginPage';
 
 
 function App() {
