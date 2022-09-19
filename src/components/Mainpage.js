@@ -18,8 +18,8 @@ import { RiHandCoinLine } from 'react-icons/ri'
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-const tokenAddress = "0x1CF9a07C05e5728F46F404553A52b29BaBc4CBad";
-const rentAddres = "0x22d53379588f09D0d68820671Fb6148A4A9e6925";
+const tokenAddress = "0x200ad080289ce9C62FA0019F5b4B9462019d3FD4";
+const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";  
 const usdcAddress = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 
@@ -39,7 +39,6 @@ const Mainpage = ({ accountAddress }) => {
 
   useEffect(() => {
     window.ethereum.on("accountsChanged", accounts => {
-      //console.log(accounts[0] + ' acc');
       if (accounts[0] === accountAddress);
       else navigate('/', { replace: true });
     });
@@ -75,7 +74,6 @@ const Mainpage = ({ accountAddress }) => {
 
     const dateParts = (date).split("/");
     const endDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0] + 1);
-    //console.log(JSON.stringify({ hash, endDate }))
     fetch('https://coworking-khuti.ondigitalocean.app/api/insertTicket', {
       method: 'POST',
       headers: {
@@ -102,7 +100,6 @@ const Mainpage = ({ accountAddress }) => {
       });
       if (accounts[0] > 0) {
         const bal = await token.balanceOf(accounts[0]);
-        //console.log(ethers.utils.formatEther(bal));
         setBeoTokenBalance(Math.trunc(ethers.utils.formatEther(bal)));
       }
       else console.log("greska");
@@ -214,7 +211,6 @@ const Mainpage = ({ accountAddress }) => {
           method: "eth_accounts",
         });
         const rentable = await rent.numberOfFreePlacesForAddress(accounts[0]);
-        //console.log("moze renta " + rentable.toNumber());
         setCanRent(rentable.toNumber());
       } catch (err) {
         console.log("Err RENT: " + err);
@@ -229,7 +225,6 @@ const Mainpage = ({ accountAddress }) => {
   }, [])
 
   useEffect(() => {
-    //console.log(stakedTokens);
     updateCanRent();
   }, [stakedTokens])
 
@@ -247,8 +242,6 @@ const Mainpage = ({ accountAddress }) => {
 
       let amount = BigNumber.from(10).pow(18).mul(stakingValue);
 
-      //console.log(stakingValue);
-      //console.log(amount.toString());
       try {
 
         let request = await token.approve(rentContract.address, amount);
@@ -256,13 +249,8 @@ const Mainpage = ({ accountAddress }) => {
 
         await loadingAnimation(request, "Waiting for transaction approval ...");
 
-
-        //console.log("ZAVRSIO APPROVE");
         request = await rentContract.stakeTokens(amount);
         await loadingAnimation(request, "Waiting for stake ...");
-        //console.log("stake gotov");
-
-        //console.log("Cards length: " + cards.length);
 
         setBeoTokenBalance(beoTokenBalance - stakingValue);
         setStakedTokens(stakedTokens - (- stakingValue));
@@ -320,31 +308,23 @@ const Mainpage = ({ accountAddress }) => {
 
       var numOfPlacesBN = BigNumber.from(rentPlaceCount);
       var rentPeriodBN = BigNumber.from(rentPeriod);
-      // console.log(numOfPlacesBN);
-      // console.log(rentPeriodBN);
 
       try {
-        let amount = numOfPlacesBN.mul(rentPeriod).mul(BigNumber.from(250)).div(30);
-        // console.log(amount.toNumber())
-        let x = BigNumber.from(10).pow(6).mul(amount);
+        let price = await rentContract.getAmount();
+        let amount = numOfPlacesBN.mul(rentPeriod).mul(BigNumber.from(price)).div(30);
 
-        let request = await usdc.approve(rentContract.address, x);
+        let request = await usdc.approve(rentContract.address, amount);
 
 
         await loadingAnimation(request, "Transfering USDC ...");
 
-        let result = await rentContract.rentSeat(numOfPlacesBN, rentPeriodBN, x);
+        let result = await rentContract.rentSeat(numOfPlacesBN, rentPeriodBN);
 
         await loadingAnimation(result, "Waiting for rent ...");
-
-        //console.log("rentovao");
 
         setMsg("Wait for chainlink...");
         setLoading(true);
         listen(provider, numOfPlacesBN);
-
-        //setRentedPlaces(rentedPlaces - (-numOfPlacesBN));
-        //updateCanRent();
 
       } catch (err) {
         console.log("Error RENT SEAT : ", err);

@@ -13,30 +13,9 @@ import { EmailIcon, EmailShareButton } from 'react-share';
 const Card = ({ card }) => {
 
   const [canEntry, setCanEntry] = useState(false);
-  const rentAddres = "0x22d53379588f09D0d68820671Fb6148A4A9e6925";
+  const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";
   const dateParts = (card.expirationDate).split("/");
   const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-  // console.log(dateParts);
-  // console.log(date);
-  // console.log(date.getDate());
-
-  async function getInfo() {
-    if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner(0);
-      const rent = new ethers.Contract(rentAddres, Rent.abi, signer);
-      try {
-        let result = await rent.ulaz(card.hash);
-        setCanEntry(result);
-      } catch (err) {
-        console.log("Err rent: " + err);
-      }
-    }
-  }
-
-  useEffect(() => {
-    //getInfo();
-  }, [])
 
   return (
 
