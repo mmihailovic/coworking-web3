@@ -1,0 +1,102 @@
+#tickets {
+    position: absolute;
+    width: 221px;
+    height: 37px;
+    left: 31.5%;
+    top:20%;
+
+    /* H2 */
+
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 120%;
+}
+
+#available {
+    position: absolute;
+    width: 76px;
+    height: 18px;
+    left:76%;
+    top:21%;
+
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Grayscale/Black */
+
+    color: #000000;
+}
+
+#redeemed {
+    position: absolute;
+    width: 68px;
+    height: 18px;
+    left:84%;
+    top:21%;
+
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Grayscale/Label */
+
+    color: #93A4B7; 
+}
+
+#expired {
+    /* Expired */
+    position: absolute;
+    width: 59px;
+    height: 18px;
+    left:91%;
+    top:21%;
+
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Grayscale/Label */
+
+    color: #93A4B7;
+}
+ul {
+    list-style-type: none;
+}
+li.active::after {
+    position: absolute;
+    content: "";
+    height: 3px;
+    width: 100%;
+    background-color: #0568FD;
+    left: 0;
+    bottom: -7px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    animation: appear 0.2s linear;
+  }
+@keyframes appear {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%; 
+    }
+}

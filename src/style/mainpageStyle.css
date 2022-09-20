@@ -36,7 +36,7 @@
     height: 100vh;
     width: 100vw;
     /* background-color: #8b98ff; */
-    background: linear-gradient(to bottom, #8b98ff, #78dac0);
+    background: #F5F5F5;
     /* background: radial-gradient(circle at center, #78dac0, #8b98ff 100%) */
 }
 

@@ -175,7 +175,7 @@ contract Rent is VRFConsumerBaseV2 {
         uint cnt = 0;
         for(uint i =0 ; i< radnaMesta.length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
+             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate < block.timestamp){
                 cnt = cnt + 1;
              }
         }
@@ -183,7 +183,7 @@ contract Rent is VRFConsumerBaseV2 {
         uint256 index = 0;
         for(uint i =0 ; i< radnaMesta.length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
+             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate < block.timestamp){
                 h[index] = radnaMesta[i].hashUlaznice;
                 index = index + 1;
              }

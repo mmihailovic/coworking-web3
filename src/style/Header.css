@@ -1,0 +1,95 @@
+#beoseats {
+    position: absolute;
+    left: 8.8%;
+    top: 41.35%;
+}
+
+#greenIcon {
+    position: absolute;
+    left: 4%;
+    right: 89.03%;
+    top: 31%;
+}
+
+#blueIcon {
+    position: absolute;
+    left: 4%;
+    right: 89.03%;
+    top: 50%;
+}
+
+#yellowIcon {
+    position: absolute;
+    left: 5.35%;
+    right: 78.19%;
+    top: 50%;
+}
+#blueCircle {
+    height: 50px;
+    width: 50px;
+    background-color: #0568FD;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 28%;
+    left:78%;
+    bottom: 0%;
+  }
+  #whiteCircle {
+    position: absolute;
+    right: 23.31%;
+    top: 24.9%;
+    left:77.8%;
+    bottom: 0%;
+    height: 57px;
+    width: 57px;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    display: inline-block;
+
+    /* Grayscale/White*/
+
+    border: 2px solid #FFFFFF;
+  }
+#arrow {
+    position: absolute;
+    left: 96%;
+    right: 8.33%;
+    top: 49%;
+    bottom: 16.67%;
+}
+
+#wallet {
+    position: absolute;
+    width: 10.8%;
+    top: 43%;
+    left:83%;
+    
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    /* identical to box height, or 100% */
+    
+    display: flex;
+    align-items: center;
+    
+    /* Slate */
+    
+    color: #262338;    
+}
+
+.header {
+    /* Header */
+    position: absolute;
+    width: 96%;
+    height: 11.73%; 
+    left: 2%;
+    top: 2%;
+
+    /* LightPink */
+    background: #FAE6E9;
+    border-radius: 16px;
+}
+

@@ -18,6 +18,8 @@ import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
 import { selectEmailWeb2, insertTicketsWeb2 } from '../web2communication';
+import Header from '../components/Header';
+import Tickets from '../components/Tickets';
 
 
 
@@ -28,6 +30,8 @@ const Mainpage = ({ accountAddress }) => {
   const [rentedPlaces, setRentedPlaces] = useState();
   const [canRent, setCanRent] = useState();
   const [tickets, setTickets] = useState([]);
+  const [redeemedTickets, setRedeemedTickets] = useState([]);
+  const [expiredTickets, setExpiredTickets] = useState([]);
   const [loading, setLoading] = useState();
   const [msg, setMsg] = useState();
   const [stakingValue, setStakingValue] = useState(0);
@@ -36,6 +40,9 @@ const Mainpage = ({ accountAddress }) => {
   const [showPopup,setShowPopup] = useState(false);
   const [text,setText] = useState();
   const [popupTitle,setpopupTitle] = useState();
+  const [available,setAvailable] = useState(true);
+  const [redeemed,setRedeemed] = useState(false);
+  const [expired,setExpired] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -139,23 +146,56 @@ const Mainpage = ({ accountAddress }) => {
           method: "eth_accounts",
         });
         const exDates = [];
+        const exDatesOfRedeemedTickets = [];
         const hashes = await rent.getUserHash({ from: accounts[0] });
-        for (let i = 0; i < hashes.length; i++) {
-          exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
-        }
+        const hashesOfAvailableTickets = [];
+        const hashesOfRedeemedTickets = [];
+        // for (let i = 0; i < hashes.length; i++) {
+        //   exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
+        // }
 
         let emailsArr = [];
+        let emailsArrOfRedeemedTickets = [];
 
-        for (let i = 0; i < hashes.length; i++) {
-          emailsArr.push("Not redeemed");
-        }
+        // for (let i = 0; i < hashes.length; i++) {
+        //   emailsArr.push("Not redeemed");
+        // }
 
         for (let i = 0; i < hashes.length; i++) {
           var email = await selectEmailWeb2(hashes[i]);
-          emailsArr[i] = email === "no_hashes" ? "Not redeemed" : email;
+          //emailsArr[i] = email === "no_hashes" ? "Not redeemed" : email;
+          if(email === "no_hashes") email = "Not redeemed";
+          if(email === "Not redeemed") {
+            emailsArr.push(email);
+            exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
+            hashesOfAvailableTickets.push(hashes[i]);
+          }
+          else {
+            emailsArrOfRedeemedTickets.push(email);
+            exDatesOfRedeemedTickets.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
+            hashesOfRedeemedTickets.push(hashes[i]);
+          }
         }
 
-        setTickets(parseTickets(exDates, hashes, emailsArr));
+        const exDatesOfExpiredTickets = [];
+        const hashesOfExpiredTickets = await rent.getUserHashOfExpiredTickets({from: accounts[0]});
+        for(let i = 0; i < hashesOfExpiredTickets.length; i++) {
+          exDatesOfExpiredTickets.push(BigNumber.from(await rent.getExpireDateOfExpiredTickets(i,{from:accounts[0]})));
+        }
+
+        let emailsArrOfExpiredTickets = [];
+
+        for (let i = 0; i < hashesOfExpiredTickets.length; i++) {
+          emailsArrOfExpiredTickets.push("Not redeemed");
+        }
+
+        for (let i = 0; i < hashesOfExpiredTickets.length; i++) {
+          var emailOfExpiredTicket = await selectEmailWeb2(hashesOfExpiredTickets[i]);
+          emailsArrOfExpiredTickets[i] = emailOfExpiredTicket === "no_hashes" ? "Not redeemed" : emailOfExpiredTicket;
+        }
+        setTickets(parseTickets(exDates, hashesOfAvailableTickets, emailsArr)); // available tickets
+        setRedeemedTickets(parseTickets(exDatesOfRedeemedTickets, hashesOfRedeemedTickets, emailsArrOfRedeemedTickets));
+        setExpiredTickets(parseTickets(exDatesOfExpiredTickets,hashesOfExpiredTickets,emailOfExpiredTicket));
         setLoading(false);
 
       } catch (err) {
@@ -323,11 +363,12 @@ const Mainpage = ({ accountAddress }) => {
 
   return (
     <>
-      {loading ? <Loader loading={false} msg={msg} /> : <div className='mainDiv'>
-        <div className='topDiv'>
-          <img src={logo} id="headerLogo" />
+        {/* <div> */}
+        <div className='mainDiv'>
+          <Header walletAddress={accountAddress}></Header>
+          <Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired}></Tickets>
         </div>
-        <div className='leftDiv'>
+        {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />
             <div className='row statDiv'>
@@ -400,11 +441,11 @@ const Mainpage = ({ accountAddress }) => {
           <Button variant="outline-dark" id="rentBtn" style={{ backgroundColor: "black", color: "#8b98ff" }} onClick={rentPlaces}>Rent</Button>
         </div>
 
-        <div className='rightDiv'>
+        <div className='rightDiv'> */}
           {/* <p>Mainpage</p> */}
-          <Cards cards={tickets} />
-        </div>
-      </div>}
+          {/* <Cards cards={tickets}></Cards> */}
+        {/* </div>
+      </div> */}
     </>
   )
 }
