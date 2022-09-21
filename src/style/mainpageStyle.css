@@ -30,18 +30,24 @@
     left: 4%;
     top: 2%;
 }
+.dashboardDiv {
+    float:left;
+    margin-top: 10%;
+    margin-left: 2%;
+    height: 65%;
+    width: 21%;
+}
 
 .mainDiv {
     /* background:linear-gradient(to bottom, #468edb, #3f7fc4); */
     height: 100vh;
     width: 100vw;
     /* background-color: #8b98ff; */
-    background: #F5F5F5;
     /* background: radial-gradient(circle at center, #78dac0, #8b98ff 100%) */
 }
 
 .topDiv {
-    height: 100px;
+    height: 300px;
     /* background:linear-gradient(to bottom, #24568c, #1d4978); */
     background: #000000;
 }

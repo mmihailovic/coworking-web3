@@ -45,7 +45,7 @@ const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards}) => 
             <li id="redeemed"onClick={redeemedClick}>Redeemed</li>
             <li id="expired"onClick={expiredClick}>Expired</li>
         </ul>
-        <Cards id="karte" cards={cards}></Cards>
+        {/* <Cards id="karte" cards={cards}></Cards> */}
     </div>
   )
 }

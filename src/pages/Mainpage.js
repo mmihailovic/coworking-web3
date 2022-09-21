@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { selectEmailWeb2, insertTicketsWeb2 } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
+import Dashboard from '../components/Dashboard';
 
 
 
@@ -43,6 +44,7 @@ const Mainpage = ({ accountAddress }) => {
   const [available,setAvailable] = useState(true);
   const [redeemed,setRedeemed] = useState(false);
   const [expired,setExpired] = useState(false);
+  const [myBool,setMyBool] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -367,7 +369,9 @@ const Mainpage = ({ accountAddress }) => {
         <div className='mainDiv'>
           <Header walletAddress={accountAddress}></Header>
           <Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired}></Tickets>
-        </div>
+          <div className="dashboardDiv"><Dashboard myBool={myBool} setmyBool = {setMyBool}></Dashboard>
+          </div>
+         </div>
         {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />
