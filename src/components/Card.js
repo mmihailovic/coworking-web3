@@ -9,83 +9,62 @@ import { WhatsappIcon, WhatsappShareButton } from 'react-share';
 import { ViberShareButton, ViberIcon } from 'react-share';
 import { CardList } from 'react-bootstrap-icons';
 import { EmailIcon, EmailShareButton } from 'react-share';
+import QRcode from "../assets/qrcode.png"
+import mapMarker from "../assets/map-marker.svg"
+import calendarIcon from "../assets/calendar.svg"
+import userIcon from "../assets/user.svg"
+import "@fontsource/space-mono"
+import "@fontsource/roboto-mono";
 
 const Card = ({ card }) => {
 
   const [canEntry, setCanEntry] = useState(false);
   const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";
   const dateParts = (card.expirationDate).split("/");
-  const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+  //const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
+  let redeemd = false;
+  let expired = false;
 
   return (
+    <div className={`${!expired ? 'primary_container' : 'primary_container_expired'}`}>
 
-    <div className='container'>
-      <div className='item'>
-        <div className='item-right'>
-          <h3 className='valid'>Until:</h3>
-          <h2 className='num'>{date.getDate()}</h2>
-          <p className='day'>{date.toLocaleString('en-US', { month: 'short' })}</p>
-          <span className='up-border'></span>
-          <span className='down-border'></span>
-        </div>
-
-        <div className='item-left'>
-          <p className='title'>Enterance ticket</p>
-          <h2 className='event'>Redeemed by: {card.email}</h2>
-
-          <div className='item-QR'>
-            <div className='item-QR-left'>
-              <p className='QR-text'>Exipration date: {date.getDate() + "/" + Number(date.getMonth() - (-1)) + "/" + date.getFullYear()}</p>
-              <p className='QR-text'>Address: Masarikova 5, Beograd 11000</p>
+      <div className="secondary_container">
+        <div className="left">
+          <div className="beo_spaces_div">
+            <div className='beo_space_second_div'>
+              <p className="text1">BeoSeats</p>
+              {expired ? <div id="expired_div"><p className='text3' id="expired"> Expired </p></div> : <></>}
             </div>
-            <div className='item-QR-right'>
-              <QRCode value={card.hash} size={150} />
-            </div>
+            {redeemd ? <></> : <button type="button" className="redeem_btn">Redeem</button>}
           </div>
-
-          <div className='sce'>
-            <FacebookShareButton
-              url={'https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash}
-              quote={'nesto'}
-              hashtag='#BeoSpace'
-            >
-              <FacebookIcon ></FacebookIcon>
-            </FacebookShareButton>
-
-            <WhatsappShareButton
-              url={'https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash}>
-              <WhatsappIcon></WhatsappIcon>
-            </WhatsappShareButton>
-
-            <ViberShareButton
-              url={'https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash}
-            >
-              <ViberIcon></ViberIcon>
-            </ViberShareButton>
-            <EmailShareButton
-              url={'https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash}
-            >
-              <EmailIcon></EmailIcon>
-            </EmailShareButton>
-            <button onClick={() => navigator.clipboard.writeText('https://coworking-khuti.ondigitalocean.app/?hash=' + card.hash)}>Copy</button>
+          <div className="address_div">
+            <img alt='map_marker' src={mapMarker} className="icon" />
+            <p className="text2">Masarikova 5, Beograd</p>
+          </div>
+          <div className="date_div">
+            <img alt='calendar_icon' src={calendarIcon} className="icon" />
+            <p className="text2">Expires: 29/09/2022</p>
+          </div>
+          <div className="redeem_div">
+            <img alt="user icon" src={userIcon} className="icon" />
+            {redeemd ? <p className='text2'>Petar Petrovic</p> : <div id="available_div"><p className="text2">Available</p></div>}
+            {redeemd ? <div className="copy_mail_div">
+              <p className="text3">Copy email</p>
+            </div> : <></>}
           </div>
         </div>
-
+        <div className="mid">
+          <div className={`${!expired ? 'circle_div_up' : 'circle_div_up_expired'}`}></div>
+          <div className="dotted"></div>
+          <div className={`${!expired ? 'circle_div_down' : 'circle_div_down_expired'}`}></div>
+        </div>
+        <div className="right">
+          <img className="QRcode" src={QRcode} alt="QRcode" />
+        </div>
       </div>
     </div>
-
-    // <div style={{border: '2px dotted', marginTop:'10px'}}>
-
-    //   <div style={{float: 'left'}}>
-    //     <p>{card.id}</p>
-    //     <p>{card.expirationDate}</p>
-    //   </div>
-    //   <QRCode   
-    //         value={card.hash}
-    //         size={150}
-    //       />
-    // </div>
-  )
+  );
 }
 
 export default Card
