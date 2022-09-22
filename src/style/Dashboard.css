@@ -1,18 +1,18 @@
 .container{
     border: 2px solid #000000;
     border-radius: 16px;
-    width: 31%;
+    width: 21%;
     height: 120%;
     font-size:120%;
     position: relative;
 }
 
 .buttonContainer{
-    margin: 15%;
-    height: 80px;
+    height: 8%;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    font-size: 1vw;
 }
 button{
     background: #FFFFFF;
@@ -22,43 +22,60 @@ button{
     border:  white;
     font-family: 'Roboto Mono';
     font-weight: 500;
-    font-size: 80px;
+    font-size: 1em;
     line-height: 100%;
     width: 100%;
     height: 100%;
-    /* transition-duration: 0.4s; */
+    /* transition-duration: 0.4s;*/
     
+}
+
+#btn1Container {
+    position: absolute;
+    top:10%;
+    left:10%;
+}
+#btn2Container {
+    position: absolute;
+    top:20%;
+    left:10%;   
 }
 button:hover {
     background-color: #FAE6E9;;
     border: 2px solid black;
-    border-radius: 16px;
+    border-radius: 8px;
     
   }
 #img1{
     margin: 15%;
+    width:12.5%;
+    height: 100%;
 }
 #img2{
     margin: 15%;
+    width:12.5%;
+    height: 100%;
 }
 
 .inactive{
     background-color: white;
     color:#528990 ;
     border: 2px solid #528990;
-    border-radius: 16px;
+    border-radius: 8px;
 }
 .inactive:hover{
     background-color: #FAE6E9;;
     border: 2px solid #528990;
-    border-radius: 16px;
+    border-radius: 8px;
 }
 
 .bottomDiv{
     background-color: #528990;
     position: absolute;
     bottom: 5%;
-    width: 90%;
+    width: 88%;
+    height: 18%;
+    left:6%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 100%;
@@ -68,21 +85,27 @@ button:hover {
     font-family: 'Space Mono';
     font-style: normal;
     font-weight: 700;
-    font-size: 120%;
+    font-size: 1.25vw;
     line-height: 130%;
     color: #FAE6E9;
     padding-top: 13%;
     padding-right: 18%;
     margin-bottom: -1%;
+    position: absolute;
+    top:-5%;
+    left: 10%;
 }
 
 #dashboardPar{
     font-family: 'Space Mono';
     font-style: normal;
-    font-weight: 700;
-    font-size: 120%;
+    font-weight: bold;
+    font-size: 1.6vw;
     line-height: 160%;
     padding-left: 18%;
     padding-bottom: 13%;
-    color:black;
+    color:black;   
+    position: absolute;
+    top:50%;
+    left:25%;
 }

@@ -31,11 +31,10 @@
     top: 2%;
 }
 .dashboardDiv {
-    float:left;
-    margin-top: 10%;
-    margin-left: 2%;
-    height: 65%;
-    width: 21%;
+    position: relative;
+    top:0%;
+    height: 80%;
+    width: 23%;
 }
 
 .mainDiv {

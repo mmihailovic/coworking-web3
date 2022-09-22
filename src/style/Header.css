@@ -1,32 +1,14 @@
 #beoseats {
     position: absolute;
-    left: 8.8%;
-    top: 41.35%;
+    left: 4.1%;
+    top: 28%;
+    width: 14%;
+    height: 44%;
 }
 
-#greenIcon {
-    position: absolute;
-    left: 4%;
-    right: 89.03%;
-    top: 31%;
-}
-
-#blueIcon {
-    position: absolute;
-    left: 4%;
-    right: 89.03%;
-    top: 50%;
-}
-
-#yellowIcon {
-    position: absolute;
-    left: 5.35%;
-    right: 78.19%;
-    top: 50%;
-}
 #blueCircle {
-    height: 50px;
-    width: 50px;
+    height: 50%;
+    width: 3.44%;
     background-color: #0568FD;
     border-radius: 50%;
     display: inline-block;
@@ -34,29 +16,29 @@
     top: 28%;
     left:78%;
     bottom: 0%;
-  }
-  #whiteCircle {
+}
+
+#whiteCircle {
     position: absolute;
     right: 23.31%;
     top: 24.9%;
     left:77.8%;
     bottom: 0%;
-    height: 57px;
-    width: 57px;
+    height: 57%;
+    width: 3.9%;
     border: 2px solid #FFFFFF;
     border-radius: 50%;
     display: inline-block;
+}
 
-    /* Grayscale/White*/
-
-    border: 2px solid #FFFFFF;
-  }
 #arrow {
     position: absolute;
     left: 96%;
     right: 8.33%;
     top: 49%;
     bottom: 16.67%;
+    width: 0.73%;
+    height: 9.4%;
 }
 
 #wallet {
@@ -68,8 +50,8 @@
     font-family: 'Space Mono';
     font-style: normal;
     font-weight: 700;
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 1.75vmin;
+    line-height: 85%;
     /* identical to box height, or 100% */
     
     display: flex;
@@ -82,11 +64,11 @@
 
 .header {
     /* Header */
-    position: absolute;
+    position: relative;
     width: 96%;
-    height: 11.73%; 
-    left: 2%;
-    top: 2%;
+    height: 10%;
+    margin-left: 2%;
+    margin-top: 2%;
 
     /* LightPink */
     background: #FAE6E9;

@@ -45,6 +45,7 @@ const Mainpage = ({ accountAddress }) => {
   const [redeemed,setRedeemed] = useState(false);
   const [expired,setExpired] = useState(false);
   const [myBool,setMyBool] = useState(false);
+  const [first,setFirst] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +54,12 @@ const Mainpage = ({ accountAddress }) => {
       else navigate('/', { replace: true });
     });
   }, []);
+
+  useEffect(()=>{
+    if(!myBool)
+      setFirst(true);
+    else setFirst(false);
+  },[myBool])
 
   useEffect(() => {
     for (let i = 0; i < tickets.length; i++) {
@@ -365,13 +372,16 @@ const Mainpage = ({ accountAddress }) => {
 
   return (
     <>
-        {/* <div> */}
+    {/* <div> */}
         <div className='mainDiv'>
           <Header walletAddress={accountAddress}></Header>
-          <Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired}></Tickets>
-          <div className="dashboardDiv"><Dashboard myBool={myBool} setmyBool = {setMyBool}></Dashboard>
+          <div style={{position:"relative", width:"100%", height:"80%", marginLeft:"2%", marginTop:"1%"}}>
+            <div style={{position:"relative", width:"23%", height:"85%"}}>
+              <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
+            </div>
+            {myBool?null:<Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
           </div>
-         </div>
+        </div>
         {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />

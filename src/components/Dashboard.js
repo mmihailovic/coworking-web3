@@ -39,8 +39,8 @@ function myTicketsChange() {
 
   return (
     <div className="container">
-        <div  className='buttonContainer'><button id='btn1' onClick={seatRentalsChange}><img id="img1" src={monitorDesktop} alt='?'/>Seat rentals</button></div>
-        <div  className='buttonContainer'><button id='btn2' onClick={myTicketsChange}><img id="img2" src={ticket} alt='?'/>My tickets</button></div>
+        <div  className='buttonContainer' id="btn1Container"><button id='btn1' onClick={seatRentalsChange}><img id="img1" src={monitorDesktop} alt='?'/>Seat rentals</button></div>
+        <div  className='buttonContainer' id="btn2Container"><button id='btn2' onClick={myTicketsChange}><img id="img2" src={ticket} alt='?'/>My tickets</button></div>
         <div className="bottomDiv">
             <p id="coworkingSpace">Co-working space</p>
             <p id="dashboardPar">dashboard</p>

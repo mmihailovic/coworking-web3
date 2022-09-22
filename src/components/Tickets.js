@@ -1,12 +1,16 @@
 import "../style/Tickets.css";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import Cards from "./Cards";
 
-const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards}) => {
-    const available = document.getElementById("available");
-    const redeemed = document.getElementById("redeemed");
-    const expired = document.getElementById("expired");
+const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
+  useEffect(() => {
+    document.getElementById("available").classList.add("active");
+    setFirst(false);
+  }, [first]);
     const availableClick = () => {
+      let available = document.getElementById("available");
+      let redeemed = document.getElementById("redeemed");
+      let expired = document.getElementById("expiredButton");
         available.style.color = "#000000";
         redeemed.style.color = "#93A4B7";
         expired.style.color = "#93A4B7";
@@ -15,14 +19,20 @@ const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards}) => 
         setExpiredCards(false);
     }
     const redeemedClick = () => {
-        redeemed.style.color = "#000000";
-        available.style.color = "#93A4B7";
-        expired.style.color = "#93A4B7";
-        setAvailableCards(false);
-        setRedeemedCards(true);
-        setExpiredCards(false);
+      let available = document.getElementById("available");
+      let redeemed = document.getElementById("redeemed");
+      let expired = document.getElementById("expiredButton");
+      redeemed.style.color = "#000000";
+      available.style.color = "#93A4B7";
+      expired.style.color = "#93A4B7";
+      setAvailableCards(false);
+      setRedeemedCards(true);
+      setExpiredCards(false);
     }
     const expiredClick = () => {
+      let available = document.getElementById("available");
+      let redeemed = document.getElementById("redeemed");
+      let expired = document.getElementById("expiredButton");
         expired.style.color = "#000000";
         available.style.color = "#93A4B7";
         redeemed.style.color = "#93A4B7";
@@ -38,14 +48,19 @@ const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards}) => 
       });
     });
   return (
-    <div>
-        <p id="tickets">My tickets</p>
-        <ul>
-            <li id="available" onClick={availableClick} className="active">Available</li>
-            <li id="redeemed"onClick={redeemedClick}>Redeemed</li>
-            <li id="expired"onClick={expiredClick}>Expired</li>
-        </ul>
-        {/* <Cards id="karte" cards={cards}></Cards> */}
+    <div style={{position:"absolute", width:"90%", top:"2%", left:"25%", width:"65%", height:"100%"}}>
+          <div style={{position:"relative", height:"70%", top:"2%", height:"10%"}}>
+
+          <p id="tickets">My tickets</p>
+          <ul>
+              <li style={{width:"5.5vw"}} id="available" onClick={availableClick} className="active">Available</li>
+              <li style={{width:"5vw"}}id="redeemed"onClick={redeemedClick}>Redeemed</li>
+              <li style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</li>
+          </ul>
+          </div>
+        <div style={{height:"60%", width:"100%"}}>
+        <Cards id="karte" cards={cards}></Cards>
+        </div>
     </div>
   )
 }

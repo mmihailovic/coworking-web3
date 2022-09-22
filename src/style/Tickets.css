@@ -1,16 +1,16 @@
 #tickets {
     position: absolute;
-    width: 221px;
-    height: 37px;
-    left: 31.5%;
-    top:20%;
+    width: 30%;
+    height: 3.75%;
+    left: 0%;
+    top:0%;
 
     /* H2 */
 
     font-family: 'Space Mono';
     font-style: normal;
     font-weight: 700;
-    font-size: 36px;
+    font-size: 2vw;
     line-height: 120%;
 }
 
@@ -18,13 +18,13 @@
     position: absolute;
     width: 76px;
     height: 18px;
-    left:76%;
-    top:21%;
+    left: 76%;
+    top:0%;
 
     font-family: 'Roboto Mono';
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1vw;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -39,13 +39,13 @@
     position: absolute;
     width: 68px;
     height: 18px;
-    left:84%;
-    top:21%;
+    left:87.5%;
+    top:0%;
 
     font-family: 'Roboto Mono';
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1vw;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -56,18 +56,18 @@
     color: #93A4B7; 
 }
 
-#expired {
+#expiredButton {
     /* Expired */
     position: absolute;
     width: 59px;
     height: 18px;
-    left:91%;
-    top:21%;
+    left:98%;
+    top:0%;
 
     font-family: 'Roboto Mono';
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1vw;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -83,20 +83,20 @@ ul {
 li.active::after {
     position: absolute;
     content: "";
-    height: 3px;
+    height: 20%;
     width: 100%;
     background-color: #0568FD;
-    left: 0;
-    bottom: -7px;
+    left: 0%;
+    bottom: -50%;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     animation: appear 0.2s linear;
-  }
+}
 @keyframes appear {
     from {
         width: 0;
     }
     to {
-        width: 100%; 
+        width: 100%;    
     }
 }
