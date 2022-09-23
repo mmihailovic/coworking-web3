@@ -80,7 +80,7 @@
 ul {
     list-style-type: none;
 }
-li.active::after {
+/* li.active::after {
     position: absolute;
     content: "";
     height: 20%;
@@ -91,7 +91,7 @@ li.active::after {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     animation: appear 0.2s linear;
-}
+} */
 @keyframes appear {
     from {
         width: 0;

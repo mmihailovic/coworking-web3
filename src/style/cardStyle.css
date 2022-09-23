@@ -8,7 +8,8 @@
     border-radius: 16px;
     display: flex;
     transition: all 0.5s ease-in-out;
-    margin-bottom: 10%;
+    margin-bottom: 3%;
+    margin-left: 5%;
 }
 
 .primary_container_expired {

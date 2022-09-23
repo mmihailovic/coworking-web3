@@ -13,8 +13,6 @@ import QRcode from "../assets/qrcode.png"
 import mapMarker from "../assets/map-marker.svg"
 import calendarIcon from "../assets/calendar.svg"
 import userIcon from "../assets/user.svg"
-import "@fontsource/space-mono"
-import "@fontsource/roboto-mono";
 
 const Card = ({ card }) => {
 

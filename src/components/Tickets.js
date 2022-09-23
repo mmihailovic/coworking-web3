@@ -1,6 +1,7 @@
 import "../style/Tickets.css";
 import React,{useEffect, useState} from "react";
 import Cards from "./Cards";
+import PassengersList from './Pass';
 
 const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
   useEffect(() => {
@@ -58,8 +59,11 @@ const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards,first
               <li style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</li>
           </ul>
           </div>
-        <div style={{height:"60%", width:"100%"}}>
+        {/* <div style={{height:"60%", width:"100%"}}>
         <Cards id="karte" cards={cards}></Cards>
+        </div> */}
+        <div style={{height:"60%", width:"100%" }}>
+          <PassengersList listaKarata={cards} />
         </div>
     </div>
   )

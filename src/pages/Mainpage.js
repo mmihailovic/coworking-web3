@@ -24,6 +24,7 @@ import Dashboard from '../components/Dashboard';
 
 
 
+
 const Mainpage = ({ accountAddress }) => {
 
   const [beoTokenBalance, setBeoTokenBalance] = useState();
@@ -453,13 +454,13 @@ const Mainpage = ({ accountAddress }) => {
             </div>
           </div>
           <Button variant="outline-dark" id="rentBtn" style={{ backgroundColor: "black", color: "#8b98ff" }} onClick={rentPlaces}>Rent</Button>
-        </div>
+        </div> */}
 
-        <div className='rightDiv'> */}
-          {/* <p>Mainpage</p> */}
-          {/* <Cards cards={tickets}></Cards> */}
-        {/* </div>
-      </div> */}
+        {/* <div className='rightDiv'>
+          <p>Mainpage</p>
+          <Cards cards={tickets}></Cards>
+        </div> */}
+     
     </>
   )
 }
