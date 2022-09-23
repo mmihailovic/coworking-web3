@@ -82,14 +82,14 @@ const PassengersList = ({listaKarata})=>{
 
   return(
     <div>
-        {!loading ? <Pagination {...paginationAttributes} 
+        <Pagination {...paginationAttributes} 
                           listaKarata={listaKarata}
                           onPrevClick={onPrevClick} 
                           onNextClick={onNextClick}
                           onPageChange={onPageChange}
                           />
-        : <div> Loading... </div>
-        }
+        
+        
     </div>
 )
       
