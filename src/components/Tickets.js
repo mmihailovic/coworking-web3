@@ -3,9 +3,9 @@ import React,{useEffect, useState} from "react";
 import Cards from "./Cards";
 import PassengersList from './Pass';
 
-const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
+const Tickets = ({cards,available, redeemed, expired, setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
   useEffect(() => {
-    document.getElementById("available").classList.add("active");
+    document.getElementById("available").click();
     setFirst(false);
   }, [first]);
     const availableClick = () => {
@@ -41,29 +41,24 @@ const Tickets = ({cards,setAvailableCards,setRedeemedCards,setExpiredCards,first
         setRedeemedCards(false);
         setExpiredCards(true);
     }
-    const items = document.querySelectorAll("ul li");
+    const items = document.querySelectorAll(".menuItem");
     items.forEach((item) => {
       item.addEventListener("click", () => {
-        document.querySelector("li.active").classList.remove("active");
+        document.querySelector("p.active").classList.remove("active");
         item.classList.add("active");
       });
     });
   return (
     <div style={{position:"absolute", width:"90%", top:"2%", left:"25%", width:"65%", height:"100%"}}>
           <div style={{position:"relative", height:"70%", top:"2%", height:"10%"}}>
-
-          <p id="tickets">My tickets</p>
-          <ul>
-              <li style={{width:"5.5vw"}} id="available" onClick={availableClick} className="active">Available</li>
-              <li style={{width:"5vw"}}id="redeemed"onClick={redeemedClick}>Redeemed</li>
-              <li style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</li>
-          </ul>
+            
+            <p id="tickets">My tickets</p>
+            <p style={{width:"5.5vw"}} id="available" onClick={availableClick} className="menuItem active">Available</p>
+            <p className="menuItem"style={{width:"5vw"}}id="redeemed" onClick={redeemedClick}>Redeemed</p>
+            <p className="menuItem"style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</p>
           </div>
-        {/* <div style={{height:"60%", width:"100%"}}>
-        <Cards id="karte" cards={cards}></Cards>
-        </div> */}
         <div style={{height:"60%", width:"100%" }}>
-          <PassengersList listaKarata={cards} />
+          <PassengersList listaKarata={cards} available = {available} redeemed = {redeemed} expired = {expired} />
         </div>
     </div>
   )

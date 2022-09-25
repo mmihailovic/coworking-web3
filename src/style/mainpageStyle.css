@@ -101,6 +101,9 @@ hr {
     background: #0a6efd;
     color: white;
 }
+body {
+    overflow: hidden;
+}
 
 .picture {
     width: 15%;

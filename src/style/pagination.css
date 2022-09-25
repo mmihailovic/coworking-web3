@@ -19,7 +19,7 @@
 
 .pageNumbers li{
     
-    width: 100%;
+    width: 9%;
     height: 100%;
 }
 
@@ -41,33 +41,60 @@
     outline: none;
 }
 
+.leftArrow, .rightArrow {
+    transform: rotate(-180deg);
+}
+
 
 button.active{
     background-color: black;
     color: white;
     border: 2px solid #000000;
-    border-radius: 8px;
+    border-radius: 25%;
     font-family: 'Poppins';
     font-style: normal;
-    font-size: 25px;
-    line-height: 22px;
+    font-size: .75vw;
+    font-weight: bold;
+    line-height: 10%;   
     padding: auto;
-    height: 50px;
-    width: 50px;
+    height: 100%;
+    width: 90%;
 }
 
 .buttonNum{
     border: 2px solid #000000;
-    border-radius: 8px;
+    border-radius: 25%;
     font-family: 'Poppins';
     font-style: normal;
-    font-size: 25px;
-    line-height: 22px;
-    height: 50px;
-    width: 50px;
+    font-size: .75vw;
+    line-height: 10%;
+    height: 100%;
+    width: 90%;
+    font-weight: bold;
+}
+.buttonNum:hover {
+    background-color: #FAE6E9;;
+    border: 2px solid black;
+    border-radius: 8px;
 }
 
 .buttonNextPrev{
-    height: 50px;
-    width: 50px;
+    height: 10%;
+    width: 10%;
+}
+
+#prev {
+    position: absolute;
+    left:3.5%;
+    top:9%;
+    width: 1%;
+    height: 1%;
+}
+#next {
+    position: relative;
+    left:-30%;
+    width: 1%;
+    height: 1%;
+    top:8%;
+    background-color: transparent;
 }

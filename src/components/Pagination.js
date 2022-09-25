@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import '../style/pagination.css'
 import Card from './Card'
+import grayArrow from '../assets/grayArrow.svg';
+import blackArrow from '../assets/blackArrow.svg';
 
 const Pagination = (props) => {
 
@@ -55,20 +57,22 @@ const Pagination = (props) => {
               cardSliceArray.map((item) => {
                 return (
                     <div >
-                        <Card key={item.id} card = {item}/> 
+                        <Card key={item.id} card = {item} redeemd={props.redeemed} expired={props.expired}/> 
                     </div>
                 );
                 })}
             </div>
-            <ul className="pageNumbers"> 
-               <li>
-                   {numOfPages>0?<button className='buttonNextPrev' onClick={handlePrevClick} disabled={currentPage === pages[0]}>&lt;</button>:null}
-               </li>
-                {pageNumbers}
+            <div style={{position:"absolute",left:"81%", top:"95%", width:"100%", height:"4.5%"}}>
+                <ul className="pageNumbers">
                 <li>
-                   {numOfPages>0?<button className='buttonNextPrev' onClick={handleNextClick} disabled={currentPage === numOfPages}>&gt;</button>:null}
-               </li>
-            </ul>
+                    {numOfPages>0?<button className='buttonNextPrev' id="prev" onClick={handlePrevClick} disabled={currentPage === pages[0]}><img className={currentPage === pages[0]?null:"leftArrow"} src={currentPage === pages[0]?grayArrow:blackArrow}/></button>:null}
+                </li>
+                    {pageNumbers}
+                    <li>
+                    {numOfPages>0?<button className='buttonNextPrev' id = "next" onClick={handleNextClick} disabled={currentPage === numOfPages}><img className={currentPage === numOfPages?"rightArrow":null} src={currentPage === numOfPages?grayArrow:blackArrow}/></button>:null}
+                </li>
+                </ul>
+            </div>
         </div>
     )
 }

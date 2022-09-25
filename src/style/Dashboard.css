@@ -14,9 +14,12 @@
     margin-right: auto;
     font-size: 1vw;
 }
+#btn1, #btn2 {
+    display: flex;
+    font-family: 'Roboto Mono';
+}
 button{
     background: #FFFFFF;
-    display: flex;
     align-items: center;
     
     border:  white;
@@ -40,19 +43,21 @@ button{
     top:20%;
     left:10%;   
 }
-button:hover {
+#btn1:hover, #btn2:hover {
     background-color: #FAE6E9;;
     border: 2px solid black;
     border-radius: 8px;
     
   }
 #img1{
-    margin: 15%;
+    margin-left: 10%;
+    margin-right: 5%;
     width:12.5%;
     height: 100%;
 }
 #img2{
-    margin: 15%;
+    margin-left: 10%;
+    margin-right: 5%;
     width:12.5%;
     height: 100%;
 }

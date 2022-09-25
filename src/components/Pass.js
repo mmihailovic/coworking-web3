@@ -2,7 +2,7 @@ import { use } from 'chai';
 import React, {useEffect, useState} from 'react'
 import Pagination from './Pagination';
 
-const PassengersList = ({listaKarata})=>{
+const PassengersList = ({listaKarata, available, redeemed, expired})=>{
   const [passengersData, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
@@ -10,7 +10,7 @@ const PassengersList = ({listaKarata})=>{
   const [numOfPages , setnumOfPages]=useState(10);
   const [numOfButtons,setNumOfButtons]=useState(0);
   
-  useEffect(()=>{setData(listaKarata); setnumOfPages(Math.ceil(listaKarata.length/2)); setMaxPageLimit(Math.min(5,Math.ceil(listaKarata.length/2))); setNumOfButtons(Math.min(5,Math.ceil(listaKarata.length/2)))},[listaKarata]);
+  useEffect(()=>{setData(listaKarata); setnumOfPages(Math.ceil(listaKarata.length/2)); setCurrentPage(1); setMinPageLimit(0); setMaxPageLimit(Math.min(5,Math.ceil(listaKarata.length/2))); setNumOfButtons(Math.min(5,Math.ceil(listaKarata.length/2)));},[listaKarata]);
   
   const onPageChange= (pageNumber)=>{
     
@@ -87,6 +87,9 @@ const PassengersList = ({listaKarata})=>{
                           onPrevClick={onPrevClick} 
                           onNextClick={onNextClick}
                           onPageChange={onPageChange}
+                          available={available}
+                          redeemed={redeemed}
+                          expired={expired}
                           />
         
         

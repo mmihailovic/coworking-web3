@@ -136,7 +136,7 @@ const Mainpage = ({ accountAddress }) => {
     for (let i = 0; i < hash.length; i++) {
       tmpArr.push({
         id: parseInt(i + 1),
-        expirationDate: new Date(expirationDates[i] * 1000).toLocaleDateString(),
+        expirationDate: new Date(expirationDates[i] * 1000).toLocaleDateString('en-GB'),
         hash: (hash[i]),
         email: (email[i])
       })
@@ -380,7 +380,7 @@ const Mainpage = ({ accountAddress }) => {
             <div style={{position:"relative", width:"23%", height:"85%"}}>
               <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
             </div>
-            {myBool?null:<Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
+            {myBool?null:<Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} available = {available} redeemed = {redeemed} expired = {expired} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
           </div>
         </div>
         {/* <div className='leftDiv'>

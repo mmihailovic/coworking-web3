@@ -14,15 +14,11 @@ import mapMarker from "../assets/map-marker.svg"
 import calendarIcon from "../assets/calendar.svg"
 import userIcon from "../assets/user.svg"
 
-const Card = ({ card }) => {
+const Card = ({ card, redeemd, expired }) => {
 
   const [canEntry, setCanEntry] = useState(false);
   const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";
   const dateParts = (card.expirationDate).split("/");
-  //const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-
-  let redeemd = false;
-  let expired = false;
 
   return (
     <div className={`${!expired ? 'primary_container' : 'primary_container_expired'}`}>
@@ -42,11 +38,11 @@ const Card = ({ card }) => {
           </div>
           <div className="date_div">
             <img alt='calendar_icon' src={calendarIcon} className="icon" />
-            <p className="text2">Expires: 29/09/2022</p>
+            <p className="text2">Expires: {dateParts[0] + "." + dateParts[1] + "." + dateParts[2]}</p>
           </div>
           <div className="redeem_div">
             <img alt="user icon" src={userIcon} className="icon" />
-            {redeemd ? <p className='text2'>Petar Petrovic</p> : <div id="available_div"><p className="text2">Available</p></div>}
+            {redeemd ? <p className='text2'>{card.email}</p> : <div id="available_div"><p className="text2">Available</p></div>}
             {redeemd ? <div className="copy_mail_div">
               <p className="text3">Copy email</p>
             </div> : <></>}
