@@ -13,6 +13,7 @@ import QRcode from "../assets/qrcode.png"
 import mapMarker from "../assets/map-marker.svg"
 import calendarIcon from "../assets/calendar.svg"
 import userIcon from "../assets/user.svg"
+import { QRCodeSVG } from 'qrcode.react';
 
 const Card = ({ card, redeemd, expired }) => {
 
@@ -33,7 +34,9 @@ const Card = ({ card, redeemd, expired }) => {
             {redeemd ? <></> : <button type="button" className="redeem_btn">Redeem</button>}
           </div>
           <div className="address_div">
-            <img alt='map_marker' src={mapMarker} className="icon" />
+            {/* <img alt='map_marker' src={mapMarker} className="icon" /> */}
+            {/* <div className='imgDiv'></div> */}
+            <svg alt='map_marker' src={mapMarker} className="icon" />
             <p className="text2">Masarikova 5, Beograd</p>
           </div>
           <div className="date_div">
@@ -54,7 +57,17 @@ const Card = ({ card, redeemd, expired }) => {
           <div className={`${!expired ? 'circle_div_down' : 'circle_div_down_expired'}`}></div>
         </div>
         <div className="right">
-          <img className="QRcode" src={QRcode} alt="QRcode" />
+          {/* <img className="QRcode" src={QRcode} alt="QRcode" /> */}
+          {/* <div style={{ height: "auto", maxWidth: "80%", width: "80%", backgroundColor: "red" }}>
+            
+          </div> */}
+          {/* <QRCode value={card.hash} className="QRcode" /> */}
+
+          <QRCodeSVG
+            value={card.hash}
+            className="QRcode"
+          />
+
         </div>
       </div>
     </div>

@@ -1,15 +1,18 @@
-.main{
-    display: flex;
+.main {
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center; */
+
+    width: 100%;
+    height: 100%;
 }
 
-.mainData{
+.mainData {
     width: 100%;
     height: 50%;
 }
+
 .pageNumbers {
     list-style: none;
     display: flex;
@@ -17,36 +20,37 @@
     height: 100%;
 }
 
-.pageNumbers li{
-    
+.pageNumbers li {
+
     width: 9%;
     height: 100%;
 }
 
 
-.pageNumbers li.button{
+.pageNumbers li.button {
     background-color: transparent;
     border: none;
     color: white;
     font-size: 1.5rem;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.pageNumbers li.button:hover{
+.pageNumbers li.button:hover {
     background-color: white;
     color: black;
 }
 
-.pageNumbers li.button:focus{
+.pageNumbers li.button:focus {
     outline: none;
 }
 
-.leftArrow, .rightArrow {
+.leftArrow,
+.rightArrow {
     transform: rotate(-180deg);
 }
 
 
-button.active{
+button.active {
     background-color: black;
     color: white;
     border: 2px solid #000000;
@@ -55,13 +59,13 @@ button.active{
     font-style: normal;
     font-size: .75vw;
     font-weight: bold;
-    line-height: 10%;   
+    line-height: 10%;
     padding: auto;
     height: 100%;
     width: 90%;
 }
 
-.buttonNum{
+.buttonNum {
     border: 2px solid #000000;
     border-radius: 25%;
     font-family: 'Poppins';
@@ -72,29 +76,32 @@ button.active{
     width: 90%;
     font-weight: bold;
 }
+
 .buttonNum:hover {
-    background-color: #FAE6E9;;
+    background-color: #FAE6E9;
+    ;
     border: 2px solid black;
     border-radius: 8px;
 }
 
-.buttonNextPrev{
+.buttonNextPrev {
     height: 10%;
     width: 10%;
 }
 
 #prev {
     position: absolute;
-    left:3.5%;
-    top:9%;
+    left: 3.5%;
+    top: 9%;
     width: 1%;
     height: 1%;
 }
+
 #next {
     position: relative;
-    left:-30%;
+    left: -30%;
     width: 1%;
     height: 1%;
-    top:8%;
+    top: 8%;
     background-color: transparent;
 }

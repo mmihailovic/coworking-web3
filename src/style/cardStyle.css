@@ -1,8 +1,6 @@
 .primary_container {
     width: 90%;
     height: 30%;
-    max-width: fit-content;
-    min-height: 240px;
     background-color: #FAE6E9;
     padding: 2%;
     border-radius: 16px;
@@ -30,7 +28,7 @@
 .circle_div_up {
     position: relative;
     width: 100%;
-    height: 11%;
+    height: 13%;
     background-color: #FAE6E9;
     border-bottom-left-radius: 110px;
     border-bottom-right-radius: 110px;
@@ -41,7 +39,7 @@
 .circle_div_up_expired {
     position: relative;
     width: 100%;
-    height: 11%;
+    height: 13%;
     background-color: #CBD5E1;
     border-bottom-left-radius: 110px;
     border-bottom-right-radius: 110px;
@@ -51,7 +49,7 @@
 .circle_div_down {
     position: relative;
     width: 100%;
-    height: 11%;
+    height: 13%;
     background-color: #FAE6E9;
     border-top-left-radius: 110px;
     border-top-right-radius: 110px;
@@ -62,7 +60,7 @@
 .circle_div_down_expired {
     position: relative;
     width: 100%;
-    height: 11%;
+    height: 13%;
     background-color: #CBD5E1;
     border-top-left-radius: 110px;
     border-top-right-radius: 110px;
@@ -93,6 +91,8 @@
     border-bottom-right-radius: 16px;
     min-width: 30%;
     min-height: 100%;
+    max-width: 30%;
+    min-height: 100%;
     background-color: white;
     text-align: center;
     /* display: inline-block; */
@@ -100,7 +100,7 @@
 
 .dotted {
     border-left: 2px dashed #528990;
-    height: 78%;
+    height: 74%;
     margin-left: 47%;
 }
 
@@ -112,48 +112,47 @@
 }
 
 .QRcode {
-    margin-top: 15%;
-    width: 70%;
-    height: 70%;
+    margin-top: 10%;
+    width: 80%;
+    height: 80%;
 }
 
 .beo_spaces_div {
-    margin-top: 5%;
+    margin-top: 3%;
     margin-left: 5%;
     /* background-color: aquamarine; */
     display: flex;
     justify-content: space-between;
     height: 20%;
-    line-height: 40%;
     width: 92%;
     color: #0352C4;
 }
 
 .address_div {
-    margin-top: 3%;
-    height: 10%;
+    margin-top: 1%;
+    height: 19%;
     width: 92%;
     margin-left: 4%;
     display: flex;
-    line-height: 30%;
+    /* line-height: 70%; */
 }
 
 .date_div {
-    margin-top: 3%;
-    height: 10%;
+    margin-top: 1%;
+    height: 19%;
     width: 92%;
     margin-left: 4%;
     display: flex;
-    line-height: 30%;
+    /* line-height: 30%; */
 }
 
 .redeem_div {
-    margin-top: 3%;
-    height: 10%;
+    margin-top: 1%;
+    height: 19%;
     width: 92%;
     margin-left: 4%;
     display: flex;
-    line-height: 30%;
+    /* line-height: 30%; */
 }
 
 .redeem_btn {
@@ -172,46 +171,73 @@
 
 .text1 {
     font-family: 'Space Mono';
-    font-style: normal;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1.5vw;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .text2 {
     font-family: 'Roboto Mono';
     margin-left: 2%;
-    font-size: 12px;
+    font-size: 0.8vw;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .text3 {
     font-family: 'Space Mono';
     margin-left: 2%;
-    font-size: 12px;
+    font-size: 0.7vw;
     font-weight: bold;
     color: #528990;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.span {
+    height: 10%;
+    width: 10%;
+}
+
+.imgDiv {
+    height: 100%;
+    width: auto;
 }
 
 .icon {
-    margin-top: 1%;
-    height: 80%;
+    /* margin-top: 1%; */
+    /* font-size: 50px; */
+    /* background: url('../assets/map-marker.svg') no-repeat; */
+    /* margin-top: auto;
+    margin-bottom: auto; */
+    /* width: auto;
+    height: 80%; */
+    transform: scale(0.8);
 }
 
 .beo_space_second_div {
     display: flex;
     width: 40%;
+    height: 40%;
+    margin-left: 1%;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 #expired {
-    margin-top: 14%;
+    margin-top: auto;
+    margin-bottom: auto;
     color: white;
     font-family: "Roboto Mono";
-    font-size: 10px;
+    /* font-size: 10px; */
 }
 
 #expired_div {
-    height: 50%;
+    height: 80%;
     width: 70%;
-    margin-top: 7%;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: 10%;
     text-align: center;
     background-color: #E7AA6D;
@@ -219,10 +245,13 @@
 }
 
 #available_div {
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: 2.5%;
-    line-height: 10%;
+    /* line-height: 10%; */
     width: 20%;
-    text-align: center;
+    /* text-align: center; */
+    height: 50%;
     background-color: #0568FD;
     border-radius: 9px;
     color: white;
