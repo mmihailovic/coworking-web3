@@ -81,7 +81,7 @@ const PassengersList = ({listaKarata, available, redeemed, expired})=>{
   };
 
   return(
-    <div>
+    <div style={{width:"100%", height:"100%"}}>
         <Pagination {...paginationAttributes} 
                           listaKarata={listaKarata}
                           onPrevClick={onPrevClick} 

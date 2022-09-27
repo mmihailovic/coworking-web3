@@ -44,6 +44,11 @@ function App() {
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
       setAccountAddress(accounts[0]);
+      let avatar = await selectAvatar(accounts[0]);
+      if(!avatar) {
+        let x = Math.floor((Math.random() * 8) + 1);
+        insertAvatar(x);
+      }
       setAccountBalance(bal);
       setIsConnected(true);
       navigate('/main');

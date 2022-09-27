@@ -51,12 +51,12 @@ const Pagination = (props) => {
    
  );
     return (
-        <div className="main">
-            <div className="mainData">
+        <div className="main" style={{height:"100%", width:"100%"}}>
+            <div className="mainData" style={{height:"90%", width:"100%", marginTop:"3%"}}>
               {
               cardSliceArray.map((item) => {
                 return (
-                    <div >
+                    <div style={{height:"46%", width:"100%", marginBottom:"2%"}}>
                         <Card key={item.id} card = {item} redeemd={props.redeemed} expired={props.expired}/> 
                     </div>
                 );

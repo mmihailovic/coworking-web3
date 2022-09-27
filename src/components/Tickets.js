@@ -50,14 +50,14 @@ const Tickets = ({cards,available, redeemed, expired, setAvailableCards,setRedee
     });
   return (
     <div style={{position:"absolute", width:"90%", top:"2%", left:"25%", width:"65%", height:"100%"}}>
-          <div style={{position:"relative", height:"70%", top:"2%", height:"10%"}}>
+          <div style={{position:"relative",top:"2%", height:"10%"}}>
             
             <p id="tickets">My tickets</p>
             <p style={{width:"5.5vw"}} id="available" onClick={availableClick} className="menuItem active">Available</p>
             <p className="menuItem"style={{width:"5vw"}}id="redeemed" onClick={redeemedClick}>Redeemed</p>
             <p className="menuItem"style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</p>
           </div>
-        <div style={{height:"60%", width:"100%" }}>
+        <div style={{position:"absolute",height:"90%", width:"100%"}}>
           <PassengersList listaKarata={cards} available = {available} redeemed = {redeemed} expired = {expired} />
         </div>
     </div>

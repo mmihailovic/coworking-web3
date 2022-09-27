@@ -36,7 +36,7 @@ const Card = ({ card, redeemd, expired }) => {
           <div className="address_div">
             {/* <img alt='map_marker' src={mapMarker} className="icon" /> */}
             {/* <div className='imgDiv'></div> */}
-            <svg alt='map_marker' src={mapMarker} className="icon" />
+            <img alt='map_marker' src={mapMarker} className="icon" />
             <p className="text2">Masarikova 5, Beograd</p>
           </div>
           <div className="date_div">
@@ -45,7 +45,7 @@ const Card = ({ card, redeemd, expired }) => {
           </div>
           <div className="redeem_div">
             <img alt="user icon" src={userIcon} className="icon" />
-            {redeemd ? <p className='text2'>{card.email}</p> : <div id="available_div"><p className="text2">Available</p></div>}
+            {card.email !== 'Not redeemed' ? <p className='text2'>{card.email}</p> : <div id="available_div"><p className="text2">Available</p></div>}
             {redeemd ? <div className="copy_mail_div">
               <p className="text3">Copy email</p>
             </div> : <></>}

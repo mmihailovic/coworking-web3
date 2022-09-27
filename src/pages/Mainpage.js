@@ -17,7 +17,7 @@ import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-import { selectEmailWeb2, insertTicketsWeb2 } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, /*selectAvatar*/ } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
@@ -205,7 +205,7 @@ const Mainpage = ({ accountAddress }) => {
         }
         setTickets(parseTickets(exDates, hashesOfAvailableTickets, emailsArr)); // available tickets
         setRedeemedTickets(parseTickets(exDatesOfRedeemedTickets, hashesOfRedeemedTickets, emailsArrOfRedeemedTickets));
-        setExpiredTickets(parseTickets(exDatesOfExpiredTickets,hashesOfExpiredTickets,emailOfExpiredTicket));
+        setExpiredTickets(parseTickets(exDatesOfExpiredTickets,hashesOfExpiredTickets,emailsArrOfExpiredTickets));
         setLoading(false);
 
       } catch (err) {
@@ -375,7 +375,7 @@ const Mainpage = ({ accountAddress }) => {
     <>
     {/* <div> */}
         <div className='mainDiv'>
-          <Header walletAddress={accountAddress}></Header>
+          <Header walletAddress={accountAddress} /*avatar = {"../assets/avatar" + selectAvatar(accountAddress) + ".svg"}*/></Header>
           <div style={{position:"relative", width:"100%", height:"80%", marginLeft:"2%", marginTop:"1%"}}>
             <div style={{position:"relative", width:"23%", height:"85%"}}>
               <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
@@ -454,9 +454,9 @@ const Mainpage = ({ accountAddress }) => {
             </div>
           </div>
           <Button variant="outline-dark" id="rentBtn" style={{ backgroundColor: "black", color: "#8b98ff" }} onClick={rentPlaces}>Rent</Button>
-        </div> */}
+  </div>
 
-        {/* <div className='rightDiv'>
+          <div className='rightDiv'>
           <p>Mainpage</p>
           <Cards cards={tickets}></Cards>
         </div> */}
