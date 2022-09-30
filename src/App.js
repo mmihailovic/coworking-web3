@@ -6,6 +6,7 @@ import './App.css';
 import Mainpage from './pages/Mainpage';
 import React from 'react';
 import LoginPage from './pages/LoginPage';
+import { selectUser , insertUser} from './web2communication';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [accountBalance, setAccountBalance] = useState('');
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [avatar,setAvatar] = useState("");
   const { ethereum } = window;
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -44,10 +46,12 @@ function App() {
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
       setAccountAddress(accounts[0]);
-      let avatar = await selectAvatar(accounts[0]);
-      if(!avatar) {
+      let myAvatar = await selectUser(accounts[0]);
+      setAvatar(myAvatar);
+      if(myAvatar == "user not existing") {
         let x = Math.floor((Math.random() * 8) + 1);
-        insertAvatar(x);
+        insertUser(accounts[0], "avatar"+x+".svg");
+        setAvatar("avatar"+x+".svg");
       }
       setAccountBalance(bal);
       setIsConnected(true);
@@ -83,7 +87,7 @@ function App() {
       <div className="App">
           <Routes>
             <Route exac path="/" element={haveMetamask?<LoginPage onClick={ConnectWallet}/>:<p>Please install Metamask!</p>} />
-            <Route path="/main" element={<Mainpage accountAddress={accountAddress}/>} />
+            <Route path="/main" element={<Mainpage accountAddress={accountAddress} userAvatar = {avatar}/>} />
           </Routes>
         
       </div>

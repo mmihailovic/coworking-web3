@@ -17,7 +17,7 @@ import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-import { selectEmailWeb2, insertTicketsWeb2, /*selectAvatar*/ } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, selectUser } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
@@ -25,7 +25,7 @@ import Dashboard from '../components/Dashboard';
 
 
 
-const Mainpage = ({ accountAddress }) => {
+const Mainpage = ({ accountAddress, userAvatar}) => {
 
   const [beoTokenBalance, setBeoTokenBalance] = useState();
   const [stakedTokens, setStakedTokens] = useState(0);
@@ -47,6 +47,7 @@ const Mainpage = ({ accountAddress }) => {
   const [expired,setExpired] = useState(false);
   const [myBool,setMyBool] = useState(false);
   const [first,setFirst] = useState(true);
+  const [avatar,setAvatar] = useState(userAvatar);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -232,11 +233,19 @@ const Mainpage = ({ accountAddress }) => {
       }
     }
   }
+  async function loadAvatar() {
+    const accounts = await window.ethereum.request({
+      method: "eth_accounts",
+    });
+    let myAvatar = await selectUser(accounts[0]);
+    setAvatar(myAvatar);  
+  }
 
   useEffect(() => {
     getTokenBalance();
     GetStakingBalance();
     getRentInfo();
+    if(!avatar)loadAvatar();
   }, [])
 
   useEffect(() => {
@@ -375,7 +384,7 @@ const Mainpage = ({ accountAddress }) => {
     <>
     {/* <div> */}
         <div className='mainDiv'>
-          <Header walletAddress={accountAddress} /*avatar = {"../assets/avatar" + selectAvatar(accountAddress) + ".svg"}*/></Header>
+          <Header walletAddress={accountAddress} avatar = {avatar}></Header>
           <div style={{position:"relative", width:"100%", height:"80%", marginLeft:"2%", marginTop:"1%"}}>
             <div style={{position:"relative", width:"23%", height:"85%"}}>
               <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>

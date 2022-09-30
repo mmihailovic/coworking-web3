@@ -62,7 +62,7 @@ button.active {
     line-height: 10%;
     padding: auto;
     height: 100%;
-    width: 90%;
+    width: 85%;
 }
 
 .buttonNum {
@@ -73,7 +73,7 @@ button.active {
     font-size: .75vw;
     line-height: 10%;
     height: 100%;
-    width: 90%;
+    width: 85%;
     font-weight: bold;
 }
 
@@ -92,7 +92,7 @@ button.active {
 #prev {
     position: absolute;
     left: 3.5%;
-    top: 9%;
+    top: 0%;
     width: 1%;
     height: 1%;
 }
@@ -102,6 +102,6 @@ button.active {
     left: -30%;
     width: 1%;
     height: 1%;
-    top: 8%;
+    /* top: 8%; */
     background-color: transparent;
 }

@@ -1,31 +1,21 @@
 #beoseats {
     position: absolute;
-    left: 4.1%;
+    left: 2%;
     top: 28%;
     width: 14%;
     height: 44%;
 }
 
-#blueCircle {
-    height: 50%;
-    width: 3.01%;
-    background-color: #0568FD;
-    border-radius: 50%;
-    display: inline-block;
-    position: absolute;
-    top: 28.5%;
-    left:78%;
-    bottom: 0%;
-}
-
 #whiteCircle {
     position: absolute;
     right: 23.31%;
-    top: 24.9%;
-    left:77.8%;
+    top: 23%;
+    left:77.685%;
     bottom: 0%;
-    height: 57%;
-    width: 3.44%;
+    /* height: 58%; */
+    height:59px;
+    width: 59px;
+    /* width: 3.35%; */
     border: 2px solid #FFFFFF;
     border-radius: 50%;
     display: inline-block;
@@ -45,7 +35,7 @@
     position: absolute;
     width: 10.8%;
     top: 43%;
-    left:83%;
+    left:83.8%;
     
     font-family: 'Space Mono';
     font-style: normal;
