@@ -24,7 +24,7 @@ import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
 
 let socket;
-const CONNECTION_PORT = "localhost:3002/";
+const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
 
 
 const Mainpage = ({ accountAddress, userAvatar}) => {
@@ -60,7 +60,7 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
   }, []);
 
   useEffect(() => {
-    socket = io(CONNECTION_PORT);
+    socket = io(CONNECTION_PORT,{path: '/api/socket.io'});
     socket.emit("user_connected", "mihailjovanoski14@gmail.com");
     socket.on("card_received", (data) => {
       console.log(data);
