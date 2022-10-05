@@ -3,7 +3,7 @@ import React,{useEffect, useState} from "react";
 import Cards from "./Cards";
 import PassengersList from './Pass';
 
-const Tickets = ({cards,available, redeemed, expired, setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
+const Tickets = ({ onCardClick,cards,available, redeemed, expired, setAvailableCards,setRedeemedCards,setExpiredCards,first,setFirst}) => {
   useEffect(() => {
     document.getElementById("available").click();
     setFirst(false);
@@ -58,7 +58,7 @@ const Tickets = ({cards,available, redeemed, expired, setAvailableCards,setRedee
             <p className="menuItem"style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</p>
           </div>
         <div style={{position:"absolute",height:"90%", width:"100%"}}>
-          <PassengersList listaKarata={cards} available = {available} redeemed = {redeemed} expired = {expired} />
+          <PassengersList onCardClick={onCardClick} listaKarata={cards} available = {available} redeemed = {redeemed} expired = {expired} />
         </div>
     </div>
   )

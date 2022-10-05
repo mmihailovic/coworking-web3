@@ -7,7 +7,10 @@ import Mainpage from './pages/Mainpage';
 import React from 'react';
 import LoginPage from './pages/LoginPage';
 import { selectUser , insertUser} from './web2communication';
+// import io from "socket.io-client";
 
+// let socket;
+// const CONNECTION_PORT = "localhost:3002/";
 
 function App() {
 
@@ -21,6 +24,16 @@ function App() {
   // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   socket = io(CONNECTION_PORT);
+  // }, [CONNECTION_PORT])
+
+  // useEffect(() => {
+  //  socket.on("hello from server", (data) => {
+  //     console.log("GDE SI PROKIC");
+  //  })
+  // })
 
   useEffect(() => {
     const { ethereum } = window;
@@ -76,9 +89,9 @@ function App() {
           }).then((balance) => {
             console.log("Already connected!")
             setAccountBalance(balance);
+            setIsConnected(true);
+            navigate("/main");
         });
-        setIsConnected(true);
-        navigate("/main");
       }
     }
   }

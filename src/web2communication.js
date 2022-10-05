@@ -57,3 +57,16 @@ export async function insertUser(wallet_address, avatar) {
     body: JSON.stringify({ wallet_address, avatar }),
   })
 }
+
+export async function shareTicketWeb2(hash, email) {
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/shareTicket", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({hash,email}),
+  })
+  .then(response => {
+    return response.status;
+  });
+}

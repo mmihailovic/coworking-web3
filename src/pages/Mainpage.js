@@ -17,12 +17,14 @@ import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-import { selectEmailWeb2, insertTicketsWeb2, selectUser } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, selectUser,shareTicketWeb2 } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
+import io from "socket.io-client";
 
-
+let socket;
+const CONNECTION_PORT = "localhost:3002/";
 
 
 const Mainpage = ({ accountAddress, userAvatar}) => {
@@ -56,6 +58,25 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
       else navigate('/', { replace: true });
     });
   }, []);
+
+  useEffect(() => {
+    socket = io(CONNECTION_PORT);
+    socket.emit("user_connected", "mihailjovanoski14@gmail.com");
+    socket.on("card_received", (data) => {
+      console.log(data);
+   })
+  }, [CONNECTION_PORT])
+
+  async function shareTicket(hash, email) {
+    let request = await shareTicketWeb2(hash,email);
+    if(request == 201){
+      let data = {
+        email: email,
+        hash : hash,
+      }
+      socket.emit("shared_ticket", (data));
+    }
+  }
 
   useEffect(()=>{
     if(!myBool)
@@ -389,7 +410,7 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
             <div style={{position:"relative", width:"23%", height:"85%"}}>
               <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
             </div>
-            {myBool?null:<Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} available = {available} redeemed = {redeemed} expired = {expired} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
+            {myBool?null:<Tickets onCardClick={shareTicket} cards={available?tickets:redeemed?redeemedTickets:expiredTickets} available = {available} redeemed = {redeemed} expired = {expired} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
           </div>
         </div>
         {/* <div className='leftDiv'>

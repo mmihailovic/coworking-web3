@@ -15,7 +15,7 @@ import calendarIcon from "../assets/calendar.svg"
 import userIcon from "../assets/user.svg"
 import { QRCodeSVG } from 'qrcode.react';
 
-const Card = ({ card, redeemd, expired }) => {
+const Card = ({ card, redeemd, expired, onCardClick }) => {
 
   const [canEntry, setCanEntry] = useState(false);
   const rentAddres = "0x0d39e38d03067BD1e902FfB845A5Ef38606d1bB0";
@@ -31,7 +31,7 @@ const Card = ({ card, redeemd, expired }) => {
               <p className={`${!expired ? 'text1' : 'text1-dark'}`}>BeoSeats</p>
               {expired ? <div id="expired_div"><p className='text3' id="expired"> Expired </p></div> : <></>}
             </div>
-            {redeemd ? <></> : <button type="button" className="redeem_btn">Redeem</button>}
+            {false ? <></> : <button type="button" onClick={() => onCardClick(card.hash, "mihailjovanoski14@gmail.com")} className="redeem_btn">Redeem</button>}
           </div>
           <div className="address_div">
             {/* <img alt='map_marker' src={mapMarker} className="icon" /> */}
