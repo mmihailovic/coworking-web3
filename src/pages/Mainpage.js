@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Cards from '../components/Cards';
 import Stat from '../components/Stat';
 import { useState } from 'react';
@@ -21,6 +21,7 @@ import { selectEmailWeb2, insertTicketsWeb2, selectUser } from '../web2communica
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
+import { UserContext } from '../context/userContext';
 
 
 
@@ -48,12 +49,13 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
   const [myBool,setMyBool] = useState(false);
   const [first,setFirst] = useState(true);
   const [avatar,setAvatar] = useState(userAvatar);
+  const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.ethereum.on("accountsChanged", accounts => {
       if (accounts[0] === accountAddress);
-      else navigate('/', { replace: true });
+      else navigate('/login', { replace: true });
     });
   }, []);
 

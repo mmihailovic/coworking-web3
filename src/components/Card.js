@@ -28,7 +28,7 @@ const Card = ({ card, redeemd, expired }) => {
         <div className="left">
           <div className="beo_spaces_div">
             <div className='beo_space_second_div'>
-              <p className={`${!expired ? 'text1' : 'text1-dark'}`}>BeoSeats</p>
+              <p className={`${!expired ? 'text1' : 'text1-dark'}`}>BeoDesks</p>
               {expired ? <div id="expired_div"><p className='text3' id="expired"> Expired </p></div> : <></>}
             </div>
             {redeemd ? <></> : <button type="button" className="redeem_btn">Redeem</button>}

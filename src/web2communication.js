@@ -30,7 +30,7 @@ export async function selectEmailWeb2(hash) {
 }
 
 export async function selectUser(wallet_address) {
-  return fetch("https://coworking-khuti.ondigitalocean.app/api/selectUser", {
+  return fetch(process.env.REACT_APP_selectUser, {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json',
