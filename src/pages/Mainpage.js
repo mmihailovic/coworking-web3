@@ -68,11 +68,14 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   }, [CONNECTION_PORT])
 
   async function shareTicket(hash, email) {
-    let request = await shareTicketWeb2(hash, email);
+
+    let receiver_email = "mihailjovanoski14@gmail.com"
+
+    let request = await shareTicketWeb2(hash, receiver_email);
     if (request == 201) {
       let data = {
         sender_email: "aleksa.prokic888@gmail.com",
-        receiver_email: "mihailjovanoski14@gmail.com",
+        receiver_email: receiver_email,
         hash: hash,
       }
       socket.emit("shared_ticket", (data));
