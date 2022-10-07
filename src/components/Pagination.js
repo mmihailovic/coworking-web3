@@ -63,6 +63,7 @@ const Pagination = (props) => {
                 })}
             </div>
             <div style={{position:"absolute",left:"81%", top:"95%", width:"100%", height:"4.5%"}}>
+                {totalCards > 2?
                 <ul className="pageNumbers">
                 <li>
                     {numOfPages>0?<button className='buttonNextPrev' id="prev" onClick={handlePrevClick} disabled={currentPage === pages[0]}><img className={currentPage === pages[0]?null:"leftArrow"} src={currentPage === pages[0]?grayArrow:blackArrow}/></button>:null}
@@ -71,7 +72,7 @@ const Pagination = (props) => {
                     <li>
                     {numOfPages>0?<button className='buttonNextPrev' id = "next" onClick={handleNextClick} disabled={currentPage === numOfPages}><img className={currentPage === numOfPages?"rightArrow":null} src={currentPage === numOfPages?grayArrow:blackArrow}/></button>:null}
                 </li>
-                </ul>
+                </ul>:null}
             </div>
         </div>
     )

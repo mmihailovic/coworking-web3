@@ -2,7 +2,7 @@
     position: absolute;
     width: 30%;
     height: 3.75%;
-    left: 0%;
+    left: 5%;
     top:0%;
 
     /* H2 */
@@ -91,6 +91,17 @@ ul {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     animation: appear 0.2s linear;
+}
+.menuItem:hover:not(.menuItem.active:hover)::after {
+    position: absolute;
+    content: "";
+    height: 20%;
+    width: 100%;
+    background-color: black;
+    left: 0%;
+    bottom: -50%;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 @keyframes appear {
     from {

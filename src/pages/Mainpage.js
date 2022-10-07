@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Cards from '../components/Cards';
 import Stat from '../components/Stat';
 import { useState } from 'react';
@@ -22,6 +22,7 @@ import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
+import { UserContext } from '../context/userContext';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -41,21 +42,22 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [stakingValue, setStakingValue] = useState(0);
   const [rentPlaceCount, setRentPlaceCount] = useState(0);
   const [rentPeriod, setRentPeriod] = useState(0);
-  const [showPopup, setShowPopup] = useState(false);
-  const [text, setText] = useState();
-  const [popupTitle, setpopupTitle] = useState();
-  const [available, setAvailable] = useState(true);
-  const [redeemed, setRedeemed] = useState(false);
-  const [expired, setExpired] = useState(false);
-  const [myBool, setMyBool] = useState(false);
-  const [first, setFirst] = useState(true);
-  const [avatar, setAvatar] = useState(userAvatar);
+  const [showPopup,setShowPopup] = useState(false);
+  const [text,setText] = useState();
+  const [popupTitle,setpopupTitle] = useState();
+  const [available,setAvailable] = useState(true);
+  const [redeemed,setRedeemed] = useState(false);
+  const [expired,setExpired] = useState(false);
+  const [myBool,setMyBool] = useState(false);
+  const [first,setFirst] = useState(true);
+  const [avatar,setAvatar] = useState(userAvatar);
+  const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.ethereum.on("accountsChanged", accounts => {
       if (accounts[0] === accountAddress);
-      else navigate('/', { replace: true });
+      else navigate('/login', { replace: true });
     });
   }, []);
 
