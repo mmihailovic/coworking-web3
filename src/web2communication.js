@@ -29,13 +29,13 @@ export async function selectEmailWeb2(hash) {
     });
 }
 
-export async function selectUser(wallet_address) {
+export async function selectUser(email) {
   return fetch(process.env.REACT_APP_selectUser, {
       method: 'POST',
       headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ wallet_address }),
+    body: JSON.stringify({ email }),
   })
     .then(response => {
       if (response.ok) {
@@ -47,14 +47,14 @@ export async function selectUser(wallet_address) {
     });
 }
 
-export async function insertUser(wallet_address, avatar) {
+export async function insertUser(email, avatar) {
 
   fetch(process.env.REACT_APP_insertUser, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ wallet_address, avatar }),
+    body: JSON.stringify({ email, avatar }),
   })
 }
 

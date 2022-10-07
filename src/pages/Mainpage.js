@@ -63,7 +63,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
   useEffect(() => {
     socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
-    socket.emit("user_connected", "aleksa.prokic888@gmail.com");
+    socket.emit("user_connected", email);
     socket.on("card_received", (data) => {
       console.log(data);
     })
@@ -76,7 +76,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     let request = await shareTicketWeb2(hash, receiver_email);
     if (request == 201) {
       let data = {
-        sender_email: "aleksa.prokic888@gmail.com",
+        sender_email: receiver_email,
         receiver_email: receiver_email,
         hash: hash,
       }
@@ -264,7 +264,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     const accounts = await window.ethereum.request({
       method: "eth_accounts",
     });
-    let myAvatar = await selectUser(accounts[0]);
+    let myAvatar = await selectUser(email);
     setAvatar(myAvatar);
   }
 

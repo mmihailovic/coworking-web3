@@ -51,11 +51,11 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
       setAccount(accounts[0]);
-      let myAvatar = await selectUser(accounts[0]);
+      let myAvatar = await selectUser(email);
       setUserAvatar(myAvatar);
       if(myAvatar == "user not existing") {
         let x = Math.floor((Math.random() * 8) + 1);
-        insertUser(accounts[0], "avatar"+x+".svg");
+        insertUser(email, "avatar"+x+".svg");
         setUserAvatar("avatar"+x+".svg");
       }
       setBalance(bal);
