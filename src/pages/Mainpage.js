@@ -417,7 +417,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
           </div>
-          {myBool ? <NotificationCenter></NotificationCenter> : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
+          {myBool ? <NotificationCenter email={email}></NotificationCenter> : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
         </div>
       </div>
       {/* <div className='leftDiv'>

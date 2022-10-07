@@ -1,3 +1,9 @@
+.notifications{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+}
 .notification_div {
     display: flex;
     width: 100%;
@@ -81,6 +87,11 @@
     text-align: right;
     color: #528990;
 }
+.view_ticket:hover{
+    cursor:pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
 
 .view_ticket_seen{
     font-family: 'Space Mono';
@@ -89,4 +100,6 @@
     font-size: 16px;
     text-align: right;
     color: #000000;
+    cursor:default;
+    pointer-events: none;
 }

@@ -71,3 +71,31 @@ export async function shareTicketWeb2(hash, email) {
       return response.status;
     });
 }
+
+export async function selectNotificationsWeb2(email) {
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/selectAllNotifacations", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(json => {
+          const ret = json;
+          return ret;
+        });
+      }
+    });
+}
+
+export async function viewTicketWeb2(notification_id){
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/updateNotification", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ notification_id }),
+  })
+}
