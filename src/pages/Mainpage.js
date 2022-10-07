@@ -23,6 +23,7 @@ import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
+import NotificationCenter from '../components/NotificationCenter';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -416,7 +417,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
           </div>
-          {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
+          {myBool ? <NotificationCenter></NotificationCenter> : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
         </div>
       </div>
       {/* <div className='leftDiv'>
