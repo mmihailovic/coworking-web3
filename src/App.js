@@ -12,7 +12,6 @@ import { UserContext } from './context/userContext';
 import { checkUser } from './service/magic';
 import Authenticate from './components/Authenticate';
 
-
 function App() {
 
   const [haveMetamask, sethaveMetamask] = useState(true);
@@ -31,6 +30,7 @@ function App() {
   useEffect(()=>{
     checkIfWalletIsConnected(setIsConnected);
   },[])
+  
   useEffect(() => {
     const validateUser = async () => {
       setLoading(true);

@@ -17,16 +17,18 @@ import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-import { selectEmailWeb2, insertTicketsWeb2, selectUser } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, selectUser, shareTicketWeb2 } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
+import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
 
+let socket;
+const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
+//const CONNECTION_PORT = "http://localhost:3002/";
 
-
-
-const Mainpage = ({ accountAddress, userAvatar}) => {
+const Mainpage = ({ accountAddress, userAvatar }) => {
 
   const [beoTokenBalance, setBeoTokenBalance] = useState();
   const [stakedTokens, setStakedTokens] = useState(0);
@@ -59,11 +61,34 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
     });
   }, []);
 
-  useEffect(()=>{
-    if(!myBool)
+  useEffect(() => {
+    socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
+    socket.emit("user_connected", "aleksa.prokic888@gmail.com");
+    socket.on("card_received", (data) => {
+      console.log(data);
+    })
+  }, [CONNECTION_PORT])
+
+  async function shareTicket(hash, email) {
+
+    let receiver_email = "mihailjovanoski14@gmail.com"
+
+    let request = await shareTicketWeb2(hash, receiver_email);
+    if (request == 201) {
+      let data = {
+        sender_email: "aleksa.prokic888@gmail.com",
+        receiver_email: receiver_email,
+        hash: hash,
+      }
+      socket.emit("shared_ticket", (data));
+    }
+  }
+
+  useEffect(() => {
+    if (!myBool)
       setFirst(true);
     else setFirst(false);
-  },[myBool])
+  }, [myBool])
 
   useEffect(() => {
     for (let i = 0; i < tickets.length; i++) {
@@ -177,8 +202,8 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
         for (let i = 0; i < hashes.length; i++) {
           var email = await selectEmailWeb2(hashes[i]);
           //emailsArr[i] = email === "no_hashes" ? "Not redeemed" : email;
-          if(email === "no_hashes") email = "Not redeemed";
-          if(email === "Not redeemed") {
+          if (email === "no_hashes") email = "Not redeemed";
+          if (email === "Not redeemed") {
             emailsArr.push(email);
             exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
             hashesOfAvailableTickets.push(hashes[i]);
@@ -191,9 +216,9 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
         }
 
         const exDatesOfExpiredTickets = [];
-        const hashesOfExpiredTickets = await rent.getUserHashOfExpiredTickets({from: accounts[0]});
-        for(let i = 0; i < hashesOfExpiredTickets.length; i++) {
-          exDatesOfExpiredTickets.push(BigNumber.from(await rent.getExpireDateOfExpiredTickets(i,{from:accounts[0]})));
+        const hashesOfExpiredTickets = await rent.getUserHashOfExpiredTickets({ from: accounts[0] });
+        for (let i = 0; i < hashesOfExpiredTickets.length; i++) {
+          exDatesOfExpiredTickets.push(BigNumber.from(await rent.getExpireDateOfExpiredTickets(i, { from: accounts[0] })));
         }
 
         let emailsArrOfExpiredTickets = [];
@@ -208,7 +233,7 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
         }
         setTickets(parseTickets(exDates, hashesOfAvailableTickets, emailsArr)); // available tickets
         setRedeemedTickets(parseTickets(exDatesOfRedeemedTickets, hashesOfRedeemedTickets, emailsArrOfRedeemedTickets));
-        setExpiredTickets(parseTickets(exDatesOfExpiredTickets,hashesOfExpiredTickets,emailsArrOfExpiredTickets));
+        setExpiredTickets(parseTickets(exDatesOfExpiredTickets, hashesOfExpiredTickets, emailsArrOfExpiredTickets));
         setLoading(false);
 
       } catch (err) {
@@ -240,14 +265,14 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
       method: "eth_accounts",
     });
     let myAvatar = await selectUser(accounts[0]);
-    setAvatar(myAvatar);  
+    setAvatar(myAvatar);
   }
 
   useEffect(() => {
     getTokenBalance();
     GetStakingBalance();
     getRentInfo();
-    if(!avatar)loadAvatar();
+    if (!avatar) loadAvatar();
   }, [])
 
   useEffect(() => {
@@ -384,17 +409,17 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
 
   return (
     <>
-    {/* <div> */}
-        <div className='mainDiv'>
-          <Header walletAddress={accountAddress} avatar = {avatar}></Header>
-          <div style={{position:"relative", width:"100%", height:"80%", marginLeft:"2%", marginTop:"1%"}}>
-            <div style={{position:"relative", width:"23%", height:"85%"}}>
-              <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
-            </div>
-            {myBool?null:<Tickets cards={available?tickets:redeemed?redeemedTickets:expiredTickets} available = {available} redeemed = {redeemed} expired = {expired} setAvailableCards = {setAvailable} setRedeemedCards = {setRedeemed} setExpiredCards = {setExpired} first={first} setFirst={setFirst}></Tickets>}
+      {/* <div> */}
+      <div className='mainDiv'>
+        <Header walletAddress={accountAddress} avatar={avatar}></Header>
+        <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
+          <div style={{ position: "relative", width: "23%", height: "85%" }}>
+            <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
           </div>
+          {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
         </div>
-        {/* <div className='leftDiv'>
+      </div>
+      {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />
             <div className='row statDiv'>
@@ -471,7 +496,7 @@ const Mainpage = ({ accountAddress, userAvatar}) => {
           <p>Mainpage</p>
           <Cards cards={tickets}></Cards>
         </div> */}
-     
+
     </>
   )
 }
