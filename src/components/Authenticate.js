@@ -8,29 +8,27 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { loginUser } from '../service/magic';
-
+import sideNavBar from '../assets/sidebarNav.svg';
+import '../style/authenticate.css';
+import Popup from './Popup';
 const Authenticate = ({logged}) => {
 
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState('');
-  const [error, setError] = useState(null);
+  const [showPopup,setShowPopup] = useState(false);
   const history = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
     if (!email) {
-      setLoading(false);
-      setError('Email is Invalid');
+      setShowPopup(false);
       return;
     }
     try {
+      setShowPopup(true);
       await loginUser(email);
-      setLoading(false);
       if(logged)history('/main');
       else history('/login');
       window.location.reload(false);
     } catch (error) {
-      setError('Unable to log in');
       console.error(error);
     }
   };
@@ -39,30 +37,30 @@ const Authenticate = ({logged}) => {
     console.log(event.target.value);
   };
   return (
-    <div className="w-50 p-5 mt-5 mx-auto">
-      <h1 className="h1 text-center">React Magic Form</h1>
-      <Form onSubmit={handleSubmit} className="p-2 my-5 mx-auto">
-        <FormGroup className="mt-3" controlId="formBasicEmail">
-          <FormLabel fontSize="sm">Enter Email Address</FormLabel>
+    <div>
+        <div>
+        <img src={sideNavBar}></img>
+        </div>
+        <div className='loginDiv'>
+            <p className='big'>Welcome back!</p>
+            <p className='small'>Authenticate with your email to use the app.</p>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup controlId="formBasicEmail">
+          <p className='emailLabel'>Email Address</p>
           <FormControl
             type="email"
             name="email"
             // id="email"
             value={email}
             onChange={handleChange}
-            placeholder="Email Address"
+            placeholder="Email"
+            className='emailInput'
           />
-          <p className="text-danger text-small">{error}</p>
         </FormGroup>
-        <Button
-          type="submit"
-          size="md"
-          className="d-block w-100"
-          variant="primary"
-        >
-          {loading ? 'Loading...' : 'Send'}
-        </Button>
+        <button type="submit" className='signButton'>Sign in</button>
+        <Popup trigger={showPopup} emailToShow={email} func={setShowPopup}></Popup>
       </Form>
+    </div>
     </div>
   );
 };

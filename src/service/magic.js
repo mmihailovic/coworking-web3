@@ -12,7 +12,7 @@ export const checkUser = async (cb) => {
   };
   
   export const loginUser = async (email) => {
-    await magic.auth.loginWithMagicLink({ email });
+    await magic.auth.loginWithMagicLink({ email, showUI:false });
   };
   
   export const logoutUser = async () => {

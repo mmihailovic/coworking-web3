@@ -55,9 +55,10 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if(email == null) navigate('/');
     window.ethereum.on("accountsChanged", accounts => {
       if (accounts[0] === accountAddress);
-      else navigate('/login', { replace: true });
+      else if(email != null)navigate('/login', { replace: true });
     });
   }, []);
 

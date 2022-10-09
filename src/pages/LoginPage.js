@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { UserContext } from '../context/userContext';
 import { logoutUser } from '../service/magic';
+import ConfirmPopup from '../components/ConfirmPopup';
 
 
 const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnected} ) => {
@@ -17,6 +18,8 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
   const [accountBalance, setAccountBalance] = useState('');
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [showConfirmPopup,setShowConfirmPopup] = useState(false);
+  const [avatar,setAvatar] = useState(null);
   const { ethereum } = window;
   const { email } = useContext(UserContext);
   const history = useNavigate();
@@ -28,6 +31,16 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
       console.error(error);
     }
   };
+  async function loadAvatar() {
+    let myAvatar = await selectUser(email);
+    if(myAvatar == "user not existing") {
+      let x = Math.floor((Math.random() * 8) + 1);
+      insertUser(email, "avatar"+x+".svg");
+      setAvatar("avatar"+x+".svg");
+      setShowConfirmPopup(true);
+    }
+    setAvatar(myAvatar);
+  }
   useEffect(() => {
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
@@ -38,6 +51,8 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
     };
     checkMetamaskAvailability();
     if(haveMetamask) checkIfWalletIsConnected(setConnected);
+    if(avatar == null)loadAvatar();
+    if(email == null) navigate('/');
   }, []);
   const ConnectWallet = async () => {
     try{
@@ -51,15 +66,9 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
       setAccount(accounts[0]);
-      let myAvatar = await selectUser(email);
-      setUserAvatar(myAvatar);
-      if(myAvatar == "user not existing") {
-        let x = Math.floor((Math.random() * 8) + 1);
-        insertUser(email, "avatar"+x+".svg");
-        setUserAvatar("avatar"+x+".svg");
-      }
       setBalance(bal);
       setConnected(true);
+      setShowConfirmPopup(false);
       navigate('/main');
     }catch (error){
       setConnected(false);
@@ -86,9 +95,10 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
     }
   }
   return (
-    <header className="App-header">  
-        <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
+    <>
+    {/* // <header className="App-header">   */}
+        {/* <div className="App-header"> */}
+            {/* <img src={logo} className="App-logo" alt="logo" /> */}
             <Button variant="light" size="lg" onClick={ConnectWallet}>
                     Connect
             </Button>
@@ -96,8 +106,11 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
               Sign Out
             </Button>
             <h1>{email}</h1>
-        </div>
-    </header> 
+        {/* </div> */}
+        <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={setShowConfirmPopup}></ConfirmPopup>
+        {avatar != null?<img src={ require('../assets/' + avatar)}></img>:null}
+        </>
+    // </header> 
   )
 }
 

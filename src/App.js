@@ -28,6 +28,8 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(()=>{
+    if(!ethereum)
+      sethaveMetamask(false);
     checkIfWalletIsConnected(setIsConnected);
   },[])
   

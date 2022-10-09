@@ -1,0 +1,58 @@
+.big {
+    font-family: 'Space Mono';
+    font-weight: bold;
+    font-size: 4em;
+    position: absolute;
+    top:37%;
+}
+.small {
+    font-family: 'Roboto Mono';
+    top:47%;
+    position: absolute;
+}
+.emailLabel {
+    font-family: 'Space Mono';
+    font-weight: bold;
+    color: #262338;
+    text-transform: uppercase;
+    position:absolute;
+    top:54%;
+}
+.emailInput {
+    background: url('../assets/mail-heart.svg') no-repeat scroll 10px 10px;
+    height: 5%;
+    width: 37%;
+    border: 2px solid #CBD5E1;
+    border-radius: 6px;
+    padding-left: 5%;
+    position:absolute;
+    top:57.5%;
+}
+.emailInput::placeholder{
+    font-family: 'Roboto Mono';
+    color: #93A4B7;
+}
+.signButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #0568FD;
+    border-radius: 6px;
+    width: 15%;
+    height: 5%;
+    color: white;
+    font-family: 'Space Mono';
+    font-weight: bold;
+    text-transform: uppercase;
+    position:absolute;
+    left:40%;
+    top:57.5%;
+}
+.loginDiv {
+    position:absolute;
+    left:50%;
+    top:0%;
+    width:50%;
+    height:100%;
+}
