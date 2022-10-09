@@ -11,7 +11,21 @@
     margin-top: 10px;
     border: 3px solid #528990;
     border-radius: 16px;
+    pointer-events: none;
 }
+
+.notification_div:hover{
+    border: 3px solid #000000;
+}
+
+.notification_div:hover .title{
+    color: black;
+}
+
+.notification_div:hover .message{
+    color: black;
+}
+
 .notification_div_seen {
     display: flex;
     width: 100%;
@@ -19,6 +33,12 @@
     margin-top: 10px;
     border: 3px solid #CBD5E1;
     border-radius: 16px;
+    pointer-events: none;
+}
+
+.notification_div_seen:hover{
+    border: 3px solid #000000;
+    color: red;
 }
 
 .main_div{
@@ -31,6 +51,8 @@
 }
 
 .icon_div{
+    margin-top: auto;
+    margin-bottom: auto;
     width: 10%;
 }
 
@@ -86,11 +108,12 @@
     font-size: 16px;
     text-align: right;
     color: #528990;
+    pointer-events: auto;
 }
 .view_ticket:hover{
     cursor:pointer;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
+    color: #A0BFC4;
+    pointer-events: auto;
 }
 
 .view_ticket_seen{
@@ -100,6 +123,6 @@
     font-size: 16px;
     text-align: right;
     color: #000000;
-    cursor:default;
-    pointer-events: none;
+    cursor:pointer;
+    pointer-events: auto;
 }
