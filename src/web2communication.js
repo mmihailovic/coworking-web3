@@ -31,8 +31,8 @@ export async function selectEmailWeb2(hash) {
 
 export async function selectUser(email) {
   return fetch(process.env.REACT_APP_selectUser, {
-      method: 'POST',
-      headers: {
+    method: 'POST',
+    headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email }),
@@ -69,6 +69,52 @@ export async function shareTicketWeb2(hash, email) {
     .then(response => {
       console.log(response.text());
       return response.status;
+    });
+}
+
+export async function numberOfUnreadNotificationWeb2(email, isReceived) {
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/numberOfUnreadNotification", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, isReceived }),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(json => {
+          const ret = json[0].result;
+          return ret;
+        });
+      }
+    });
+}
+
+export async function viewTicketWeb2(notification_id){
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/updateNotification", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ notification_id }),
+  })
+}
+
+export async function selectNotificationsWeb2(email) {
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/selectAllNotifacations", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(json => {
+          const ret = json;
+          return ret;
+        });
+      }
     });
 }
 export async function selectTickets(email) {

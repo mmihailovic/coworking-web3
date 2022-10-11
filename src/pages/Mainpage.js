@@ -17,13 +17,14 @@ import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
 
-import { selectEmailWeb2, insertTicketsWeb2, selectUser, shareTicketWeb2 } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, selectUser, shareTicketWeb2, numberOfUnreadNotificationWeb2 } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
-import {Route,Routes} from 'react-router-dom';
+import NotificationCenter from '../components/NotificationCenter';
+import { Route, Routes } from 'react-router-dom';
 import Wallet from '../components/Wallet';
 
 let socket;
@@ -44,22 +45,27 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [stakingValue, setStakingValue] = useState(0);
   const [rentPlaceCount, setRentPlaceCount] = useState(0);
   const [rentPeriod, setRentPeriod] = useState(0);
-  const [showPopup,setShowPopup] = useState(false);
-  const [text,setText] = useState();
-  const [popupTitle,setpopupTitle] = useState();
-  const [available,setAvailable] = useState(true);
-  const [redeemed,setRedeemed] = useState(false);
-  const [expired,setExpired] = useState(false);
-  const [first,setFirst] = useState(true);
-  const [avatar,setAvatar] = useState(userAvatar);
+  const [showPopup, setShowPopup] = useState(false);
+  const [text, setText] = useState();
+  const [popupTitle, setpopupTitle] = useState();
+  const [available, setAvailable] = useState(true);
+  const [redeemed, setRedeemed] = useState(false);
+  const [expired, setExpired] = useState(false);
+  const [first, setFirst] = useState(true);
+  const [avatar, setAvatar] = useState(userAvatar);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const [numberOfUnreadNotifications, setNumberOfUnreadNotifications] = useState();
+  const [numberOfReadNotifications, setNumberOfReadNotifications] = useState();
+  //var numberOfUnreadNotifications;
+  //var numberOfReadNotifications;
+
   useEffect(() => {
-    if(email == null) navigate('/');
+    if (email == null) navigate('/');
     window.ethereum.on("accountsChanged", accounts => {
       if (accounts[0] === accountAddress);
-      else if(email != null)navigate('/login/tickets', { replace: true });
+      else if (email != null) navigate('/login/tickets', { replace: true });
     });
   }, []);
 
@@ -67,6 +73,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
     socket.emit("user_connected", email);
     socket.on("card_received", (data) => {
+      loadNotificationInfo();
       console.log(data);
     })
   }, [CONNECTION_PORT])
@@ -85,6 +92,21 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       socket.emit("shared_ticket", (data));
     }
   }
+
+  async function loadNotificationInfo() {
+    //numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
+    //numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
+
+    setNumberOfUnreadNotifications(await numberOfUnreadNotificationWeb2(email, false));
+    setNumberOfReadNotifications(await numberOfUnreadNotificationWeb2(email, true));
+
+    console.log("read: " + numberOfReadNotifications);
+    console.log("unread: " + numberOfUnreadNotifications);
+  }
+
+  useEffect(() => {
+    loadNotificationInfo();
+  }, [])
 
   useEffect(() => {
     for (let i = 0; i < tickets.length; i++) {
@@ -407,16 +429,16 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     <>
       {/* <div> */}
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar}></Header>
+        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
-            <Dashboard web2={false}></Dashboard>
+            <Dashboard web2={false} unreadNotifications={numberOfUnreadNotifications}></Dashboard>
           </div>
           <Routes>
-          <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-          <Route path="notifications" element={<p>Notifications</p>} />
-          <Route path="wallet" element={<Wallet></Wallet>}></Route>
-        </Routes>
+            <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
+            <Route path="notifications" element={<NotificationCenter email={email}></NotificationCenter>} />
+            <Route path="wallet" element={<Wallet></Wallet>}></Route>
+          </Routes>
         </div>
       </div>
       {/* <div className='leftDiv'>
