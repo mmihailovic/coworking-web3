@@ -14,7 +14,7 @@
     margin-right: auto;
     font-size: 1vw;
 }
-#btn1, #btn2 {
+#btn1, #btn2, #btn3 {
     display: flex;
     font-family: 'Roboto Mono';
 }
@@ -43,7 +43,12 @@ button{
     top:20%;
     left:10%;   
 }
-#btn1:hover, #btn2:hover {
+#btn3Container {
+    position: absolute;
+    top:30%;
+    left:10%;
+}
+#btn1:hover, #btn2:hover, #btn3:hover {
     background-color: #FAE6E9;;
     border: 2px solid black;
     border-radius: 8px;
@@ -56,6 +61,12 @@ button{
     height: 100%;
 }
 #img2{
+    margin-left: 10%;
+    margin-right: 5%;
+    width:12.5%;
+    height: 100%;
+}
+#img3 {
     margin-left: 10%;
     margin-right: 5%;
     width:12.5%;

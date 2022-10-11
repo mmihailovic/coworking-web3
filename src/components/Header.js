@@ -21,7 +21,7 @@ const Header = ({walletAddress, avatar}) => {
     <div className="header">  
         <img src={logo} id="beoseats"></img>
         <span id="whiteCircle"></span>
-        {avatar.length > 0 && avatar !== 'user not existing'?<img src={ require('../assets/' + avatar)} style={{position:"absolute", left:"53.46%", top:"26.5%", width:"52%", height:"52%"}}></img>:null}
+        {avatar != null && avatar.length > 0 && avatar !== 'user not existing'?<img src={ require('../assets/' + avatar)} style={{position:"absolute", left:"53.46%", top:"26.5%", width:"52%", height:"52%"}}></img>:null}
         <p id="wallet">{walletAddress.substring(0,13) + "..."}</p>
         <img src={arrow} id="arrow"></img>
         <Button variant="primary" onClick={handleLogOut} style={{position:"absolute",width:"10%",height:"100%", left:"65%"}}>

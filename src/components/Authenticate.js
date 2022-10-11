@@ -34,7 +34,6 @@ const Authenticate = ({logged}) => {
   };
   const handleChange = (event) => {
     setEmail(event.target.value);
-    console.log(event.target.value);
   };
   return (
     <div>

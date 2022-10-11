@@ -4,10 +4,10 @@ import close from '../assets/Close.svg';
 function Popup({trigger, emailToShow, func}) {
   return (trigger)?(
     <div>
-        <div className="modal">
-            <div className="modal-content">
-                <div className="modal-body">
-                  <button onClick={()=>func(false)}><img src={close}id="closeBtn"></img></button>
+        <div className="popupmodal">
+            <div className="popupmodal-content">
+                <div className="modalpopup-body">
+                <button onClick={()=>func(false)}><img src={close}id="closeBtn"></img></button>
                   <p className="popupTitle">Check your email</p>
                   <ul className="popupText">
                     <li>We emailed a magic link to</li>

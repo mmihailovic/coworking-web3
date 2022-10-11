@@ -23,6 +23,8 @@ import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
+import {Route,Routes} from 'react-router-dom';
+import Wallet from '../components/Wallet';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -48,7 +50,6 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [available,setAvailable] = useState(true);
   const [redeemed,setRedeemed] = useState(false);
   const [expired,setExpired] = useState(false);
-  const [myBool,setMyBool] = useState(false);
   const [first,setFirst] = useState(true);
   const [avatar,setAvatar] = useState(userAvatar);
   const { email } = useContext(UserContext);
@@ -58,7 +59,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     if(email == null) navigate('/');
     window.ethereum.on("accountsChanged", accounts => {
       if (accounts[0] === accountAddress);
-      else if(email != null)navigate('/login', { replace: true });
+      else if(email != null)navigate('/login/tickets', { replace: true });
     });
   }, []);
 
@@ -84,12 +85,6 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       socket.emit("shared_ticket", (data));
     }
   }
-
-  useEffect(() => {
-    if (!myBool)
-      setFirst(true);
-    else setFirst(false);
-  }, [myBool])
 
   useEffect(() => {
     for (let i = 0; i < tickets.length; i++) {
@@ -412,12 +407,17 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     <>
       {/* <div> */}
       <div className='mainDiv'>
-        <Header walletAddress={accountAddress} avatar={avatar}></Header>
+        <Header walletAddress={email} avatar={avatar}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
-            <Dashboard bool={myBool} setmyBool={setMyBool}></Dashboard>
+            <Dashboard web2={false}></Dashboard>
           </div>
-          {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>}
+          {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
+          <Routes>
+          <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
+          <Route path="notifications" element={<p>Notifications</p>} />
+          <Route path="wallet" element={<Wallet></Wallet>}></Route>
+        </Routes>
         </div>
       </div>
       {/* <div className='leftDiv'>

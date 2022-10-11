@@ -13,7 +13,6 @@ import { checkUser } from './service/magic';
 import Authenticate from './components/Authenticate';
 
 function App() {
-
   const [haveMetamask, sethaveMetamask] = useState(true);
   const [accountAddress, setAccountAddress] = useState('');
   const [accountBalance, setAccountBalance] = useState('');
@@ -30,7 +29,7 @@ function App() {
   useEffect(()=>{
     if(!ethereum)
       sethaveMetamask(false);
-    checkIfWalletIsConnected(setIsConnected);
+    if(haveMetamask)checkIfWalletIsConnected(setIsConnected);
   },[])
   
   useEffect(() => {
@@ -40,8 +39,8 @@ function App() {
         await checkUser(setUser);
         setLoading(false);
         if(user.isLoggedIn){
-          if(isConnected == true)navigate('/main');
-          else navigate('/login');
+          if(isConnected == true)navigate('/main/tickets');
+          else navigate('/login/tickets');
         }
       } catch (error) {
         console.error(error);
@@ -103,7 +102,7 @@ function App() {
             console.log("Already connected!")
             setAccountBalance(balance);
             setIsConnected(true);
-            if(user.isLoggedIn)navigate("/main");
+            if(user.isLoggedIn)navigate("/main/tickets");
         });
       }
       else setIsConnected(false);
@@ -114,8 +113,8 @@ function App() {
     <UserContext.Provider value={user}>
         <Routes>
           <Route exact path="/" element={<Authenticate logged={isConnected}></Authenticate>} />
-          <Route exac path="/login" element={haveMetamask?<LoginPage setAccount = {setAccountAddress} setBalance = {setAccountBalance} setUserAvatar = {setAvatar} setConnected = {setIsConnected}/>:<p>Please install Metamask!</p>} />
-          <Route path="/main" element={<Mainpage accountAddress={accountAddress} userAvatar={avatar}/>}></Route>
+          <Route exac path="/login/*" element={<LoginPage setAccount = {setAccountAddress} setBalance = {setAccountBalance} setUserAvatar = {setAvatar} setConnected = {setIsConnected}/>} />
+          <Route path="/main/*" element={<Mainpage accountAddress={accountAddress} userAvatar={avatar}/>}></Route>
         </Routes>
      </UserContext.Provider> 
   //         <div className="App">
