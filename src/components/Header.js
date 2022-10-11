@@ -44,7 +44,7 @@ const Header = ({walletAddress, avatar}) => {
               <p id="count">2</p>
             </div>
         </div>
-        <NotificationCenterPopup></NotificationCenterPopup>
+        <NotificationCenterPopup show={notificationShow} email={email}></NotificationCenterPopup>
         {/* <div id="popup"className="notificationPopup" style={{display:"none"}}>
           <div className="polygon"></div>
           <div className="mainNotificationDiv">

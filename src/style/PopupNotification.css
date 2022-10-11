@@ -1,9 +1,17 @@
 .divMain{
     width: 320px;
-    height: 100px;
+    height: 90px;
     margin-top: 20px;
     background: #FFFFFF;
     border-bottom: 2px solid #0568FD;
+}
+
+.divMain_seen{
+    width: 320px;
+    height: 90px;
+    margin-top: 20px;
+    background: #FFFFFF;
+    border-bottom: 2px solid #CBD5E1;
 }
 
 .titleDiv{
@@ -29,13 +37,22 @@
     color: #0568FD;
 }
 
-.notif_message{
+.time_passed_seen{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
 
+    color: #528990;
+}
+
+.notif_message{
 
     font-family: 'Roboto Mono';
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 10px; /* treba 14px */
+    word-wrap: break-word;
 
     font-feature-settings: 'calt' off;
 
