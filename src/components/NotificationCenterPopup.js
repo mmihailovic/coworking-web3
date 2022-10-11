@@ -4,7 +4,7 @@ import PopupNotification from './PopupNotification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
 
-const NotificationCenterPopup = ({show, email}) => {
+const NotificationCenterPopup = ({show, email, numberOfUnreadNotifications}) => {
 
     const [notifications, setNotifications] = useState([]);
 
@@ -35,7 +35,7 @@ const NotificationCenterPopup = ({show, email}) => {
             <p className="notificationTitle">Notifications</p>
             
             <div className="statusDiv">
-                <p className="unread_count">2 unread</p>
+                {numberOfUnreadNotifications==0?<p></p>:<p className="unread_count">{numberOfUnreadNotifications} unread</p>}
                 <p className="markAllAsRead" onClick={markAllNotificationsAsRead}>Mark all as read</p>
             </div>
 

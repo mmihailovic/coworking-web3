@@ -139,7 +139,7 @@
     color:#A0BFC4;
 }
 
-#count_div{
+.count_div{
     position: absolute;
     width: 24px;
     height: 24px;
@@ -148,6 +148,17 @@
     background: #0568FD;
     border-radius: 6px;
     text-align: center;
+}
+.count_div_no_notif{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    right: 0;
+    background: #0568FD;
+    border-radius: 6px;
+    text-align: center;
+    display: none;
 }
 
 #count{

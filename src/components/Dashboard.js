@@ -45,7 +45,7 @@ function Dashboard({ web2, unreadNotifications }) {
     document.getElementById("img2").src = ticketGreen;
     document.getElementById("img3").src = wallet;
     if (web2) navigate('/login/notifications');
-    else navigate('main/notifications');
+    else navigate('/main/notifications');
   }
 
   function walletChange() {

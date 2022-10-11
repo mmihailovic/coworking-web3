@@ -14,7 +14,7 @@
     border-bottom: 2px solid #CBD5E1;
 }
 
-.titleDiv{
+.titleDivNot{
     display: flex;
     justify-content: space-between;
 }

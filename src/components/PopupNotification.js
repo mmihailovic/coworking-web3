@@ -20,7 +20,7 @@ const PopupNotification = ({notification}) => {
 
   return (
     <div className={`${!notification.received ? 'divMain' : 'divMain_seen'}`}>
-        <div className='titleDiv'>
+        <div className='titleDivNot'>
             <div>
                 <p className='title'>{notification.title}</p>
             </div>
