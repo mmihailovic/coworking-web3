@@ -21,6 +21,153 @@
     display: inline-block;
 }
 
+#notification{
+    position: absolute;
+    left:72%;
+    top: 23%;
+    /* height: 58%; */
+    height:69px;
+    width: 64px;
+    /* width: 3.35%; */
+    display: inline-block;
+}
+
+.notificationCirceWhite{
+    position: absolute;
+    left: 0%;
+    height:64px;
+    width: 64px;
+    /* width: 3.35%; */
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+}
+.notificationCirceBlue{
+    position: absolute;
+    left: 0%;
+    height:64px;
+    width: 64px;
+    /* width: 3.35%; */
+    border: 2px solid #0568FD;
+    border-radius: 50%;
+}
+
+.notificationPopup{
+    position: absolute;
+    width: 360px;
+    height: 485px;
+    left: calc(72% - 360px/2 + 32px);
+    top: 90px;
+    z-index: 1;
+}
+
+.polygon{
+    position: absolute;
+    width: 14.66px;
+    height: 7.51px;
+    left: calc(50% - 14.66px/2);
+    top: 0px;
+    border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid white;
+}
+
+.mainNotificationDiv{
+    position: absolute;
+    width: 360px;
+    height: 480px;
+    left: 0px;
+    top: 5px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow-y: scroll;
+
+}
+
+.notificationsDiv{
+    width: 320px;
+    height: 460px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.notificationTitle{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.statusDiv{
+    width: 320px;
+    height: 40px;
+    background: #FAE6E9;
+    border-radius: 9px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.unread_count{
+    width: 69px;
+    height: 16px;
+    margin-top: auto;
+    margin-left: 10px;
+    
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.markAllAsRead{
+
+    width: 138px;
+    height: 16px;
+    margin-top: auto;
+    margin-right: 10px;
+    
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: #528990;
+    cursor: pointer;
+}
+
+.markAllAsRead:hover{
+    color:#A0BFC4;
+}
+
+#count_div{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    right: 0;
+    background: #0568FD;
+    border-radius: 6px;
+    text-align: center;
+}
+
+#count{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 22px;
+    /* or 169% */
+
+    color: white;
+    letter-spacing: 0.25px;
+}
+
+#not_icon{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
 #arrow {
     position: absolute;
     left: 96%;

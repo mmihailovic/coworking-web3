@@ -23,6 +23,7 @@ import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
 import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
+import NotificationCenter from '../components/NotificationCenter';
 import { Route, Routes } from 'react-router-dom';
 import Wallet from '../components/Wallet';
 
@@ -436,7 +437,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<p>Notifications</p>} />
+            <Route path="notifications" element={<NotificationCenter email={email}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet></Wallet>}></Route>
           </Routes>
         </div>

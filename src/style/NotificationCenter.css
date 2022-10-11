@@ -1,0 +1,18 @@
+.markAll{
+
+    width: 157px;
+    height: 16px;
+    margin: auto;
+    margin-right: 0;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+
+    color: #528990;
+    cursor: pointer;
+}
+
+.markAll:hover{
+    color:#A0BFC4;
+}
