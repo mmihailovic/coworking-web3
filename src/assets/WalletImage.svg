@@ -1,0 +1,13 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="320" height="320" rx="160" fill="#FAE6E9"/>
+<rect x="88.6666" y="113.667" width="134.333" height="112.667" rx="10" fill="#CBD5E1" stroke="black" stroke-width="4"/>
+<rect x="168.667" y="152" width="69.3333" height="36" rx="4" fill="#CBD5E1" stroke="black" stroke-width="4"/>
+<path d="M173.333 128.333H203.333C206.095 128.333 208.333 130.572 208.333 133.333V138.333" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<path d="M156.667 128.333L161.667 128.333" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<path d="M103.333 153.333L103.333 206.667C103.333 209.428 105.572 211.667 108.333 211.667L123.333 211.667" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<path d="M131.667 211.667H138.333" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<path d="M208.333 200H220" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<path d="M191.667 200H198.333" stroke="black" stroke-width="4" stroke-linecap="round"/>
+<circle cx="186.667" cy="170" r="8" fill="#CBD5E1" stroke="black" stroke-width="4"/>
+<path d="M110.738 116.333L114.975 110.847C115.586 110.23 116.169 109.64 116.726 109.075C119.281 106.486 121.31 104.429 123.169 102.791C125.424 100.804 127.292 99.5617 129.321 98.8331C133.433 97.3568 138.692 97.7908 150.018 100.091C167.653 103.672 180.394 95.8876 187.518 88.267C188.189 87.5496 189.283 87.1813 190.366 87.3003C191.435 87.4176 192.177 87.958 192.477 88.6975L203.696 116.333H137.788H110.738Z" fill="#0568FD" stroke="black" stroke-width="4"/>
+</svg>

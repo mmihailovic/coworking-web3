@@ -1,28 +1,32 @@
-.container{
+.container {
     border: 2px solid #000000;
     border-radius: 16px;
     width: 21%;
     height: 120%;
-    font-size:120%;
+    font-size: 120%;
     position: relative;
 }
 
-.buttonContainer{
+.buttonContainer {
     height: 8%;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
     font-size: 1vw;
 }
-#btn1, #btn2 {
+
+#btn1,
+#btn2,
+#btn3 {
     display: flex;
     font-family: 'Roboto Mono';
 }
-button{
+
+button {
     background: #FFFFFF;
     align-items: center;
-    
-    border:  white;
+
+    border: white;
     font-family: 'Roboto Mono';
     font-weight: 500;
     font-size: 1em;
@@ -30,63 +34,86 @@ button{
     width: 100%;
     height: 100%;
     /* transition-duration: 0.4s;*/
-    
+
 }
 
 #btn1Container {
     position: absolute;
-    top:10%;
-    left:10%;
+    top: 10%;
+    left: 10%;
 }
+
 #btn2Container {
     position: absolute;
-    top:20%;
-    left:10%;   
+    top: 20%;
+    left: 10%;
 }
-#btn1:hover, #btn2:hover {
-    background-color: #FAE6E9;;
+
+#btn3Container {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+}
+
+#btn1:hover,
+#btn2Container:hover,
+#btn3:hover {
+    background-color: #FAE6E9;
+    ;
     border: 2px solid black;
     border-radius: 8px;
-    
-  }
-#img1{
-    margin-left: 10%;
-    margin-right: 5%;
-    width:12.5%;
-    height: 100%;
+
 }
-#img2{
+
+#img1 {
     margin-left: 10%;
     margin-right: 5%;
-    width:12.5%;
+    width: 12.5%;
     height: 100%;
 }
 
-.inactive{
+#img2 {
+    margin-left: 10%;
+    margin-right: 5%;
+    width: 12.5%;
+    height: 100%;
+}
+
+#img3 {
+    margin-left: 10%;
+    margin-right: 5%;
+    width: 12.5%;
+    height: 100%;
+}
+
+.inactive {
     background-color: white;
-    color:#528990 ;
-    border: 2px solid #528990;
-    border-radius: 8px;
-}
-.inactive:hover{
-    background-color: #FAE6E9;;
+    color: #528990;
     border: 2px solid #528990;
     border-radius: 8px;
 }
 
-.bottomDiv{
+.inactive:hover {
+    background-color: #FAE6E9;
+    ;
+    border: 2px solid #528990;
+    border-radius: 8px;
+}
+
+.bottomDiv {
     background-color: #528990;
     position: absolute;
     bottom: 5%;
     width: 88%;
     height: 18%;
-    left:6%;
+    left: 6%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 100%;
     border-radius: 16px;
 }
-#coworkingSpace{
+
+#coworkingSpace {
     font-family: 'Space Mono';
     font-style: normal;
     font-weight: 700;
@@ -97,11 +124,11 @@ button{
     padding-right: 18%;
     margin-bottom: -1%;
     position: absolute;
-    top:-5%;
+    top: -5%;
     left: 10%;
 }
 
-#dashboardPar{
+#dashboardPar {
     font-family: 'Space Mono';
     font-style: normal;
     font-weight: bold;
@@ -109,8 +136,32 @@ button{
     line-height: 160%;
     padding-left: 18%;
     padding-bottom: 13%;
-    color:black;   
+    color: black;
     position: absolute;
-    top:50%;
-    left:25%;
+    top: 50%;
+    left: 25%;
+}
+
+.notification {
+    background-color: #528990;
+    width: 10%;
+    height: 50%;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10%;
+}
+
+
+.notificationButtonContainer {
+    height: 8%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1vw;
+    display: flex;
+
+
 }

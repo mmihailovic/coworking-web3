@@ -8,6 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { UserContext } from '../context/userContext';
 import { logoutUser } from '../service/magic';
+import ConfirmPopup from '../components/ConfirmPopup';
+import Header from '../components/Header';
+import Dashboard from '../components/Dashboard';
+import Wallet from '../components/Wallet';
+import {Route, Routes} from 'react-router-dom';
+import Tickets from '../components/Tickets';
 
 
 const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnected} ) => {
@@ -17,6 +23,8 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
   const [accountBalance, setAccountBalance] = useState('');
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [showConfirmPopup,setShowConfirmPopup] = useState(false);
+  const [avatar,setAvatar] = useState(null);
   const { ethereum } = window;
   const { email } = useContext(UserContext);
   const history = useNavigate();
@@ -28,6 +36,19 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
       console.error(error);
     }
   };
+  async function generateAvatar() {
+    let x = Math.floor((Math.random() * 8) + 1);
+    insertUser(email, "avatar"+x+".svg");
+    setAvatar("avatar"+x+".svg");
+    setShowConfirmPopup(false);
+  }
+  async function loadAvatar() {
+    let myAvatar = await selectUser(email);
+    if(myAvatar == "user not existing") {
+      setShowConfirmPopup(true);
+    }
+    else setAvatar(myAvatar);
+  }
   useEffect(() => {
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
@@ -38,6 +59,10 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
     };
     checkMetamaskAvailability();
     if(haveMetamask) checkIfWalletIsConnected(setConnected);
+    if(avatar == null)loadAvatar();
+    if(email == null) {
+      navigate('/');
+    }
   }, []);
   const ConnectWallet = async () => {
     try{
@@ -50,17 +75,15 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
-      setAccount(accounts[0]);
-      let myAvatar = await selectUser(email);
-      setUserAvatar(myAvatar);
-      if(myAvatar == "user not existing") {
-        let x = Math.floor((Math.random() * 8) + 1);
-        insertUser(email, "avatar"+x+".svg");
-        setUserAvatar("avatar"+x+".svg");
+      if(avatar == null || avatar == "user not existing") {
+        console.log('nema avatar pri connect wallet');
+        generateAvatar();
       }
+      setAccount(accounts[0]);
       setBalance(bal);
       setConnected(true);
-      navigate('/main');
+      setShowConfirmPopup(false);
+      navigate('/main/tickets');
     }catch (error){
       setConnected(false);
     }
@@ -80,24 +103,41 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
             console.log("Already connected!")
             setBalance(balance);
             setConnected(true);
-            navigate("/main");
+            navigate("/main/tickets");
         });
       }
     }
   }
   return (
-    <header className="App-header">  
-        <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <Button variant="light" size="lg" onClick={ConnectWallet}>
+    <>
+    {/* // <header className="App-header">   */}
+        {/* <div className="App-header"> */}
+            {/* <img src={logo} className="App-logo" alt="logo" /> */}
+            {/* <Button variant="light" size="lg" onClick={ConnectWallet}>
                     Connect
             </Button>
             <Button variant="primary" onClick={handleLogOut}>
               Sign Out
             </Button>
-            <h1>{email}</h1>
+            <h1>{email}</h1> */}
+        {/* </div> */}
+        <div className='mainDiv'>
+        <Header walletAddress={email} avatar={avatar}></Header>
+        <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
+          <div style={{ position: "relative", width: "23%", height: "85%" }}>
+            <Dashboard web2={true}></Dashboard>
+          </div>
+          <Routes>
+          <Route path="tickets" element={<p>Tickets</p>} />
+          <Route path="notifications" element={<p>Notifications</p>} />
+          <Route path="wallet" element={<Wallet onClick={ConnectWallet}></Wallet>}></Route>
+        </Routes>
         </div>
-    </header> 
+      </div>
+        <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
+        {avatar != null && avatar != 'user not existing'?<img src={ require('../assets/' + avatar)}></img>:null}
+        </>
+    // </header> 
   )
 }
 

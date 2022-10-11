@@ -2,7 +2,6 @@ import { Magic } from 'magic-sdk';
 const magic = new Magic(process.env.REACT_APP_PK_KEY);
 
 export const checkUser = async (cb) => {
-    console.log(process.env.REACT_APP_PK_KEY);
     const isLoggedIn = await magic.user.isLoggedIn();
     if (isLoggedIn) {
       const user = await magic.user.getMetadata();
@@ -12,7 +11,7 @@ export const checkUser = async (cb) => {
   };
   
   export const loginUser = async (email) => {
-    await magic.auth.loginWithMagicLink({ email });
+    await magic.auth.loginWithMagicLink({ email, showUI:false });
   };
   
   export const logoutUser = async () => {

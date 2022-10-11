@@ -1,0 +1,125 @@
+.modalDialog {
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background: rgba(76, 85, 100, 0.5);
+}
+.modalDialog-content {
+    position:absolute;
+    top:13%;
+    padding: 32px;
+    width: 50%;
+    max-width: 640px;
+    background-color: white;
+    height:60%;
+    border-radius: 20px;
+
+}
+.contentDiv {
+    height: 20%;
+    width: 64%;
+    position: absolute;
+    top:40%;
+    left:18%;
+}
+.titleDiv {
+    position: absolute;
+    width: 80%;
+    left:10%;
+    top:20%;
+}
+.confirmpopupTitle {
+    font-family: 'Space Mono';
+    color: black;
+    font-size: 1.9em;
+    position: absolute;
+    left:2.8%;
+    top:10%;
+    font-weight: bold;
+    text-align: center;
+}
+.popupContent {
+    font-family: 'Roboto Mono';
+    text-align: center;
+    color:black;
+    mix-blend-mode: normal;
+}
+.boldedContent {
+    font-weight: bold;
+    color: #528990;
+    font-family: 'Roboto Mono';
+}
+.confirmButton {
+    background: #0568FD;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: white; 
+    width: 40%;
+    height: 10%;
+    font-family: 'Space Mono';
+    font-weight: bold;
+}
+.skipButton {
+    background: transparent;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: white; 
+    width: 25%;
+    height: 5%;
+    color: #528990;
+    font-weight: bold;
+    font-family: 'Space Mono';
+}
+#connectWallet {
+    position:absolute;
+    top:75%;
+    left:30.5%;   
+    font-weight: bold;
+    text-transform: uppercase;
+
+}
+#skipWallet {
+    position: absolute;
+    top:88%;
+    left:38%;
+}
+#closeButton {
+    position: absolute;
+    left: 90%;
+    top:5%;
+    background: transparent;
+    background-color: transparent;
+}
+#p1 {
+    position:absolute;
+    top:0%;
+    left:64%;
+}
+#p2 {
+    position:absolute;
+    left:2%;
+}
+#div1 {
+    position: absolute;
+    left:17%;
+    width: 66%;
+    top:52%;
+}
+#div2 {
+    position: absolute;
+    top: 56%;
+    width: 72%;
+    left:14%;
+}
