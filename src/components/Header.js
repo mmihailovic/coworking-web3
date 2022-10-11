@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { UserContext } from '../context/userContext';
 import { logoutUser } from '../service/magic';
+import PopupNotification from "./PopupNotification";
+import NotificationCenterPopup from "./NotificationCenterPopup";
 const Header = ({walletAddress, avatar}) => {
   const { email } = useContext(UserContext);
   const history = useNavigate();
@@ -42,14 +44,26 @@ const Header = ({walletAddress, avatar}) => {
               <p id="count">2</p>
             </div>
         </div>
-        <div id="popup"className="notificationPopup" style={{display:"none"}}>
+        <NotificationCenterPopup></NotificationCenterPopup>
+        {/* <div id="popup"className="notificationPopup" style={{display:"none"}}>
           <div className="polygon"></div>
           <div className="mainNotificationDiv">
+            
             <div className="notificationsDiv">
               <p className="notificationTitle">Notifications</p>
+              
+              <div className="statusDiv">
+                  <p className="unread_count">2 unread</p>
+                  <p className="markAllAsRead">Mark all as read</p>
+              </div>
+
+              <PopupNotification></PopupNotification>
+              <PopupNotification></PopupNotification>
+              <PopupNotification></PopupNotification>
             </div>
+
           </div>
-        </div>
+        </div> */}
         <img src={arrow} id="arrow"></img>
         {/* <Button variant="primary" onClick={handleLogOut} style={{position:"absolute",width:"10%",height:"100%", left:"65%"}}>
           Sign Out

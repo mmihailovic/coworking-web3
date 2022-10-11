@@ -83,18 +83,54 @@
 }
 
 .notificationsDiv{
-    position: absolute;
     width: 320px;
     height: 460px;
-    left: 19px;
-    top: 20px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .notificationTitle{
     font-family: 'Space Mono';
-font-style: normal;
-font-weight: 700;
-font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.statusDiv{
+    width: 320px;
+    height: 40px;
+    background: #FAE6E9;
+    border-radius: 9px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.unread_count{
+    width: 69px;
+    height: 16px;
+    margin-top: auto;
+    margin-left: 10px;
+    
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.markAllAsRead{
+
+    width: 138px;
+    height: 16px;
+    margin-top: auto;
+    margin-right: 10px;
+    
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: #528990;
+    cursor: pointer;
 }
 
 #count_div{
