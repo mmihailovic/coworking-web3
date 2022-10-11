@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../style/NotificationStyle.css";
 import icon_seen from "../assets/avatar1.svg";
 import icon from "../assets/avatar2.svg";
 import { viewTicketWeb2 } from '../web2communication';
 
-const Notification = ({ notification }) => {
+const Notification = ({ notification, rerender }) => {
 
   const [received, setReceived] = useState(notification.received);
 
@@ -14,6 +14,10 @@ const Notification = ({ notification }) => {
     setReceived(true)
     //this.forceUpdate();
   }
+
+  useEffect(()=>{
+    if(rerender)setReceived(true);
+  },[rerender])
 
   function diff(date){
     let today = new Date();

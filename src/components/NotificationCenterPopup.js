@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../style/Header.css";
 import PopupNotification from './PopupNotification';
-import { selectNotificationsWeb2 } from '../web2communication';
+import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
 
 const NotificationCenterPopup = ({show, email}) => {
@@ -19,6 +19,11 @@ const NotificationCenterPopup = ({show, email}) => {
        //console.log("Usao")
     },[show])
 
+    function markAllNotificationsAsRead(){
+        notifications.forEach(notification =>{
+            viewTicketWeb2(notification.id);
+        })
+    }
 
 
   return (
@@ -31,7 +36,7 @@ const NotificationCenterPopup = ({show, email}) => {
             
             <div className="statusDiv">
                 <p className="unread_count">2 unread</p>
-                <p className="markAllAsRead">Mark all as read</p>
+                <p className="markAllAsRead" onClick={markAllNotificationsAsRead}>Mark all as read</p>
             </div>
 
             {
