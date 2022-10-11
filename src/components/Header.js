@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { UserContext } from '../context/userContext';
 import { logoutUser } from '../service/magic';
-import PopupNotification from "./PopupNotification";
 import NotificationCenterPopup from "./NotificationCenterPopup";
 const Header = ({walletAddress, avatar}) => {
   const { email } = useContext(UserContext);
