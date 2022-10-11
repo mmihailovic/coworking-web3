@@ -55,8 +55,10 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
-  var numberOfUnreadNotifications;
-  var numberOfReadNotifications;
+  const [numberOfUnreadNotifications, setNumberOfUnreadNotifications] = useState();
+  const [numberOfReadNotifications, setNumberOfReadNotifications] = useState();
+  //var numberOfUnreadNotifications;
+  //var numberOfReadNotifications;
 
   useEffect(() => {
     if (email == null) navigate('/');
@@ -70,6 +72,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
     socket.emit("user_connected", email);
     socket.on("card_received", (data) => {
+      loadNotificationInfo();
       console.log(data);
     })
   }, [CONNECTION_PORT])
@@ -90,8 +93,11 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   }
 
   async function loadNotificationInfo() {
-    numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
-    numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
+    //numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
+    //numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
+
+    setNumberOfUnreadNotifications(await numberOfUnreadNotificationWeb2(email, false));
+    setNumberOfReadNotifications(await numberOfUnreadNotificationWeb2(email, true));
 
     console.log("read: " + numberOfReadNotifications);
     console.log("unread: " + numberOfUnreadNotifications);
@@ -425,7 +431,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         <Header walletAddress={email} avatar={avatar}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
-            <Dashboard web2={false}></Dashboard>
+            <Dashboard web2={false} unreadNotifications={numberOfUnreadNotifications}></Dashboard>
           </div>
           {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
           <Routes>
