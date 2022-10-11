@@ -412,7 +412,6 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={false}></Dashboard>
           </div>
-          {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
           <Routes>
           <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
           <Route path="notifications" element={<p>Notifications</p>} />
