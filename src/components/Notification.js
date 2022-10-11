@@ -4,20 +4,23 @@ import icon_seen from "../assets/avatar1.svg";
 import icon from "../assets/avatar2.svg";
 import { viewTicketWeb2 } from '../web2communication';
 
-const Notification = ({ notification, rerender }) => {
+const Notification = ({ notification, rerender,numberOfUnreadNotifications, setNumberOfUnreadNotifications }) => {
 
   const [received, setReceived] = useState(notification.received);
 
   function viewTicket(){
     //console.log("Notification " + notification.id);
     viewTicketWeb2(notification.id);
+    //notification.received = true;
     setReceived(true)
+    setNumberOfUnreadNotifications(numberOfUnreadNotifications - 1);
     //this.forceUpdate();
   }
 
   useEffect(()=>{
-    if(rerender)setReceived(true);
-  },[rerender])
+    //if(rerender)setReceived(true);
+    if(numberOfUnreadNotifications==0)setReceived(true)
+  },[numberOfUnreadNotifications])
 
   function diff(date){
     let today = new Date();

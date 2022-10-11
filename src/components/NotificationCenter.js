@@ -3,7 +3,7 @@ import "../style/NotificationCenter.css";
 import Notification from './Notification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
-const NotificationCenter = ({email}) => {
+const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
 
   const [notifications, setNotifications] = useState([]);
   const [rerender, setRerender] = useState(false);
@@ -11,7 +11,7 @@ const NotificationCenter = ({email}) => {
   async function getNotifications(email){
     let notification = await selectNotificationsWeb2(email);
     setNotifications(notification);
-    //console.log("Notif " + notification[0]);
+    console.log("Notif " + notification[0]);
   }
 
   useEffect(() => {
@@ -23,11 +23,17 @@ const NotificationCenter = ({email}) => {
     getNotifications(email);
   },[])
 
+  useEffect(()=>{
+    console.log("USAO READ ALL");
+    getNotifications(email);
+  },[numberOfUnreadNotifications])
+
   function markAllNotificationsAsRead(){
     notifications.forEach(notification =>{
         viewTicketWeb2(notification.id);
         setRerender(true);
     })
+    setNumberOfUnreadNotifications(0);
   }
 
 
@@ -42,7 +48,7 @@ const NotificationCenter = ({email}) => {
         {
           notifications.map((item) => {
             return (
-                <Notification key={item.id} notification={item} rerender={rerender}></Notification>
+                <Notification key={item.id} notification={item}  numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Notification>
             );
         })}
     </div>

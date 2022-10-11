@@ -429,14 +429,15 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     <>
       {/* <div> */}
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications}></Header>
+        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={false} unreadNotifications={numberOfUnreadNotifications}></Dashboard>
           </div>
+          {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<NotificationCenter email={email}></NotificationCenter>} />
+            <Route path="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet></Wallet>}></Route>
           </Routes>
         </div>

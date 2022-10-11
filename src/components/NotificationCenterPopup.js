@@ -4,25 +4,27 @@ import PopupNotification from './PopupNotification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
 
-const NotificationCenterPopup = ({show, email, numberOfUnreadNotifications}) => {
+const NotificationCenterPopup = ({show, email, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
 
     const [notifications, setNotifications] = useState([]);
 
     async function getNotifications(email){
         let notification = await selectNotificationsWeb2(email);
         setNotifications(notification);
-        console.log("Notif " + notification[0]);
+        //console.log("Notif " + notification[0]);
     }
 
     useEffect(()=>{
        if(show) getNotifications(email);
        //console.log("Usao")
-    },[show])
+    },[show, numberOfUnreadNotifications])
 
     function markAllNotificationsAsRead(){
         notifications.forEach(notification =>{
             viewTicketWeb2(notification.id);
         })
+        //setNotifications([...notifications]);
+        setNumberOfUnreadNotifications(0);
     }
 
 
