@@ -14,28 +14,25 @@ import Dashboard from '../components/Dashboard';
 import Wallet from '../components/Wallet';
 import {Route, Routes} from 'react-router-dom';
 import Tickets from '../components/Tickets';
+import { selectTickets } from '../web2communication';
 
 
 const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnected} ) => {
   const navigate = useNavigate();
   const [haveMetamask, sethaveMetamask] = useState(true);
-  const [accountAddress, setAccountAddress] = useState('');
-  const [accountBalance, setAccountBalance] = useState('');
-  const [isConnected, setIsConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [tickets, setTickets] = useState([]);
+  const [redeemedTickets, setRedeemedTickets] = useState([]);
+  const [expiredTickets, setExpiredTickets] = useState([]);
   const [showConfirmPopup,setShowConfirmPopup] = useState(false);
+  const [available,setAvailable] = useState(true);
+  const [redeemed,setRedeemed] = useState(false);
+  const [expired,setExpired] = useState(false);
+  const [first,setFirst] = useState(true);
   const [avatar,setAvatar] = useState(null);
   const { ethereum } = window;
   const { email } = useContext(UserContext);
   const history = useNavigate();
-  const handleLogOut = async () => {
-    try {
-      await logoutUser();
-      history('/');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   async function generateAvatar() {
     let x = Math.floor((Math.random() * 8) + 1);
     insertUser(email, "avatar"+x+".svg");
@@ -63,7 +60,73 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
     if(email == null) {
       navigate('/');
     }
+    getTickets();
   }, []);
+  const parseTickets = (expirationDates, hash, email) => {
+    let tmpArr = [];
+    for (let i = 0; i < hash.length; i++) {
+      tmpArr.push({
+        id: parseInt(i + 1),
+        expirationDate: new Date(expirationDates[i]).toLocaleDateString('en-GB'),
+        hash: (hash[i]),
+        email: (email[i])
+      })
+    }
+
+    return tmpArr;
+  }
+  async function getTickets() {
+      console.log('loading');
+      try {
+        const today = new Date();
+        let userTickets = [];
+        userTickets = await selectTickets(email);
+
+        const exDatesOfAvailableTickets = [];
+        const exDatesOfRedeemedTickets = [];
+        const exDatesOfExpiredTickets = [];
+
+        const hashesOfAvailableTickets = [];
+        const hashesOfRedeemedTickets = [];
+        const hashesOfExpiredTickets = [];
+        
+
+        let emailsArrOfAvailableTickets = [];
+        let emailsArrOfRedeemedTickets = [];
+        let emailsArrOfExpiredTickets = [];
+
+        for(let i = 0;i < userTickets.length; i++) {
+          const ticketDate = new Date(userTickets[i].end_date);
+          if(userTickets[i].activated == false)
+            userTickets[i].email = "Not redeemed";
+          else userTickets[i].email = email;
+          if(ticketDate < today) {
+            exDatesOfExpiredTickets.push(userTickets[i].end_date);
+            hashesOfExpiredTickets.push(userTickets[i].id);
+            emailsArrOfExpiredTickets.push(userTickets[i].email);
+          }
+          else {
+            if(userTickets.activated) {
+              exDatesOfRedeemedTickets.push(userTickets[i].end_date);
+              hashesOfRedeemedTickets.push(userTickets[i].id);
+              emailsArrOfExpiredTickets.push(userTickets[i].email);
+            }
+            else {
+              exDatesOfAvailableTickets.push(userTickets[i].end_date);
+              hashesOfAvailableTickets.push(userTickets[i].id);
+              emailsArrOfAvailableTickets.push(userTickets[i].email);
+            }
+          }
+        }
+        setTickets(parseTickets(exDatesOfAvailableTickets, hashesOfAvailableTickets, emailsArrOfAvailableTickets)); // available tickets
+        setRedeemedTickets(parseTickets(exDatesOfRedeemedTickets, hashesOfRedeemedTickets, emailsArrOfRedeemedTickets));
+        setExpiredTickets(parseTickets(exDatesOfExpiredTickets, hashesOfExpiredTickets, emailsArrOfExpiredTickets));
+        console.log('end');
+
+      } catch (err) {
+        console.log("Err tickets: " + err);
+      }
+  }
   const ConnectWallet = async () => {
     try{
       if(!ethereum){
@@ -110,34 +173,21 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
   }
   return (
     <>
-    {/* // <header className="App-header">   */}
-        {/* <div className="App-header"> */}
-            {/* <img src={logo} className="App-logo" alt="logo" /> */}
-            {/* <Button variant="light" size="lg" onClick={ConnectWallet}>
-                    Connect
-            </Button>
-            <Button variant="primary" onClick={handleLogOut}>
-              Sign Out
-            </Button>
-            <h1>{email}</h1> */}
-        {/* </div> */}
-        <div className='mainDiv'>
+      <div className='mainDiv'>
         <Header walletAddress={email} avatar={avatar}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={true}></Dashboard>
           </div>
           <Routes>
-          <Route path="tickets" element={<p>Tickets</p>} />
-          <Route path="notifications" element={<p>Notifications</p>} />
-          <Route path="wallet" element={<Wallet onClick={ConnectWallet}></Wallet>}></Route>
-        </Routes>
+            <Route path="tickets" element={<Tickets onCardClick={()=>{}} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
+            <Route path="notifications" element={<p>Notifications</p>} />
+            <Route path="wallet" element={<Wallet onClick={ConnectWallet}></Wallet>}></Route>
+          </Routes>
         </div>
       </div>
         <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
-        {avatar != null && avatar != 'user not existing'?<img src={ require('../assets/' + avatar)}></img>:null}
         </>
-    // </header> 
   )
 }
 

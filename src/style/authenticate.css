@@ -28,6 +28,14 @@
     position:absolute;
     top:57.5%;
 }
+.emailInput:hover {
+    border: 2px solid #93A4B7;
+    border-radius: 6px;
+}
+.emailInput:active {
+    border: 2px solid #93A4B7;
+    border-radius: 6px;
+}
 .emailInput::placeholder{
     font-family: 'Roboto Mono';
     color: #93A4B7;

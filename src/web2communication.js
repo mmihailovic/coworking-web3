@@ -71,3 +71,21 @@ export async function shareTicketWeb2(hash, email) {
       return response.status;
     });
 }
+export async function selectTickets(email) {
+
+  return fetch(process.env.REACT_APP_selectTickets, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(json => {
+          const ret = json;
+          return ret;
+        });
+      }
+    });
+}
