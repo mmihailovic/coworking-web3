@@ -3,7 +3,7 @@ import logo from '../assets/mylogo.svg';
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import { useState, useEffect, useContext } from 'react';
-import {setAvatar, insertAvatar, selectUser, insertUser} from '../web2communication';
+import {setAvatar, insertAvatar, selectUser, insertUser, shareTicketWeb2, numberOfUnreadNotificationWeb2, numberOfReadNotifications} from '../web2communication';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { UserContext } from '../context/userContext';
@@ -15,6 +15,11 @@ import Wallet from '../components/Wallet';
 import {Route, Routes} from 'react-router-dom';
 import Tickets from '../components/Tickets';
 import { selectTickets } from '../web2communication';
+import NotificationCenter from '../components/NotificationCenter';
+import CardPopup from '../components/CardPopup';
+import io from 'socket.io-client'
+let socket;
+const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
 
 
 const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnected} ) => {
@@ -24,11 +29,14 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
   const [redeemedTickets, setRedeemedTickets] = useState([]);
   const [expiredTickets, setExpiredTickets] = useState([]);
   const [showConfirmPopup,setShowConfirmPopup] = useState(false);
+  const [showCardPopup,setShowCardPopup] = useState(false);
   const [available,setAvailable] = useState(true);
   const [redeemed,setRedeemed] = useState(false);
   const [expired,setExpired] = useState(false);
   const [first,setFirst] = useState(true);
   const [avatar,setAvatar] = useState(null);
+  const [numberOfUnreadNotifications, setNumberOfUnreadNotifications] = useState();
+  const [numberOfReadNotifications, setNumberOfReadNotifications] = useState();
   const { ethereum } = window;
   const { email } = useContext(UserContext);
   const history = useNavigate();
@@ -46,6 +54,27 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
     }
     else setAvatar(myAvatar);
   }
+  async function loadNotificationInfo() {
+    //numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
+    //numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
+
+    setNumberOfUnreadNotifications(await numberOfUnreadNotificationWeb2(email, false));
+    setNumberOfReadNotifications(await numberOfUnreadNotificationWeb2(email, true));
+
+    console.log("read: " + numberOfReadNotifications);
+    console.log("unread: " + numberOfUnreadNotifications);
+  }
+  useEffect(() => {
+    socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
+    socket.emit("user_connected", email);
+    socket.on("card_received", (data) => {
+      loadNotificationInfo();
+      console.log(data);
+    })
+  }, [CONNECTION_PORT])
+  useEffect(() => {
+    loadNotificationInfo();
+  }, [])
   useEffect(() => {
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
@@ -174,19 +203,20 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
   return (
     <>
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar}></Header>
+        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
-            <Dashboard web2={true}></Dashboard>
+            <Dashboard web2={true} unreadNotifications={numberOfUnreadNotifications}></Dashboard>
           </div>
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={()=>{}} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<p>Notifications</p>} />
+            <Route path="notifications" element={<NotificationCenter email={email}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet onClick={ConnectWallet}></Wallet>}></Route>
           </Routes>
         </div>
       </div>
         <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
+        <CardPopup showPopup={false} expiring={false} skipFunc={()=>console.log('close')} func={()=>console.log('redeem')} email={'petar@altlabs.dev'}></CardPopup>
         </>
   )
 }

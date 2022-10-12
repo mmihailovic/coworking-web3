@@ -28,11 +28,13 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
     getNotifications(email);
   },[numberOfUnreadNotifications])
 
-  function markAllNotificationsAsRead(){
-    notifications.forEach(notification =>{
-        viewTicketWeb2(notification.id);
-        setRerender(true);
-    })
+  async function markAllNotificationsAsRead(){
+    for(let i = 0;i < notifications.length;i++) {
+      
+      if(notifications[i].received == false) {
+        await viewTicketWeb2(notifications[i].id);
+      }
+    }
     setNumberOfUnreadNotifications(0);
   }
 

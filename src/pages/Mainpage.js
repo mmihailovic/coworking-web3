@@ -53,6 +53,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [expired, setExpired] = useState(false);
   const [first, setFirst] = useState(true);
   const [avatar, setAvatar] = useState(userAvatar);
+  const [notificationShow, setNotificationShow] = useState(false);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -78,19 +79,20 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     })
   }, [CONNECTION_PORT])
 
-  async function shareTicket(hash, email) {
+  async function shareTicket(hash) {
 
-    let receiver_email = "mihailjovanoski14@gmail.com"
+    let receiver_email = "mihailovicmarko05@gmail.com";
 
     let request = await shareTicketWeb2(hash, receiver_email);
     if (request == 201) {
       let data = {
-        sender_email: receiver_email,
+        sender_email: email,
         receiver_email: receiver_email,
         hash: hash,
       }
       socket.emit("shared_ticket", (data));
     }
+    console.log('gotovo');
   }
 
   async function loadNotificationInfo() {
@@ -429,15 +431,14 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     <>
       {/* <div> */}
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Header>
+        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} notificationShow={notificationShow} setNotificationShow={setNotificationShow}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={false} unreadNotifications={numberOfUnreadNotifications}></Dashboard>
           </div>
-          {/* {myBool ? null : <Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} */}
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></NotificationCenter>} />
+            <Route path="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet></Wallet>}></Route>
           </Routes>
         </div>

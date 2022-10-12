@@ -31,7 +31,7 @@ const Card = ({ card, redeemd, expired, onCardClick }) => {
               <p className={`${!expired ? 'text1' : 'text1-dark'}`}>BeoDesks</p>
               {expired ? <div id="expired_div"><p className='text3' id="expired"> Expired </p></div> : <></>}
             </div>
-            {false ? <></> : <button type="button" onClick={() => onCardClick(card.hash, "mihailjovanoski14@gmail.com")} className="redeem_btn">Redeem</button>}
+            {false ? <></> : <button type="button" onClick={() => onCardClick(card.hash)} className="redeem_btn">Redeem</button>}
           </div>
           <div className="address_div">
             {/* <img alt='map_marker' src={mapMarker} className="icon" /> */}

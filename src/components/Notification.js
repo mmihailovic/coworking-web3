@@ -8,12 +8,14 @@ const Notification = ({ notification, rerender,numberOfUnreadNotifications, setN
 
   const [received, setReceived] = useState(notification.received);
 
-  function viewTicket(){
+  async function viewTicket(){
     //console.log("Notification " + notification.id);
-    viewTicketWeb2(notification.id);
+    if(received == 0){
+      await viewTicketWeb2(notification.id);
     //notification.received = true;
-    setReceived(true)
+    setReceived(true);
     setNumberOfUnreadNotifications(numberOfUnreadNotifications - 1);
+    }
     //this.forceUpdate();
   }
 
