@@ -16,7 +16,7 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
 
   useEffect(() => {
     getNotifications(email);
-    //console.log("USAOOOO");
+    
   },[rerender])
 
   useEffect(()=>{
@@ -45,15 +45,17 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
           <p className='notifications'>Notification center</p>
           <p className='markAll' onClick={markAllNotificationsAsRead}>Mark all as read</p>
         </div>
-        {/* <Notification></Notification>
+         {/* <Notification></Notification>
         <Notification></Notification> */}
         {
           notifications.map((item) => {
             return (
                 <Notification key={item.id} notification={item}  numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Notification>
             );
-        })}
+        })} 
+        
     </div>
+    
    
   )
 }

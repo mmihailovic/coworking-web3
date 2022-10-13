@@ -81,7 +81,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
   async function shareTicket(hash) {
 
-    let receiver_email = "mihailovicmarko05@gmail.com";
+    let receiver_email = "zarko.munja@gmail.com";
 
     let request = await shareTicketWeb2(hash, receiver_email);
     if (request == 201) {
@@ -438,7 +438,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           </div>
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
+            <Route pnpath="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet></Wallet>}></Route>
           </Routes>
         </div>
