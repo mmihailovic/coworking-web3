@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../style/Dashboard.css";
 import ticket from '../assets/ticket-2.svg'
-import monitorDesktop from '../assets/monitor-desktop.svg'
-import monitorDesktopGreen from '../assets/monitor-desktopGreen.svg'
+import notification from "../assets/notification.svg"
+import notificationGreen from "../assets/notificationGreen.svg"
+
 import ticketGreen from '../assets/ticket-2Green.svg'
 import wallet from '../assets/Wallet.svg';
 import walletGreen from '../assets/WalletGreen.svg';
@@ -26,8 +27,8 @@ function Dashboard({ web2, unreadNotifications }) {
     btn1.classList.add('inactive');
     btn2.classList.remove('inactive');
     btn3.classList.remove('inactive');
-    document.getElementById("img1").src = monitorDesktopGreen;
-    document.getElementById("img2").src = ticket;
+    document.getElementById("img1").src = ticketGreen;
+    document.getElementById("img2").src = notification;
     document.getElementById("img3").src = wallet;
     if (web2) navigate('/login/tickets');
     else navigate('/main/tickets');
@@ -41,8 +42,8 @@ function Dashboard({ web2, unreadNotifications }) {
     btn2.classList.add('inactive');
     btn1.classList.remove('inactive');
     btn3.classList.remove('inactive');
-    document.getElementById("img1").src = monitorDesktop;
-    document.getElementById("img2").src = ticketGreen;
+    document.getElementById("img1").src = ticket;
+    document.getElementById("img2").src = notificationGreen;
     document.getElementById("img3").src = wallet;
     if (web2) navigate('/login/notifications');
     else navigate('/main/notifications');
@@ -55,8 +56,8 @@ function Dashboard({ web2, unreadNotifications }) {
     btn3.classList.add('inactive');
     btn2.classList.remove('inactive');
     btn1.classList.remove('inactive');
-    document.getElementById("img1").src = monitorDesktop;
-    document.getElementById("img2").src = ticket;
+    document.getElementById("img1").src = ticket;
+    document.getElementById("img2").src = notification;
     document.getElementById("img3").src = walletGreen;
     if (web2) navigate('/login/wallet');
     else navigate('/main/wallet');
@@ -64,10 +65,10 @@ function Dashboard({ web2, unreadNotifications }) {
 
   return (
     <div className="container">
-      <div className='buttonContainer' id="btn1Container"><button id='btn1' onClick={seatRentalsChange}><img id="img1" src={monitorDesktop} alt='?' />My tickets</button></div>
+      <div className='buttonContainer' id="btn1Container"><button id='btn1' onClick={seatRentalsChange}><img id="img1" src={ticket} alt='?' />My tickets</button></div>
       
       <div className='buttonContainer' id="btn2Container">
-        <button id='btn2' onClick={myTicketsChange}><img id="img2" src={ticket} alt='?' />Notifications {unreadNotifications > 0 ? <div className='notification'>{unreadNotifications}</div> : <></>}</button>
+        <button id='btn2' onClick={myTicketsChange}><img id="img2" src={notification} alt='?' />Notifications {unreadNotifications > 0 ? <div className='notification'>{unreadNotifications}</div> : <></>}</button>
       </div>
       
       <div className='buttonContainer' id="btn3Container"><button id='btn3' onClick={walletChange}><img id="img3" src={wallet} />Wallet</button></div>
