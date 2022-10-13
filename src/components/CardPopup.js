@@ -2,15 +2,17 @@ import "../style/CardPopup.css";
 import Card from "./Card";
 import close from '../assets/Close.svg';
 
-const CardPopup = ({ showPopup, func, skipFunc, email, card, notification }) => {
+const CardPopup = ({ showPopup, func, skipFunc, card, notification }) => {
 
   console.log(notification);
   let expiring = false;
   let received = false;
+  let email = "";
 
   if (!(typeof notification === "undefined")) {
     expiring = notification.title == "Ticket expiring" ? true : false;
     received = notification.title == "Ticket received" ? true : false;
+    email = notification.message.substring(notification.message.indexOf("from") + 5);
   }
 
   return (showPopup) ? (
@@ -24,7 +26,7 @@ const CardPopup = ({ showPopup, func, skipFunc, email, card, notification }) => 
               <p className='cardPopupContent'>{expiring ? 'To continue using BeoSpace, please buy a new one, or request if from your manager.' : 'You received a new ticket from'}</p>
               {!expiring ? <p className="cardPopupContent" id="email">{email}</p> : null}
             </div>
-            <div className="cardPopupCardDiv" style={{ position: "absolute", top: "43%", width: "80%", left: "5%", height: "70%" }}>
+            <div className="cardPopupCardDiv">
               <Card card={card} expiring={expiring} received={received}></Card>
             </div>
             <button onClick={() => expiring ? skipFunc(false) : func()} className='cardPopupconfirmButton' id={`${expiring ? "closeBtnCardPopup" : "closeBtnCardPopupRedeem"}`}>{expiring ? 'Close' : 'Redeem Ticket'}</button>

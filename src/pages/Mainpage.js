@@ -449,7 +449,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           </Routes>
         </div>
       </div>
-      <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')} email={'petar@altlabs.dev'}></CardPopup>
+      <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />

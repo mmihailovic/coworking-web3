@@ -221,7 +221,7 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
         </div>
       </div>
       <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
-      <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')} email={'petar@altlabs.dev'}></CardPopup>
+      <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
     </>
   )
 }
