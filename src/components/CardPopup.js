@@ -2,7 +2,7 @@ import "../style/CardPopup.css";
 import Card from "./Card";
 import close from '../assets/Close.svg';
 
-const CardPopup = ({showPopup, func, skipFunc, expiring, email, card}) => {
+const CardPopup = ({showPopup, func, skipFunc, expiring, email, card, received}) => {
     return (showPopup)?(
       <div>
           <div className="cardPopupDialog">
@@ -14,8 +14,8 @@ const CardPopup = ({showPopup, func, skipFunc, expiring, email, card}) => {
                           <p className='cardPopupContent'>{expiring?'To continue using BeoSpace, please buy a new one, or request if from your manager.':'You received a new ticket from'}</p>
                           {!expiring?<p className="cardPopupContent" id="email">{email}</p>:null}
                       </div>
-                      <div className="cardPopupCardDiv">
-                        {/* <Card card={card}></Card> */}
+                      <div className="cardPopupCardDiv" style={{position:"absolute", top:"43%", width:"80%", left:"5%", height:"70%"}}>
+                        <Card expiring={expiring} received={received}></Card>
                       </div>
                       <button onClick={()=>expiring?skipFunc(false):func()} className='cardPopupconfirmButton' id={`${expiring?"closeBtnCardPopup":"closeBtnCardPopupRedeem"}`}>{expiring?'Close':'Redeem Ticket'}</button>
                       {!expiring?<button className="skipButton" id="useLater" onClick={()=>skipFunc(false)}>Use it later</button>:null}

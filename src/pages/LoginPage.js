@@ -210,13 +210,13 @@ const LoginPage = ( {onClick, setAccount, setBalance, setUserAvatar, setConnecte
           </div>
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={()=>{}} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route path="notifications" element={<NotificationCenter email={email}></NotificationCenter>} />
+            <Route path="notifications" element={<NotificationCenter email={email} setShowCardPopup={setShowCardPopup}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet onClick={ConnectWallet}></Wallet>}></Route>
           </Routes>
         </div>
       </div>
         <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
-        <CardPopup showPopup={false} expiring={false} skipFunc={()=>console.log('close')} func={()=>console.log('redeem')} email={'petar@altlabs.dev'}></CardPopup>
+        <CardPopup showPopup={showCardPopup} received={false} expiring={true} skipFunc={setShowCardPopup} func={()=>console.log('redeem')} email={'petar@altlabs.dev'}></CardPopup>
         </>
   )
 }

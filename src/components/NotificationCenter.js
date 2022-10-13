@@ -3,7 +3,7 @@ import "../style/NotificationCenter.css";
 import Notification from './Notification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
-const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
+const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnreadNotifications, setShowCardPopup}) => {
 
   const [notifications, setNotifications] = useState([]);
   const [rerender, setRerender] = useState(false);
@@ -50,7 +50,7 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
         {
           notifications.map((item) => {
             return (
-                <Notification key={item.id} notification={item}  numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Notification>
+                <Notification setShowCardPopup ={setShowCardPopup} key={item.id} notification={item}  numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Notification>
             );
         })}
     </div>

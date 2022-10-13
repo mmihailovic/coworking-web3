@@ -4,7 +4,7 @@ import icon_seen from "../assets/avatar1.svg";
 import icon from "../assets/avatar2.svg";
 import { viewTicketWeb2 } from '../web2communication';
 
-const Notification = ({ notification, rerender,numberOfUnreadNotifications, setNumberOfUnreadNotifications }) => {
+const Notification = ({ notification, rerender,numberOfUnreadNotifications, setNumberOfUnreadNotifications, setShowCardPopup }) => {
 
   const [received, setReceived] = useState(notification.received);
 
@@ -16,6 +16,7 @@ const Notification = ({ notification, rerender,numberOfUnreadNotifications, setN
     setReceived(true);
     setNumberOfUnreadNotifications(numberOfUnreadNotifications - 1);
     }
+    if(setShowCardPopup)setShowCardPopup(true);
     //this.forceUpdate();
   }
 
