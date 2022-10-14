@@ -87,7 +87,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
   async function shareTicket(hash) {
 
-    let receiver_email = "mihailovicmarko05@gmail.com";
+    let receiver_email = "aleksa.prokic888@gmail.com";
     //let singleTicketInfo = await selectSingleTicketWeb2(hash);
     //console.log(singleTicketInfo);
 

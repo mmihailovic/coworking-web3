@@ -121,7 +121,11 @@ export async function selectNotificationsWeb2(email) {
       if (response.ok) {
         return response.json().then(json => {
           const ret = json;
-          return ret;
+
+          if (response.status == 208)
+            return ret;
+          else
+            return null;
         });
       }
     });

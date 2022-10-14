@@ -7,11 +7,17 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
 
   const [notifications, setNotifications] = useState([]);
   const [rerender, setRerender] = useState(false);
+  //const [curr_notification_date, set_curr_notification_date] = useState(new Date());
+  let curr_notification_date = new Date();
 
   async function getNotifications(email) {
     let notification = await selectNotificationsWeb2(email);
-    setNotifications(notification);
-    console.log("Notif " + notification[0]);
+
+    if (notification != null) {
+      setNotifications(notification);
+      //curr_notification_date = new Date(notification[0].date);
+      //console.log("Notif " + notification[0].date);
+    }
   }
 
   useEffect(() => {
@@ -39,6 +45,11 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
     setNumberOfUnreadNotifications(0);
   }
 
+  function areDatesEqual(date1, date2) {
+    return date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth()
+      && date1.getFullYear() == date2.getFullYear();
+  }
+
 
   return (
     <div style={{ position: "absolute", width: "90%", top: "2%", left: "25%", width: "65%", height: "100%", overflowY: "auto" }}>
@@ -50,11 +61,20 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
         <Notification></Notification> */}
       {
         notifications.map((item) => {
+
+          let tmp_notification_date = new Date(item.date);
+          let shouldAddDateParagraph = !areDatesEqual(tmp_notification_date, curr_notification_date);
+          if (shouldAddDateParagraph) curr_notification_date = tmp_notification_date;
+
           return (
-            <Notification setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup}
-              setShowCardPopup={setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={numberOfUnreadNotifications}
-              setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}>
-            </Notification>
+
+            <>
+              {shouldAddDateParagraph ? <p>{item.date}</p> : <></>}
+              <Notification setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup}
+                setShowCardPopup={setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={numberOfUnreadNotifications}
+                setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}>
+              </Notification>
+            </>
           );
         })}
     </div>
