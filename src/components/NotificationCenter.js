@@ -19,6 +19,7 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
     //console.log("USAOOOO");
   }, [rerender])
 
+
   useEffect(() => {
     getNotifications(email);
   }, [])
@@ -57,7 +58,6 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
           );
         })}
     </div>
-
   )
 }
 

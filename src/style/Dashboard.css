@@ -13,6 +13,7 @@
     margin-left: auto;
     margin-right: auto;
     font-size: 1vw;
+    display: flex;
 }
 
 #btn1,
@@ -56,7 +57,7 @@ button {
 }
 
 #btn1:hover,
-#btn2Container:hover,
+#btn2:hover,
 #btn3:hover {
     background-color: #FAE6E9;
     ;
@@ -144,24 +145,10 @@ button {
 
 .notification {
     background-color: #528990;
-    width: 10%;
-    height: 50%;
+    width: 9%;
+    height: 49%;
     border-radius: 8px;
     text-align: center;
     color: white;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 10%;
-}
-
-
-.notificationButtonContainer {
-    height: 8%;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1vw;
-    display: flex;
-
-
+    margin: auto;
 }
