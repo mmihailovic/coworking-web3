@@ -3,12 +3,12 @@ import "../style/NotificationCenter.css";
 import Notification from './Notification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
 
-const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
+const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnreadNotifications, setShowCardPopup, setNotificationInNotificationPopup, setCardInNotificationPopup }) => {
 
   const [notifications, setNotifications] = useState([]);
   const [rerender, setRerender] = useState(false);
 
-  async function getNotifications(email){
+  async function getNotifications(email) {
     let notification = await selectNotificationsWeb2(email);
     setNotifications(notification);
     console.log("Notif " + notification[0]);
@@ -16,22 +16,23 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
 
   useEffect(() => {
     getNotifications(email);
-    
-  },[rerender])
+    //console.log("USAOOOO");
+  }, [rerender])
 
-  useEffect(()=>{
+
+  useEffect(() => {
     getNotifications(email);
-  },[])
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("USAO READ ALL");
     getNotifications(email);
-  },[numberOfUnreadNotifications])
+  }, [numberOfUnreadNotifications])
 
-  async function markAllNotificationsAsRead(){
-    for(let i = 0;i < notifications.length;i++) {
-      
-      if(notifications[i].received == false) {
+  async function markAllNotificationsAsRead() {
+    for (let i = 0; i < notifications.length; i++) {
+
+      if (notifications[i].received == false) {
         await viewTicketWeb2(notifications[i].id);
       }
     }
@@ -40,23 +41,23 @@ const NotificationCenter = ({email, numberOfUnreadNotifications, setNumberOfUnre
 
 
   return (
-    <div style={{position:"absolute", width:"90%", top:"2%", left:"25%", width:"65%", height:"100%"}}>
-        <div style={{display: "flex", justifyContent:"space-between"}}>
-          <p className='notifications'>Notification center</p>
-          <p className='markAll' onClick={markAllNotificationsAsRead}>Mark all as read</p>
-        </div>
-         {/* <Notification></Notification>
+    <div style={{ position: "absolute", width: "90%", top: "2%", left: "25%", width: "65%", height: "100%", overflowY: "auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <p className='notifications'>Notification center</p>
+        <p className='markAll' onClick={markAllNotificationsAsRead}>Mark all as read</p>
+      </div>
+      {/* <Notification></Notification>
         <Notification></Notification> */}
-        {
-          notifications.map((item) => {
-            return (
-                <Notification key={item.id} notification={item}  numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Notification>
-            );
-        })} 
-        
+      {
+        notifications.map((item) => {
+          return (
+            <Notification setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup}
+              setShowCardPopup={setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={numberOfUnreadNotifications}
+              setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}>
+            </Notification>
+          );
+        })}
     </div>
-    
-   
   )
 }
 

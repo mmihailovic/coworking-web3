@@ -10,6 +10,7 @@ export async function insertTicketsWeb2(hash, date) {
   })
 }
 
+
 export async function selectEmailWeb2(hash) {
 
   return fetch(process.env.REACT_APP_selectEmail, {
@@ -29,6 +30,7 @@ export async function selectEmailWeb2(hash) {
     });
 }
 
+
 export async function selectUser(email) {
   return fetch(process.env.REACT_APP_selectUser, {
     method: 'POST',
@@ -47,6 +49,7 @@ export async function selectUser(email) {
     });
 }
 
+
 export async function insertUser(email, avatar) {
 
   fetch(process.env.REACT_APP_insertUser, {
@@ -57,6 +60,7 @@ export async function insertUser(email, avatar) {
     body: JSON.stringify({ email, avatar }),
   })
 }
+
 
 export async function shareTicketWeb2(hash, email) {
   return fetch("https://coworking-khuti.ondigitalocean.app/api/shareTicket", {
@@ -71,6 +75,7 @@ export async function shareTicketWeb2(hash, email) {
       return response.status;
     });
 }
+
 
 export async function numberOfUnreadNotificationWeb2(email, isReceived) {
   return fetch("https://coworking-khuti.ondigitalocean.app/api/numberOfUnreadNotification", {
@@ -90,7 +95,8 @@ export async function numberOfUnreadNotificationWeb2(email, isReceived) {
     });
 }
 
-export async function viewTicketWeb2(notification_id){
+
+export async function viewTicketWeb2(notification_id) {
   return fetch("https://coworking-khuti.ondigitalocean.app/api/updateNotification", {
     method: 'POST',
     headers: {
@@ -100,6 +106,9 @@ export async function viewTicketWeb2(notification_id){
   })
 }
 
+
+//"https://coworking-khuti.ondigitalocean.app/api/selectAllNotifacations"
+//"http://localhost:3002/selectAllNotifacations"
 export async function selectNotificationsWeb2(email) {
   return fetch("https://coworking-khuti.ondigitalocean.app/api/selectAllNotifacations", {
     method: 'POST',
@@ -117,6 +126,8 @@ export async function selectNotificationsWeb2(email) {
       }
     });
 }
+
+
 export async function selectTickets(email) {
 
   return fetch(process.env.REACT_APP_selectTickets, {
@@ -130,6 +141,29 @@ export async function selectTickets(email) {
       if (response.ok) {
         return response.json().then(json => {
           const ret = json;
+          return ret;
+        });
+      }
+    });
+}
+
+
+//"https://coworking-khuti.ondigitalocean.app/api/selectSingleTicket"
+//"http://localhost:3002/selectSingleTicket"
+export async function selectSingleTicketWeb2(ticket_id) {
+
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/selectSingleTicket", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ticket_id }),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(json => {
+          const ret = json;
+          console.log(ret);
           return ret;
         });
       }

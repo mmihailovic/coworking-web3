@@ -16,8 +16,7 @@
     position:absolute;
     top:13%;
     padding: 32px;
-    width: 50%;
-    max-width: 640px;
+    width: 40%;
     background-color: white;
     height:70%;
     border-radius: 20px;
@@ -27,8 +26,7 @@
     position:absolute;
     top:13%;
     padding: 32px;
-    width: 50%;
-    max-width: 640px;
+    width: 40%;
     background-color: white;
     height:75%;
     border-radius: 20px;
@@ -61,6 +59,7 @@
     text-align: center;
     color:black;
     mix-blend-mode: normal;
+    margin-bottom: 0%;
 }
 .boldedContent {
     font-weight: bold;
@@ -79,6 +78,13 @@
     font-family: 'Space Mono';
     font-weight: bold;
 }
+.cardPopupCardDiv {
+    position: absolute;
+    top: 43%;
+    width: 80%; 
+    left: 5%;
+    height: 70%;
+} 
 .skipButton {
     background: transparent;
     border-radius: 6px;
@@ -148,7 +154,4 @@
 }
 #email {
     font-weight: bold;
-    position: absolute;
-    top:20%;
-    left:30%;
 }

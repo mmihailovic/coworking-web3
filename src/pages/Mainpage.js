@@ -16,8 +16,9 @@ import { RiHandCoinLine } from 'react-icons/ri'
 import Popup from '../components/Popup';
 import InputSpinner from 'react-bootstrap-input-spinner';
 import { useNavigate } from 'react-router-dom';
+import CardPopup from '../components/CardPopup';
 
-import { selectEmailWeb2, insertTicketsWeb2, selectUser, shareTicketWeb2, numberOfUnreadNotificationWeb2 } from '../web2communication';
+import { selectEmailWeb2, insertTicketsWeb2, selectUser, shareTicketWeb2, numberOfUnreadNotificationWeb2, selectSingleTicketWeb2 } from '../web2communication';
 import Header from '../components/Header';
 import Tickets from '../components/Tickets';
 import Dashboard from '../components/Dashboard';
@@ -54,8 +55,12 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [first, setFirst] = useState(true);
   const [avatar, setAvatar] = useState(userAvatar);
   const [notificationShow, setNotificationShow] = useState(false);
+  const [cardInNotificationPopup, setCardInNotificationPopup] = useState();
+  const [notificationInNotificationPopup, setNotificationInNotificationPopup] = useState();
+  const [showCardPopup, setShowCardPopup] = useState(false);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
+
 
   const [numberOfUnreadNotifications, setNumberOfUnreadNotifications] = useState();
   const [numberOfReadNotifications, setNumberOfReadNotifications] = useState();
@@ -79,9 +84,12 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     })
   }, [CONNECTION_PORT])
 
+
   async function shareTicket(hash) {
 
-    let receiver_email = "zarko.munja@gmail.com";
+    let receiver_email = "mihailovicmarko05@gmail.com";
+    //let singleTicketInfo = await selectSingleTicketWeb2(hash);
+    //console.log(singleTicketInfo);
 
     let request = await shareTicketWeb2(hash, receiver_email);
     if (request == 201) {
@@ -96,8 +104,6 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   }
 
   async function loadNotificationInfo() {
-    //numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
-    //numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
 
     setNumberOfUnreadNotifications(await numberOfUnreadNotificationWeb2(email, false));
     setNumberOfReadNotifications(await numberOfUnreadNotificationWeb2(email, true));
@@ -438,11 +444,12 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           </div>
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
-            <Route pnpath="notifications" element={<NotificationCenter email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
+            <Route path="notifications" element={<NotificationCenter setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup} email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
             <Route path="wallet" element={<Wallet></Wallet>}></Route>
           </Routes>
         </div>
       </div>
+      <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />

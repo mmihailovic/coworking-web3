@@ -56,9 +56,9 @@ const Pagination = (props) => {
               {
               cardSliceArray.map((item) => {
                 return (
-                    <div style={{height:"46%", width:"100%", marginBottom:"2%"}}>
+                    // <div style={{height:"46%", width:"100%", marginBottom:"2%"}}>
                         <Card onCardClick={props.onCardClick} key={item.id} card = {item} redeemd={props.redeemed} expired={props.expired}/> 
-                    </div>
+                    // </div>
                 );
                 })}
             </div>

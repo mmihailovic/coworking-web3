@@ -2,29 +2,42 @@ import React, { useEffect, useState } from 'react';
 import "../style/NotificationStyle.css";
 import icon_seen from "../assets/avatar1.svg";
 import icon from "../assets/avatar2.svg";
-import { viewTicketWeb2 } from '../web2communication';
+import { viewTicketWeb2, selectSingleTicketWeb2 } from '../web2communication';
 
-const Notification = ({ notification, rerender,numberOfUnreadNotifications, setNumberOfUnreadNotifications }) => {
+const Notification = ({ notification, rerender, numberOfUnreadNotifications, setNumberOfUnreadNotifications, setShowCardPopup, setNotificationInNotificationPopup, setCardInNotificationPopup }) => {
 
   const [received, setReceived] = useState(notification.received);
 
-  async function viewTicket(){
+  async function viewTicket() {
     //console.log("Notification " + notification.id);
-    if(received == 0){
+    if (received == 0) {
       await viewTicketWeb2(notification.id);
-    //notification.received = true;
-    setReceived(true);
-    setNumberOfUnreadNotifications(numberOfUnreadNotifications - 1);
+      //notification.received = true;
+      setReceived(true);
+      setNumberOfUnreadNotifications(numberOfUnreadNotifications - 1);
     }
+
+    let ticketInfo = await selectSingleTicketWeb2(notification.ticket_hash);
+    let date = new Date(ticketInfo[0].end_date).toLocaleDateString('en-GB');
+    let ticket = {
+      expirationDate: date,
+      hash: ticketInfo[0].id,
+      email: ticketInfo[0].email
+    };
+
+    setCardInNotificationPopup(ticket);
+    setNotificationInNotificationPopup(notification);
+    if (setShowCardPopup) setShowCardPopup(true);
+
     //this.forceUpdate();
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     //if(rerender)setReceived(true);
-    if(numberOfUnreadNotifications==0)setReceived(true)
-  },[numberOfUnreadNotifications])
+    if (numberOfUnreadNotifications == 0) setReceived(true)
+  }, [numberOfUnreadNotifications])
 
-  function diff(date){
+  function diff(date) {
     let today = new Date();
     let notifDate = new Date(date);
     var diffMs = Math.abs(notifDate - today); // milliseconds between now & Christmas
@@ -32,28 +45,28 @@ const Notification = ({ notification, rerender,numberOfUnreadNotifications, setN
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
-    if(diffDays == 0){
-      if(diffHrs==0)return diffMins+"min ago";
-      return diffHrs+"hrs ago"
+    if (diffDays == 0) {
+      if (diffHrs == 0) return diffMins + "min ago";
+      return diffHrs + "hrs ago"
     }
-    return diffDays+"days ago";
+    return diffDays + "days ago";
   }
 
   return (
     <div className={`${!received ? 'notification_div' : 'notification_div_seen'}`}>
-        <div className='main_div'>
-          <div className="icon_div">
-              <img src={`${!received ? icon : icon_seen}`} alt='icon' height={80}></img>
-          </div>
-          <div className='title_div'>
-              <p className={`${!received ? 'title' : 'title_seen'}`}>{notification.title}</p>
-              <p className={`${!received ? 'message' : 'message_seen'}`}>{notification.message}</p>
-          </div>
-          <div className='stat_div'>
-              <p className='time'>{diff(notification.date)}</p>
-              <p className={`${!received ? 'view_ticket' : 'view_ticket_seen'}`} onClick={viewTicket}>View ticket</p>
-          </div>
+      <div className='main_div'>
+        <div className="icon_div">
+          <img src={`${!received ? icon : icon_seen}`} alt='icon' height={80}></img>
         </div>
+        <div className='title_div'>
+          <p className={`${!received ? 'title' : 'title_seen'}`}>{notification.title}</p>
+          <p className={`${!received ? 'message' : 'message_seen'}`}>{notification.message}</p>
+        </div>
+        <div className='stat_div'>
+          <p className='time'>{diff(notification.date)}</p>
+          <p className={`${!received ? 'view_ticket' : 'view_ticket_seen'}`} onClick={viewTicket}>View ticket</p>
+        </div>
+      </div>
     </div>
   )
 }
