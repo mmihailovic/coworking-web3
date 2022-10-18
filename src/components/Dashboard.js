@@ -14,8 +14,20 @@ function Dashboard({ web2, unreadNotifications }) {
 
   useEffect(() => {
     var btn1 = document.getElementById("btn1");
+    var btn2 = document.getElementById("btn2");
+    var btn3 = document.getElementById("btn3");
     document.getElementById("img1").src = ticketGreen;
     btn1.classList.add('inactive');
+    btn2.classList.add('btnActive');
+    btn3.classList.add('btnActive');
+    
+
+    var btnContainer2 = document.getElementById("btn2Container");
+    btnContainer2.classList.add('btnContainerActive');
+    var btnContainer3 = document.getElementById("btn3Container");
+    btnContainer3.classList.add('btnContainerActive');
+
+    
 
   }, []);
 
@@ -24,12 +36,26 @@ function Dashboard({ web2, unreadNotifications }) {
     var btn2 = document.getElementById("btn2");
     var btn3 = document.getElementById("btn3");
 
+    btn1.classList.remove('btnActive');
+    btn2.classList.add('btnActive');
+    btn3.classList.add('btnActive');
+
     btn1.classList.add('inactive');
     btn2.classList.remove('inactive');
     btn3.classList.remove('inactive');
     document.getElementById("img1").src = ticketGreen;
     document.getElementById("img2").src = notification;
     document.getElementById("img3").src = wallet;
+
+
+    var btnContainer1 = document.getElementById("btn1Container");
+    btnContainer1.classList.remove('btnContainerActive');
+    var btnContainer2 = document.getElementById("btn2Container");
+    btnContainer2.classList.add('btnContainerActive');
+    var btnContainer3 = document.getElementById("btn3Container");
+    btnContainer3.classList.add('btnContainerActive');
+
+
     if (web2) navigate('/login/tickets');
     else navigate('/main/tickets');
   }
@@ -39,12 +65,25 @@ function Dashboard({ web2, unreadNotifications }) {
     var btn2 = document.getElementById("btn2");
     var btn3 = document.getElementById("btn3");
 
+
+    btn1.classList.add('btnActive');
+    btn2.classList.remove('btnActive');
+    btn3.classList.add('btnActive');
+
     btn2.classList.add('inactive');
     btn1.classList.remove('inactive');
     btn3.classList.remove('inactive');
     document.getElementById("img1").src = ticket;
     document.getElementById("img2").src = notificationGreen;
     document.getElementById("img3").src = wallet;
+
+    var btnContainer1 = document.getElementById("btn1Container");
+    btnContainer1.classList.add('btnContainerActive');
+    var btnContainer2 = document.getElementById("btn2Container");
+    btnContainer2.classList.remove('btnContainerActive');
+    var btnContainer3 = document.getElementById("btn3Container");
+    btnContainer3.classList.add('btnContainerActive');
+
     if (web2) navigate('/login/notifications');
     else navigate('/main/notifications');
   }
@@ -53,12 +92,26 @@ function Dashboard({ web2, unreadNotifications }) {
     var btn1 = document.getElementById("btn1");
     var btn2 = document.getElementById("btn2");
     var btn3 = document.getElementById("btn3");
+
+    btn1.classList.add('btnActive');
+    btn2.classList.add('btnActive');
+    btn3.classList.remove('btnActive');
+
     btn3.classList.add('inactive');
     btn2.classList.remove('inactive');
     btn1.classList.remove('inactive');
+
     document.getElementById("img1").src = ticket;
     document.getElementById("img2").src = notification;
     document.getElementById("img3").src = walletGreen;
+
+    var btnContainer1 = document.getElementById("btn1Container");
+    btnContainer1.classList.add('btnContainerActive');
+    var btnContainer2 = document.getElementById("btn2Container");
+    btnContainer2.classList.add('btnContainerActive');
+    var btnContainer3 = document.getElementById("btn3Container");
+    btnContainer3.classList.remove('btnContainerActive');
+
     if (web2) navigate('/login/wallet');
     else navigate('/main/wallet');
   }
