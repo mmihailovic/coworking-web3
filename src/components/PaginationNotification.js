@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import '../style/pagination.css'
-import Card from './Card'
+
 import grayArrow from '../assets/grayArrow.svg';
 import blackArrow from '../assets/blackArrow.svg';
+import Notification from './Notification';
 
 const Pagination = (props) => {
 
   const {  currentPage,maxPageLimit,minPageLimit} = props;
   const data = props.lista;
-  const cardOrNotf=props.cardOrNotf;
   const totalCards = data.length;
-  var numOfPages=Math.ceil(totalCards/2);
-  const sliceArray = data.slice((currentPage-1)*2, (currentPage-1)*2 + 2)
+  var numOfPages=Math.ceil(totalCards/5);
+  const sliceArray = data.slice((currentPage-1)*5, (currentPage-1)*5 + 5)
 
     
 
@@ -57,13 +57,14 @@ const Pagination = (props) => {
               {
               sliceArray.map((item) => {
                 return (
-                    // <div style={{height:"46%", width:"100%", marginBottom:"2%"}}>
-                        cardOrNotf?<Card onCardClick={props.onClick} key={item.id} card = {item} redeemd={props.redeemed} expired={props.expired}/> : Notification
-                    // </div>
+                    <Notification setCardInNotificationPopup={props.setCardInNotificationPopup} setNotificationInNotificationPopup={props.setNotificationInNotificationPopup}
+                    setShowCardPopup={props.setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={props.numberOfUnreadNotifications}
+                    setNumberOfUnreadNotifications={props.setNumberOfUnreadNotifications}>
+                    </Notification>
                 );
                 })}
             </div>
-            <div style={{position:"absolute",left:"81%", top:"95%", width:"100%", height:"4.5%"}}>
+            <div style={{position:"absolute",left:"70%", top:"95%", width:"100%", height:"4.5%"}}>
                 {totalCards > 2?
                 <ul className="pageNumbers">
                 <li>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../style/NotificationCenter.css";
 import Notification from './Notification';
 import { selectNotificationsWeb2, viewTicketWeb2 } from '../web2communication';
+import PassNotification from './PassNotification';
 
 const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnreadNotifications, setShowCardPopup, setNotificationInNotificationPopup, setCardInNotificationPopup }) => {
 
@@ -48,15 +49,21 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
       </div>
       {/* <Notification></Notification>
         <Notification></Notification> */}
-      {
+
+      <PassNotification lista={notifications} setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup}
+      numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}
+      ></PassNotification>
+      {/* {
         notifications.map((item) => {
           return (
-            <Notification setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup}
-              setShowCardPopup={setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={numberOfUnreadNotifications}
-              setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}>
-            </Notification>
+
+            
+            // <Notification setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup}
+            //   setShowCardPopup={setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={numberOfUnreadNotifications}
+            //   setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}>
+            // </Notification>
           );
-        })}
+        })} */}
     </div>
   )
 }

@@ -87,7 +87,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
   async function shareTicket(hash) {
 
-    let receiver_email = "mihailovicmarko05@gmail.com";
+    let receiver_email = "zarko.munja@gmail.com";
     //let singleTicketInfo = await selectSingleTicketWeb2(hash);
     //console.log(singleTicketInfo);
 
@@ -450,6 +450,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         </div>
       </div>
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
+     
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />

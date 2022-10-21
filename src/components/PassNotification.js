@@ -1,8 +1,7 @@
-import { use } from 'chai';
 import React, {useEffect, useState} from 'react'
-import Pagination from './Pagination';
+import Pagination from './PaginationNotification';
 
-const PassengersList = ({onClick, lista, available, redeemed, expired, cardOrNotf})=>{
+const PassNotification = ({ lista,setCardInNotificationPopup,setNotificationInNotificationPopup,setShowCardPopup,numberOfUnreadNotifications,setNumberOfUnreadNotifications})=>{
   const [passengersData, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
@@ -10,7 +9,7 @@ const PassengersList = ({onClick, lista, available, redeemed, expired, cardOrNot
   const [numOfPages , setnumOfPages]=useState(10);
   const [numOfButtons,setNumOfButtons]=useState(0);
   
-  useEffect(()=>{setData(lista); setnumOfPages(Math.ceil(lista.length/2)); setCurrentPage(1); setMinPageLimit(0); setMaxPageLimit(Math.min(5,Math.ceil(lista.length/2))); setNumOfButtons(Math.min(5,Math.ceil(lista.length/2)));},[lista]);
+  useEffect(()=>{setData(lista); setnumOfPages(Math.ceil(lista.length/5)); setCurrentPage(1); setMinPageLimit(0); setMaxPageLimit(Math.min(5,Math.ceil(lista.length/5))); setNumOfButtons(Math.min(5,Math.ceil(lista.length/5)));},[lista]);
   
   const onPageChange= (pageNumber)=>{
     
@@ -87,11 +86,11 @@ const PassengersList = ({onClick, lista, available, redeemed, expired, cardOrNot
                           onPrevClick={onPrevClick} 
                           onNextClick={onNextClick}
                           onPageChange={onPageChange}
-                          available={available}
-                          redeemed={redeemed}
-                          expired={expired}
-                          onClick={onClick}
-                          cardOrNotf={cardOrNotf}
+                          setCardInNotificationPopup={setCardInNotificationPopup}
+                          setNotificationInNotificationPopup={setNotificationInNotificationPopup}
+                          setShowCardPopup={setShowCardPopup}
+                          numberOfUnreadNotifications={numberOfUnreadNotifications}
+                          setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}
                           />
         
         
@@ -99,4 +98,4 @@ const PassengersList = ({onClick, lista, available, redeemed, expired, cardOrNot
 )
       
  }
-export default PassengersList;
+export default PassNotification;

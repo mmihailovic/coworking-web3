@@ -58,7 +58,7 @@ const Tickets = ({ onCardClick,cards,available, redeemed, expired, setAvailableC
             <p className="menuItem"style={{width:"4.3vw"}}id="expiredButton"onClick={expiredClick}>Expired</p>
           </div>
         <div style={{position:"absolute",height:"90%", width:"100%"}}>
-          <PassengersList onCardClick={onCardClick} listaKarata={cards} available = {available} redeemed = {redeemed} expired = {expired} />
+          <PassengersList onClick={onCardClick} lista={cards} available = {available} redeemed = {redeemed} expired = {expired} cardOrNotf={true}/>
         </div>
     </div>
   )
