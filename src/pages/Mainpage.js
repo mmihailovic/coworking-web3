@@ -82,12 +82,12 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       loadNotificationInfo();
       console.log(data);
     })
-  }, [CONNECTION_PORT])
+  }, [CONNECTION_PORT, email])
 
 
   async function shareTicket(hash) {
 
-    let receiver_email = "zarko.munja@gmail.com";
+    let receiver_email = "mihailovicmarko05@gmail.com";
     //let singleTicketInfo = await selectSingleTicketWeb2(hash);
     //console.log(singleTicketInfo);
 
@@ -112,15 +112,24 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     console.log("unread: " + numberOfUnreadNotifications);
   }
 
+  async function loadAvatar() {
+    let myAvatar = await selectUser(email);
+    setAvatar(myAvatar);
+  }
+
   useEffect(() => {
     loadNotificationInfo();
-  }, [])
+    loadAvatar();
+  }, [email])
 
   useEffect(() => {
     for (let i = 0; i < tickets.length; i++) {
       insertTicketsWeb2(tickets[i].hash, tickets[i].expirationDate);
     }
   }, [tickets])
+  useEffect(()=>{
+    loadNotificationInfo();
+  },[numberOfUnreadNotifications])
 
   async function loadingAnimation(request, msg) {
     setMsg(msg);
@@ -226,16 +235,16 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         // }
 
         for (let i = 0; i < hashes.length; i++) {
-          var email = await selectEmailWeb2(hashes[i]);
+          var emailCurr = await selectEmailWeb2(hashes[i]);
           //emailsArr[i] = email === "no_hashes" ? "Not redeemed" : email;
-          if (email === "no_hashes") email = "Not redeemed";
-          if (email === "Not redeemed") {
-            emailsArr.push(email);
+          if (emailCurr === "no_hashes") emailCurr = "Not redeemed";
+          if (emailCurr === "Not redeemed") {
+            emailsArr.push(emailCurr);
             exDates.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
             hashesOfAvailableTickets.push(hashes[i]);
           }
           else {
-            emailsArrOfRedeemedTickets.push(email);
+            emailsArrOfRedeemedTickets.push(emailCurr);
             exDatesOfRedeemedTickets.push(BigNumber.from(await rent.getExpireDate(i, { from: accounts[0] })));
             hashesOfRedeemedTickets.push(hashes[i]);
           }
@@ -286,19 +295,12 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       }
     }
   }
-  async function loadAvatar() {
-    const accounts = await window.ethereum.request({
-      method: "eth_accounts",
-    });
-    let myAvatar = await selectUser(email);
-    setAvatar(myAvatar);
-  }
 
   useEffect(() => {
     getTokenBalance();
     GetStakingBalance();
     getRentInfo();
-    if (!avatar) loadAvatar();
+    getTickets();
   }, [])
 
   useEffect(() => {
@@ -437,7 +439,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     <>
       {/* <div> */}
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} notificationShow={notificationShow} setNotificationShow={setNotificationShow}></Header>
+        <Header email={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} notificationShow={notificationShow} setNotificationShow={setNotificationShow}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={false} unreadNotifications={numberOfUnreadNotifications}></Dashboard>

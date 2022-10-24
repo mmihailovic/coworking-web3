@@ -17,7 +17,7 @@ const NotificationCenterPopup = ({show, email, numberOfUnreadNotifications, setN
 
     useEffect(()=> {
         getNotifications(email);
-    },[])
+    },[email])
     useEffect(()=> {
         getNotifications(email);
 

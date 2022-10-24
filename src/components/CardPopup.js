@@ -4,7 +4,6 @@ import close from '../assets/Close.svg';
 
 const CardPopup = ({ showPopup, func, skipFunc, card, notification }) => {
 
-  console.log(notification);
   let expiring = false;
   let received = false;
   let email = "";

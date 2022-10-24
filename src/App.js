@@ -11,6 +11,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { UserContext } from './context/userContext';
 import { checkUser } from './service/magic';
 import Authenticate from './components/Authenticate';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
   const [haveMetamask, sethaveMetamask] = useState(true);
@@ -22,7 +23,6 @@ function App() {
   const [user, setUser] = useState({ isLoggedIn: null, email: '' });
   const [loading, setLoading] = useState();
   const { ethereum } = window;
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const navigate = useNavigate();
 
@@ -37,27 +37,17 @@ function App() {
       setLoading(true);
       try {
         await checkUser(setUser);
-        setLoading(false);
-        if(user.isLoggedIn){
-          if(isConnected == true)navigate('/main/tickets');
+        if(user.isLoggedIn && user.email.length > 0){
+          if(isConnected == true && await selectUser(user.email) != 'user not existing')navigate('/main/tickets');
           else navigate('/login/tickets');
         }
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
     validateUser();
   }, [user.isLoggedIn]);
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: '100vh' }}
-      >
-        <Spinner animation="border" />
-      </div>
-    );
-  }
 
   // const ConnectWallet = async () => {
   //   try{
@@ -112,9 +102,9 @@ function App() {
   return (
     <UserContext.Provider value={user}>
         <Routes>
-          <Route exact path="/" element={<Authenticate logged={isConnected}></Authenticate>} />
-          <Route exac path="/login/*" element={<LoginPage setAccount = {setAccountAddress} setBalance = {setAccountBalance} setUserAvatar = {setAvatar} setConnected = {setIsConnected}/>} />
-          <Route path="/main/*" element={<Mainpage accountAddress={accountAddress} userAvatar={avatar}/>}></Route>
+          <Route exact path="/" element={<><Authenticate logged={isConnected}></Authenticate><LoadingScreen showLoadingScreen={loading}></LoadingScreen></>} />
+          <Route exac path="/login/*" element={<><LoginPage setAccount = {setAccountAddress} setBalance = {setAccountBalance} setUserAvatar = {setAvatar} setConnected = {setIsConnected}/><LoadingScreen showLoadingScreen={loading}></LoadingScreen></>} />
+          <Route path="/main/*" element={<><Mainpage accountAddress={accountAddress} userAvatar={avatar}/><LoadingScreen showLoadingScreen={loading}></LoadingScreen></>}></Route>
         </Routes>
      </UserContext.Provider> 
   //         <div className="App">

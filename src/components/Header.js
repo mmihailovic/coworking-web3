@@ -8,8 +8,7 @@ import Button from 'react-bootstrap/Button';
 import { UserContext } from '../context/userContext';
 import { logoutUser } from '../service/magic';
 import NotificationCenterPopup from "./NotificationCenterPopup";
-const Header = ({walletAddress, avatar, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
-  const { email } = useContext(UserContext);
+const Header = ({email, avatar, numberOfUnreadNotifications, setNumberOfUnreadNotifications}) => {
   const history = useNavigate();
   const handleLogOut = async () => {
     try {
@@ -34,7 +33,7 @@ const Header = ({walletAddress, avatar, numberOfUnreadNotifications, setNumberOf
         <img src={logo} id="beoseats"></img>
         <span id="whiteCircle"></span>
         {avatar != null && avatar.length > 0 && avatar !== 'user not existing'?<img src={ require('../assets/' + avatar)} style={{position:"absolute", left:"53.46%", top:"26.5%", width:"52%", height:"52%"}}></img>:null}
-        <p id="wallet">{walletAddress.substring(0,13) + "..."}</p>
+        <p id="wallet">{email.substring(0,13) + "..."}</p>
         <div id="notification" onClick={showNotifications}>
         {/* style={{postition:"absolute", left:"50%", backgroundColor:"red", width:"69px", height:"64px"}} */}
             <img id="not_icon"src={notification} alt="notificaiton" width={54} height={54}></img>

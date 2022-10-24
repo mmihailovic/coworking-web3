@@ -3,11 +3,11 @@ import logo from '../assets/mylogo.svg';
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import { useState, useEffect, useContext } from 'react';
-import { setAvatar, insertAvatar, selectUser, insertUser, shareTicketWeb2, numberOfUnreadNotificationWeb2, numberOfReadNotifications } from '../web2communication';
-import { useNavigate } from 'react-router-dom';
+import { setAvatar, insertAvatar, selectUser, insertUser, shareTicketWeb2, numberOfUnreadNotificationWeb2, numberOfReadNotifications, selectEmailWeb2 } from '../web2communication';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ethers } from 'ethers';
 import { UserContext } from '../context/userContext';
-import { logoutUser } from '../service/magic';
+import { checkEmail, checkUser, logoutUser } from '../service/magic';
 import ConfirmPopup from '../components/ConfirmPopup';
 import Header from '../components/Header';
 import Dashboard from '../components/Dashboard';
@@ -45,26 +45,20 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
 
   async function generateAvatar() {
     let x = Math.floor((Math.random() * 8) + 1);
-    insertUser(email, "avatar" + x + ".svg");
+    await insertUser(email, "avatar" + x + ".svg");
     setAvatar("avatar" + x + ".svg");
     setShowConfirmPopup(false);
   }
   async function loadAvatar() {
     let myAvatar = await selectUser(email);
     if (myAvatar == "user not existing") {
-      setShowConfirmPopup(true);
+      if(email.length > 0)setShowConfirmPopup(true);
     }
-    else setAvatar(myAvatar);
+    else if(myAvatar != null && myAvatar.length > 0)setAvatar(myAvatar);
   }
   async function loadNotificationInfo() {
-    //numberOfReadNotifications = await numberOfUnreadNotificationWeb2("mihailjovanoski14", true);
-    //numberOfUnreadNotifications = await numberOfUnreadNotificationWeb2(email, false);
-
     setNumberOfUnreadNotifications(await numberOfUnreadNotificationWeb2(email, false));
     setNumberOfReadNotifications(await numberOfUnreadNotificationWeb2(email, true));
-
-    console.log("read: " + numberOfReadNotifications);
-    console.log("unread: " + numberOfUnreadNotifications);
   }
   useEffect(() => {
     socket = io(CONNECTION_PORT, { path: '/api/socket.io' });
@@ -73,10 +67,7 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
       loadNotificationInfo();
       console.log(data);
     })
-  }, [CONNECTION_PORT])
-  useEffect(() => {
-    loadNotificationInfo();
-  }, [])
+  }, [CONNECTION_PORT, email])
   useEffect(() => {
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
@@ -87,12 +78,18 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
     };
     checkMetamaskAvailability();
     if (haveMetamask) checkIfWalletIsConnected(setConnected);
-    if (avatar == null) loadAvatar();
+  }, []);
+  useEffect(()=>{
     if (email == null) {
       navigate('/');
     }
     getTickets();
-  }, []);
+    loadNotificationInfo();
+    loadAvatar();
+  },[email])
+  useEffect(()=>{
+    loadNotificationInfo();
+  },[numberOfUnreadNotifications])
   const parseTickets = (expirationDates, hash, email) => {
     let tmpArr = [];
     for (let i = 0; i < hash.length; i++) {
@@ -137,10 +134,10 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
           emailsArrOfExpiredTickets.push(userTickets[i].email);
         }
         else {
-          if (userTickets.activated) {
+          if (userTickets[i].activated) {
             exDatesOfRedeemedTickets.push(userTickets[i].end_date);
             hashesOfRedeemedTickets.push(userTickets[i].id);
-            emailsArrOfExpiredTickets.push(userTickets[i].email);
+            emailsArrOfRedeemedTickets.push(userTickets[i].email);
           }
           else {
             exDatesOfAvailableTickets.push(userTickets[i].end_date);
@@ -160,6 +157,10 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
   }
   const ConnectWallet = async () => {
     try {
+      if (avatar == null || avatar == "user not existing") {
+        console.log('nema avatar pri connect wallet');
+        await generateAvatar();
+      }
       if (!ethereum) {
         sethaveMetamask(false);
       }
@@ -169,10 +170,6 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       let balance = await provider.getBalance(accounts[0]);
       let bal = ethers.utils.formatEther(balance);
-      if (avatar == null || avatar == "user not existing") {
-        console.log('nema avatar pri connect wallet');
-        generateAvatar();
-      }
       setAccount(accounts[0]);
       setBalance(bal);
       setConnected(true);
@@ -187,6 +184,8 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
+      if(await selectUser(email.length) === 'user not existing')
+        return;
       if (accounts.length > 0) {
         const account = accounts[0];
         setAccount(account);
@@ -205,7 +204,7 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
   return (
     <>
       <div className='mainDiv'>
-        <Header walletAddress={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Header>
+        <Header email={email} avatar={avatar} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}></Header>
         <div style={{ position: "relative", width: "100%", height: "80%", marginLeft: "2%", marginTop: "1%" }}>
           <div style={{ position: "relative", width: "23%", height: "85%" }}>
             <Dashboard web2={true} unreadNotifications={numberOfUnreadNotifications}></Dashboard>

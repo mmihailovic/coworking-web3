@@ -11,6 +11,7 @@ import { loginUser } from '../service/magic';
 import sideNavBar from '../assets/sidebarNav.svg';
 import '../style/authenticate.css';
 import Popup from './Popup';
+import { selectUser } from '../web2communication';
 const Authenticate = ({logged}) => {
 
   const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ const Authenticate = ({logged}) => {
     try {
       setShowPopup(true);
       await loginUser(email);
-      if(logged)history('/main');
+      if(logged && await selectUser(email) !== 'user not existing')history('/main');
       else history('/login');
       window.location.reload(false);
     } catch (error) {
@@ -54,6 +55,7 @@ const Authenticate = ({logged}) => {
             onChange={handleChange}
             placeholder="Email"
             className='emailInput'
+            autoComplete='off'
           />
         </FormGroup>
         <button type="submit" className='signButton'>Sign in</button>
