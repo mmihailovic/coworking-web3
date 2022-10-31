@@ -1,0 +1,150 @@
+.myWallet{
+
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 120%;
+
+    color: #000000;
+}
+
+.walletAddressDiv{
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    margin-top: 40px;
+
+    border: 3px solid #CBD5E1;
+    border-radius: 16px;
+}
+
+.walletAddress{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    /* line-height: 120%; */
+    margin-left: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #000000;
+}
+
+#connectedText{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    /* line-height: 20px; */
+
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 30px;
+    color: #0568FD;
+}
+
+.balanceDiv{
+    position: relative;
+    height: 110px;
+    margin-top: 15px;
+    
+    border: 3px solid #CBD5E1;
+    border-radius: 16px;
+}
+.balanceDivInner{
+   margin-top: calc((110px - 6px - 57px)/2);
+   margin-left: 30px;
+}
+
+.balanceText{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    color: #000000;
+    margin-bottom: 0;
+}
+
+#inWalletText{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #528990;
+}
+
+.iconBalance{
+    position: absolute;
+    
+    right: 0px;
+    bottom: 0px;
+    /* border: 4px solid #528990;
+    border-radius: 50px; */
+}
+
+.credits{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+
+    color: #000000;
+    margin-top: 30px;
+}
+
+.stakingDiv{
+    margin-top: 40px;
+    height: 360px;
+    border: 3px solid #CBD5E1;
+    border-radius: 16px;
+}
+
+#rentalCreditText{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #528990;
+    margin-right: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#stakeInfo{
+    margin-left: 30px;
+    margin-top: 40px;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    
+    color: #000000;
+
+}
+
+#inputAmount{
+    width: 320px;
+    height: 50px;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+    border: 2px solid #CBD5E1;
+    border-radius: 6px;
+}
+
+#buyCreditsBtn{
+
+    width: 160px;
+    height: 50px;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 20px;
+
+    background: #0568FD;
+    border-radius: 6px;
+}

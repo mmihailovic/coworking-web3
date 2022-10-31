@@ -1,3 +1,9 @@
+.notifications{
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+}
 .markAll{
 
     width: 157px;

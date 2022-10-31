@@ -26,7 +26,7 @@ import io from "socket.io-client";
 import { UserContext } from '../context/userContext';
 import NotificationCenter from '../components/NotificationCenter';
 import { Route, Routes } from 'react-router-dom';
-import Wallet from '../components/Wallet';
+import MyWallet from '../components/MyWallet';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -87,7 +87,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
   async function shareTicket(hash) {
 
-    let receiver_email = "mihailovicmarko05@gmail.com";
+    let receiver_email = "mihailjovanoski14@gmail.com";
     //let singleTicketInfo = await selectSingleTicketWeb2(hash);
     //console.log(singleTicketInfo);
 
@@ -166,6 +166,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         const stakeBal = await rentContract.getStakingBalance(accounts[0]);
         const x = Math.trunc(ethers.utils.formatEther(stakeBal));
         setStakedTokens(x);
+        console.log("NUMBE OF STAKED TOKENS" + x);
 
         const rented = await rentContract.numberOfRentedPlacesForAddress(accounts[0]);
         setRentedPlaces(rented.toNumber());
@@ -311,7 +312,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     getTickets();
   }, [rentedPlaces])
 
-  const StakeTokens = async () => {
+  const StakeTokens = async (amountToStake) => {
     if (typeof window.ethereum !== 'undefined') {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -319,7 +320,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       const token = new ethers.Contract(process.env.REACT_APP_tokenAddress, Token.abi, signer)
       const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
       console.log(stakingValue);
-      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
+      let amount = BigNumber.from(10).pow(18).mul(amountToStake);
       console.log(amount);
       try {
 
@@ -331,10 +332,10 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         request = await rentContract.stakeTokens(amount);
         await loadingAnimation(request, "Waiting for stake ...");
 
-        setBeoTokenBalance(beoTokenBalance - stakingValue);
-        setStakedTokens(stakedTokens - (- stakingValue));
+        setBeoTokenBalance(beoTokenBalance - amountToStake);
+        setStakedTokens(stakedTokens - (- amountToStake));
         setShowPopup(true);
-        setText('You have successfully staked ' + stakingValue + ' BEO');
+        setText('You have successfully staked ' + amountToStake + ' BEO');
         setpopupTitle('Info');
         setStakingValue(0);
       } catch (err) {
@@ -447,7 +448,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
             <Route path="notifications" element={<NotificationCenter setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup} email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
-            <Route path="wallet" element={<Wallet></Wallet>}></Route>
+            <Route path="wallet" element={<MyWallet stakeTokens={StakeTokens} walletAddress={accountAddress} beoTokenBalance={beoTokenBalance} stakedTokes={stakedTokens}></MyWallet>}></Route>
           </Routes>
         </div>
       </div>
