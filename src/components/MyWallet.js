@@ -19,7 +19,7 @@ const MyWallet = ({walletAddress, beoTokenBalance, stakedTokes, stakeTokens}) =>
 
 
   return (
-    <div className='myWalletDiv' style={{position:"absolute", top:"2%", left:"27.5%", width:"65%", height:"100%", overflowY:"auto"}}>
+    <div className='myWalletDiv' style={{position:"absolute", top:"2%", left:"27.5%", width:"65%", height:"100%"}}>
         <div>
             <p className="myWallet">Wallet</p>
             
@@ -59,7 +59,7 @@ const MyWallet = ({walletAddress, beoTokenBalance, stakedTokes, stakeTokens}) =>
                     <Button id='buyCreditsBtn' onClick={stake}>BUY CREDITS</Button>
                 </div>
 
-                <div style={{marginLeft:"30px", marginTop:"40px"}}>
+                <div style={{marginLeft:"30px", marginTop:"30px"}}>
                     <p style={{display:"inline",fontFamily:"Roboto Mono", fontWeight:"700", fontSize:"14px"}}>Don't need credits anymore?</p>
                     <p style={{display:"inline", marginLeft:"15px", fontFamily:"Space Mono", fontWeight:"700", fontSize:"14px", color:"#DA918F", cursor:"pointer"}}>Sell credits</p>
                 </div>

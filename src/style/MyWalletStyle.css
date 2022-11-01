@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     height: 100px;
-    margin-top: 40px;
+    margin-top: 20px;
 
     border: 3px solid #CBD5E1;
     border-radius: 16px;
@@ -47,7 +47,7 @@
 .balanceDiv{
     position: relative;
     height: 110px;
-    margin-top: 15px;
+    margin-top: 10px;
     
     border: 3px solid #CBD5E1;
     border-radius: 16px;
@@ -90,11 +90,11 @@
     font-size: 36px;
 
     color: #000000;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .stakingDiv{
-    margin-top: 40px;
+    margin-top: 15px;
     height: 360px;
     border: 3px solid #CBD5E1;
     border-radius: 16px;
@@ -118,7 +118,7 @@
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
-    
+    width: 75%;
     color: #000000;
 
 }
