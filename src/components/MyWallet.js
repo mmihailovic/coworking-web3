@@ -3,7 +3,7 @@ import '../style/MyWalletStyle.css';
 import icon from "../assets/MoreticketsIcon.svg";
 import { Button } from 'react-bootstrap';
 
-const MyWallet = ({walletAddress, beoTokenBalance, stakedTokes, stakeTokens}) => {
+const MyWallet = ({walletAddress, beoTokenBalance, stakedTokes, stakeTokens, setShowUnstakePopup}) => {
 
     function stake() {
         let stakingAmount = document.getElementById("inputAmount").value;
@@ -61,7 +61,7 @@ const MyWallet = ({walletAddress, beoTokenBalance, stakedTokes, stakeTokens}) =>
 
                 <div style={{marginLeft:"30px", marginTop:"30px"}}>
                     <p style={{display:"inline",fontFamily:"Roboto Mono", fontWeight:"700", fontSize:"14px"}}>Don't need credits anymore?</p>
-                    <p style={{display:"inline", marginLeft:"15px", fontFamily:"Space Mono", fontWeight:"700", fontSize:"14px", color:"#DA918F", cursor:"pointer"}}>Sell credits</p>
+                    <p onClick={()=>{setShowUnstakePopup(true)}} style={{display:"inline", marginLeft:"15px", fontFamily:"Space Mono", fontWeight:"700", fontSize:"14px", color:"#DA918F", cursor:"pointer"}}>Sell credits</p>
                 </div>
             </div>
         </div>

@@ -219,7 +219,7 @@ const LoginPage = ({ onClick, setAccount, setBalance, setUserAvatar, setConnecte
           </Routes>
         </div>
       </div>
-      <ConfirmPopup showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
+      <ConfirmPopup sell={null} title={"Connect a wallet to rent desks"}buttonText={"CONNECT WALLET"}content={"You need to connect a wallet to use rent desks and buy tickets for BeoSpace."}showPopup={showConfirmPopup} connectFunc={ConnectWallet} skipFunc={generateAvatar}></ConfirmPopup>
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
     </>
   )

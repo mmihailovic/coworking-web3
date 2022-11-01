@@ -12,6 +12,11 @@ const Pagination = (props) => {
   const totalCards = data.length;
   var numOfPages=Math.ceil(totalCards/5);
   const sliceArray = data.slice((currentPage-1)*5, (currentPage-1)*5 + 5)
+  let curr_notification_date = new Date();
+  let today = new Date();
+  let firstDate = true;
+  let lista = [];
+  let index = 0;
 
     
 
@@ -51,20 +56,27 @@ const Pagination = (props) => {
     }
    
  );
+ function areDatesEqual(date1, date2) {
+    return date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth()
+      && date1.getFullYear() == date2.getFullYear();
+  }
     return (
         <div className="main" style={{height:"100%", width:"100%"}}>
-            <div className="mainData" style={{height:"90%", width:"100%", marginTop:"3%"}}>
+            <div className="mainData" style={{height:"90%", width:"100%"}}>
               {
               sliceArray.map((item) => {
-                return (
+                if(typeof item === 'object')return (
+                    <>
                     <Notification setCardInNotificationPopup={props.setCardInNotificationPopup} setNotificationInNotificationPopup={props.setNotificationInNotificationPopup}
                     setShowCardPopup={props.setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={props.numberOfUnreadNotifications}
                     setNumberOfUnreadNotifications={props.setNumberOfUnreadNotifications}>
                     </Notification>
+                    </>
                 );
+                else return <p>{item}</p>
                 })}
             </div>
-            <div style={{position:"absolute",left:"70%", top:"95%", width:"100%", height:"4.5%"}}>
+            <div style={{position:"absolute",left:"75%", top:"95%", width:"100%", height:"4.5%"}}>
                 {totalCards > 2?
                 <ul className="pageNumbers">
                 <li>

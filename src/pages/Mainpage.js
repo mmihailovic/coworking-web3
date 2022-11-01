@@ -27,6 +27,7 @@ import { UserContext } from '../context/userContext';
 import NotificationCenter from '../components/NotificationCenter';
 import { Route, Routes } from 'react-router-dom';
 import MyWallet from '../components/MyWallet';
+import ConfirmPopup from '../components/ConfirmPopup';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -58,6 +59,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [cardInNotificationPopup, setCardInNotificationPopup] = useState();
   const [notificationInNotificationPopup, setNotificationInNotificationPopup] = useState();
   const [showCardPopup, setShowCardPopup] = useState(false);
+  const [showUnstakePopup,setShowUnstakePopup] = useState(false);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -448,12 +450,13 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
           <Routes>
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
             <Route path="notifications" element={<NotificationCenter setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup} email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
-            <Route path="wallet" element={<MyWallet stakeTokens={StakeTokens} walletAddress={accountAddress} beoTokenBalance={beoTokenBalance} stakedTokes={stakedTokens}></MyWallet>}></Route>
+            <Route path="wallet" element={<MyWallet setShowUnstakePopup={setShowUnstakePopup} stakeTokens={StakeTokens} walletAddress={accountAddress} beoTokenBalance={beoTokenBalance} stakedTokes={stakedTokens}></MyWallet>}></Route>
           </Routes>
         </div>
       </div>
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
-     
+      <ConfirmPopup buttonColor={"#DA918F"} sell={true} content={"If you proceed, rental credits will be deducted from your account."} buttonText={"SELL CREDITS"} inputTitle={"AMOUNT OF CREDITS TO SELL"} title={"Are you sure you want to sell credits?"}showPopup={showUnstakePopup} connectFunc={()=>{console.log("Unstake")}} skipFunc={setShowUnstakePopup}></ConfirmPopup>
+      {/* <ConfirmPopup buttonColor={"#0568FD"} sell={false} content={"You can share B123459 with existing BeoDesks user - just type in their account username (email address) below."} buttonText={"SHARE TICKET"} inputTitle={"SHARE WITH"} title={"Share ticket to BeoDesk user?"}showPopup={true} connectFunc={()=>{console.log("A")}} skipFunc={()=>{}}></ConfirmPopup> */}
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />
