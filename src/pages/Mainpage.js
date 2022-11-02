@@ -350,14 +350,14 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     }
   }
 
-  const UnstakeTokens = async () => {
+  const UnstakeTokens = async (amountToUnstake) => {
     if (typeof window.ethereum !== 'undefined') {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
-      console.log(stakingValue);
-      let amount = BigNumber.from(10).pow(18).mul(stakingValue);
+      console.log(amountToUnstake);
+      let amount = BigNumber.from(10).pow(18).mul(amountToUnstake);
       console.log(amount);
 
       try {
@@ -366,11 +366,11 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
 
         await loadingAnimation(request, "Waiting for unstake ...");
 
-        setBeoTokenBalance(beoTokenBalance - (-stakingValue));
-        setStakedTokens(stakedTokens - stakingValue);
+        setBeoTokenBalance(beoTokenBalance - (-amountToUnstake));
+        setStakedTokens(stakedTokens - amountToUnstake);
         getTickets();
         setShowPopup(true);
-        setText('You have successfully unstaked ' + stakingValue + ' BEO');
+        setText('You have successfully unstaked ' + amountToUnstake + ' BEO');
         setpopupTitle('Info');
         setStakingValue(0);
       } catch (err) {
@@ -455,7 +455,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         </div>
       </div>
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
-      <ConfirmPopup buttonColor={"#DA918F"} sell={true} content={"If you proceed, rental credits will be deducted from your account."} buttonText={"SELL CREDITS"} inputTitle={"AMOUNT OF CREDITS TO SELL"} title={"Are you sure you want to sell credits?"}showPopup={showUnstakePopup} connectFunc={()=>{console.log("Unstake")}} skipFunc={setShowUnstakePopup}></ConfirmPopup>
+      <ConfirmPopup unstakeFunc={UnstakeTokens} buttonColor={"#DA918F"} sell={true} content={"If you proceed, rental credits will be deducted from your account."} buttonText={"SELL CREDITS"} inputTitle={"AMOUNT OF CREDITS TO SELL"} title={"Are you sure you want to sell credits?"}showPopup={showUnstakePopup} connectFunc={()=>{console.log("Unstake")}} skipFunc={setShowUnstakePopup}></ConfirmPopup>
       {/* <ConfirmPopup buttonColor={"#0568FD"} sell={false} content={"You can share B123459 with existing BeoDesks user - just type in their account username (email address) below."} buttonText={"SHARE TICKET"} inputTitle={"SHARE WITH"} title={"Share ticket to BeoDesk user?"}showPopup={true} connectFunc={()=>{console.log("A")}} skipFunc={()=>{}}></ConfirmPopup> */}
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>

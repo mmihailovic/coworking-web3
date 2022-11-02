@@ -3,11 +3,17 @@ import '../style/ConfirmPopup.css';
 import close from '../assets/Close.svg';
 import { useState } from 'react';
  
-const ConfirmPopup = ({showPopup, connectFunc, skipFunc, title, content, buttonText, inputTitle, sell, buttonColor}) => {
+const ConfirmPopup = ({showPopup, connectFunc, skipFunc, title, content, buttonText, inputTitle, sell, buttonColor, unstakeFunc}) => {
     const [buttonEnabled,setButtonEnabled] = useState(false);
+    const [unstakeAmount,setUnstakeAmount] = useState(0);
 
     const handleUnstake = () => {
-        if(document.getElementById("numberPopup").value.length > 0) setButtonEnabled(true);
+        let amount = document.getElementById("numberPopup").value;
+        let isnum = /^\d+$/.test(amount);
+        if(isnum) {
+            setButtonEnabled(true);
+            setUnstakeAmount(amount);
+        }
         else setButtonEnabled(false);
     }
   return (showPopup)?(
@@ -29,8 +35,8 @@ const ConfirmPopup = ({showPopup, connectFunc, skipFunc, title, content, buttonT
                     </div></>:<><p style={{fontFamily:"Space Mono", position:"absolute", top:"54%", left:"20%", fontWeight:"bold", fontSize:"0.9em"}}>{inputTitle}</p>
                     {sell == true?<input onChange={handleUnstake} type="number" id="numberPopup" className='inputInPopup' placeholder='Number of credits, e.g. 4'></input>:sell==false?<input onChange={handleUnstake} id="numberPopup" type="email"className='inputInPopup'placeholder='Email address (username)'></input>:null}</>
                     }
-                    <button onClick={connectFunc} id='connectWallet' className="confirmButton" style={{background:buttonEnabled?buttonColor:"#CBD5E1"}} disabled={buttonEnabled?false:true}>{buttonText}</button>
-                    <button onClick={()=>skipFunc(false)} className='skipButton' id='skipWallet'>Skip for now</button>
+                    <button onClick={()=>{if(sell){unstakeFunc(unstakeAmount); skipFunc(false);} else connectFunc()}} id='connectWallet' className="confirmButton" style={{background:buttonEnabled?buttonColor:"#CBD5E1"}} disabled={buttonEnabled?false:true}>{buttonText}</button>
+                    {sell==true?<button onClick={()=>skipFunc(false)} className='skipButton' id='skipWallet'>Cancel</button>:<button onClick={()=>skipFunc(false)} className='skipButton' id='skipWallet'>Skip for now</button>}
                 </div>
             </div>
         </div>
