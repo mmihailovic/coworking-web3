@@ -49,6 +49,22 @@ export async function selectUser(email) {
     });
 }
 
+export async function checkUser(email) {
+  return fetch("https://coworking-khuti.ondigitalocean.app/api/checkUser", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then(response => {
+      if (response.status == 200) {
+        return true;
+      }
+      return false;
+    });
+}
+
 
 export async function insertUser(email, avatar) {
 
