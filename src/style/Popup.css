@@ -15,10 +15,10 @@
 .popupmodal-content {
     position:relative;
     padding: 32px;
-    width: 40%;
+    /* width: 40%; */
     max-width: 640px;
     background-color: white;
-    height: 40%;
+    /* height: 40%; */
     border-radius: 20px;
 }
 .popupTitle {
@@ -51,4 +51,9 @@
     top:5%;
     background: transparent;
     background-color: transparent;
+}
+#emailPopup {
+    position: relative;
+    height: 40%;
+    width: 40%;
 }

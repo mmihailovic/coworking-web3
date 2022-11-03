@@ -66,14 +66,14 @@ const Pagination = (props) => {
               {
               sliceArray.map((item) => {
                 if(typeof item === 'object')return (
-                    <>
+                    // <>
                     <Notification setCardInNotificationPopup={props.setCardInNotificationPopup} setNotificationInNotificationPopup={props.setNotificationInNotificationPopup}
                     setShowCardPopup={props.setShowCardPopup} key={item.id} notification={item} numberOfUnreadNotifications={props.numberOfUnreadNotifications}
                     setNumberOfUnreadNotifications={props.setNumberOfUnreadNotifications}>
                     </Notification>
-                    </>
+                    // </>
                 );
-                else return <p>{item}</p>
+                // else return(<p>{item}</p>);
                 })}
             </div>
             <div style={{position:"absolute",left:"75%", top:"95%", width:"100%", height:"4.5%"}}>

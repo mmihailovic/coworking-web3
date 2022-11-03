@@ -19,7 +19,7 @@
     width: 50%;
     max-width: 640px;
     background-color: white;
-    height:60%;
+    height:70%;
     border-radius: 20px;
 
 }
@@ -64,8 +64,10 @@
     align-items: center;
     display: flex;
     color: white; 
-    width: 40%;
-    height: 10%;
+    width: 30%;
+    height: 8%;
+    /* width: 200px;
+    height: 50px; */
     font-family: 'Space Mono';
     font-weight: bold;
 }
@@ -84,11 +86,14 @@
 }
 #connectWallet {
     position:absolute;
-    top:75%;
-    left:30.5%;   
+    top:78%;
+    left:35%;   
     font-weight: bold;
     text-transform: uppercase;
-
+    position: absolute;
+    text-transform: uppercase;
+    width: 200px;
+    height: 50px;
 }
 #skipWallet {
     position: absolute;
@@ -137,7 +142,7 @@
     border: 2px solid #CBD5E1;
     border-radius: 6px;
     padding: 5px;
-    padding-left:25px
+    padding-left:25px;
 }
 
 input::-webkit-outer-spin-button,
@@ -150,4 +155,49 @@ input::-webkit-inner-spin-button {
     position: absolute;
     top:60%;
     left:20%;
+}
+
+#emailPopupInput {
+    position: absolute;
+    top:60%;
+    left:20%;
+
+}
+
+.wrong {
+    width: 320px;
+    height: 50px;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    border: 2px solid #DA918F;
+    border-radius: 6px;
+    color: #DA918F;
+    padding: 5px;
+    padding-left:25px
+}
+
+.checking {
+    background: url('../assets/checking.svg') no-repeat scroll 290px 17px;
+    width: 320px;
+    height: 50px;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+    border: 2px solid #CBD5E1;
+    border-radius: 6px;
+    padding: 5px;
+    padding-left:25px
+}
+
+.wrongText {
+    color: #DA918F;
+    font-family: 'Roboto Mono';
+    position: absolute;
+    top:68%;
+    left:24%;
+    font-size: 12px;
 }

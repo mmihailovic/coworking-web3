@@ -1,0 +1,39 @@
+#tick {
+    position: absolute;
+    top:10%;
+    left:42%;
+}
+#successfulTitle {
+    position: absolute;
+    top:38%;
+    left:26%;
+    font-family: 'Space Mono';
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.8em;
+
+}
+#successfulTransaction {
+    position: relative;
+    height: 50%;
+    width: 40%;
+}
+#successfulContent {
+    font-family: 'Roboto Mono';
+    position: absolute;
+    left:20%;
+    top:50%;
+    width: 60%;
+    text-align: center;
+}
+#viewTickets {
+    position: absolute;
+    top:73%;
+    left:35%;
+    height: 10%;
+}
+#closeSuccessfulPopup {
+    position: absolute;
+    top:87%;
+    left: 37%;
+}

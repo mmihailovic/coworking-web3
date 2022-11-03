@@ -28,6 +28,9 @@ import NotificationCenter from '../components/NotificationCenter';
 import { Route, Routes } from 'react-router-dom';
 import MyWallet from '../components/MyWallet';
 import ConfirmPopup from '../components/ConfirmPopup';
+import PopupWithEmail from '../components/PopupWithEmail';
+import SuccessfullTransactionPopup from '../components/SuccessfullTransactionPopup';
+import TransactionPopup from '../components/TransactionPopup';
 
 let socket;
 const CONNECTION_PORT = "https://coworking-khuti.ondigitalocean.app";
@@ -457,6 +460,9 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
       <ConfirmPopup unstakeFunc={UnstakeTokens} buttonColor={"#DA918F"} sell={true} content={"If you proceed, rental credits will be deducted from your account."} buttonText={"SELL CREDITS"} inputTitle={"AMOUNT OF CREDITS TO SELL"} title={"Are you sure you want to sell credits?"}showPopup={showUnstakePopup} connectFunc={()=>{console.log("Unstake")}} skipFunc={setShowUnstakePopup}></ConfirmPopup>
       {/* <ConfirmPopup buttonColor={"#0568FD"} sell={false} content={"You can share B123459 with existing BeoDesks user - just type in their account username (email address) below."} buttonText={"SHARE TICKET"} inputTitle={"SHARE WITH"} title={"Share ticket to BeoDesk user?"}showPopup={true} connectFunc={()=>{console.log("A")}} skipFunc={()=>{}}></ConfirmPopup> */}
+      {/* <TransactionPopup showPopup={true} numberOfDesks={1} period = {1} price={2}></TransactionPopup> */}
+      {/* <SuccessfullTransactionPopup trigger={true} title={'Renting successful'} content={"You successfully rented 1 desk for 1 month. The tickets are available in your dashboard."}></SuccessfullTransactionPopup> */}
+      {/* <PopupWithEmail showPopup={true} email={"pera@altlabs.dev"} shareTicket={true}></PopupWithEmail> */}
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
             <img src={profile} alt="profile" className='picture' />

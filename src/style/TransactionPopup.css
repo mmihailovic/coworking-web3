@@ -1,0 +1,61 @@
+#rentingProceed{
+    position: absolute;
+    top:75%;
+    left:30%;
+    width:275px;
+    height:50px;
+}
+#rentingSkip{
+    position: absolute;
+    top:84%;
+    left:30%;
+    width:275px;
+    height:50px;
+}
+#transactionTitle {
+    position: absolute;
+    top:20%;
+    left:19%;
+}
+#transactionContent {
+    position: absolute;
+    top:32%;
+    left:37%;
+    font-size: 1.1em;
+}
+#transactionData {
+    position: absolute;
+    top:45%;
+    left:22%;
+    width: 50%;
+}
+.data {
+    font-family: 'Roboto Mono';
+    font-weight: bold;
+}
+.bluetext {
+    font-family: 'Space Mono';
+    color: #0568FD;
+    font-weight: bold;
+    text-align: right;
+}
+#numberOfDesksText {
+    position: absolute;
+    right: 0%;
+    top:0%;
+}
+#periodText {
+    position: absolute;
+    /* left:75%; */
+    top:37%;
+    right: 0%;
+}
+#priceText {
+    position: absolute;
+    right: 0%;
+    top:74%;
+}
+#transactionDataTable {
+    /* padding-bottom: 30px; */
+    padding-bottom: 10%;
+}

@@ -5,7 +5,7 @@ function Popup({trigger, emailToShow, func}) {
   return (trigger)?(
     <div>
         <div className="popupmodal">
-            <div className="popupmodal-content">
+            <div className="popupmodal-content" id="emailPopup">
                 <div className="modalpopup-body">
                 <button onClick={()=>func(false)}><img src={close}id="closeBtn"></img></button>
                   <p className="popupTitle">Check your email</p>

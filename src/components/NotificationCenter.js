@@ -58,18 +58,19 @@ const NotificationCenter = ({ email, numberOfUnreadNotifications, setNumberOfUnr
       </div>
       {/* <Notification></Notification>
         <Notification></Notification> */}
-        {
-          notifications.map((item) => {
-            let tmp_notification_date = new Date(item.date);
-            let shouldAddDateParagraph = !areDatesEqual(tmp_notification_date, curr_notification_date) || (areDatesEqual(tmp_notification_date, today) && firstDate);
-            firstDate = false;
-            if (shouldAddDateParagraph) {
-              curr_notification_date = tmp_notification_date;
-              notifications.splice(index,0,item.date);
-              console.log("DODAT");
-            }
-            index++;
-        })}
+        {/* {
+
+        notifications.map((item) => {
+          let tmp_notification_date = new Date(item.date);
+          let shouldAddDateParagraph = !areDatesEqual(tmp_notification_date, curr_notification_date) || (areDatesEqual(tmp_notification_date, today) && firstDate);
+          firstDate = false;
+          if (shouldAddDateParagraph) {
+            curr_notification_date = tmp_notification_date;
+            notifications.splice(index,0,item.date);
+            console.log("DODAT");
+          }
+          index++;
+        })} */}
       <PassNotification lista={notifications} setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup}
       numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications}
       ></PassNotification>

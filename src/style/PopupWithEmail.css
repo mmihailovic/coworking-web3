@@ -1,0 +1,47 @@
+#confirmSharingButton {
+    position: absolute;
+    width: 60%;
+    height: 10%;
+    top:70%;
+    left: 20%;
+}
+#sharingTicketPopup {
+    position: relative;
+    width: 40%;
+    height: 50%;
+}
+#backToDashboard {
+    position: absolute;
+    top:85%;
+    left: 35%;
+    width: 30%;
+}
+#shareTitle {
+    width: 65%;
+    left:18%;
+    top:17%;
+}
+#sharingTitle {
+    position: absolute;
+    top:35%;
+    left:25%;
+}
+#shareContent {
+    position:absolute;
+    top:40%;
+    left:20%
+    
+}
+#sharingContent {
+    position:absolute;
+    top:50%;
+    left:22%;
+    width:60%;
+}
+#closeSharingButton {
+    position: absolute;
+    width: 20%;
+    text-transform: uppercase;
+    top:80%;
+    left:40%;
+}
