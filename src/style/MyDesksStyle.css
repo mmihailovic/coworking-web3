@@ -1,0 +1,242 @@
+#myDesksDiv {
+    position: absolute;
+    top: 2%;
+    left: 27.5%;
+    width: 68%;
+    height: 100%;
+}
+
+#titleDiv {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 120%;
+}
+
+#infoCardsHolderDiv {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    margin-top: 2%;
+}
+
+.emptyDiv {
+    width: 5%;
+}
+
+/* infoCards css */
+
+.infoDivs {
+    width: 30%;
+    height: 100%;
+    display: inline-block;
+    border: 3px solid #CBD5E1;
+    border-radius: 16px;
+}
+
+.infoDivsLeftDiv {
+    float: left;
+    width: 70%;
+    height: 100%;
+}
+
+.infoDivsRightDiv {
+    float: right;
+    width: 30%;
+    height: 100%;
+}
+
+.infoDivsLeftDivPart {
+    width: 100%;
+    height: 25%;
+    padding-left: 12%;
+}
+
+.Icon {
+    margin-left: 15%;
+    margin-top: 43%;
+    width: 85%;
+    height: 65%;
+}
+
+.UpDiv {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.DownDiv {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    /* line-height: 30px; */
+}
+
+#p_alert {
+    color: #DA918F;
+}
+
+#p_ticket {
+    color: #528990;
+}
+
+#p_shared {
+    color: #0568FD;
+}
+
+/* rent desk div */
+#rentDeskDiv {
+    margin-top: 5%;
+    border: 3px solid #CBD5E1;
+    border-radius: 16px;
+    width: 100%;
+    height: 50%;
+}
+
+#rentDeskTitleDiv {
+    width: 100%;
+    height: 21%;
+    display: flex;
+}
+
+#leftRent {
+    width: 80%;
+    height: 100%;
+    padding-top: 1%;
+    padding-left: 5%;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+#rightRent {
+    width: 20%;
+    height: 100%;
+    padding-top: 1.5%;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #528990;
+}
+
+#textDiv {
+    width: 100%;
+    height: 21%;
+    padding-left: 5%;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+#inputDiv {
+    width: 100%;
+    height: 35%;
+    display: flex;
+}
+
+#priceDiv {
+    width: 100%;
+    height: 23%;
+    display: flex;
+}
+
+#leftPrice {
+    width: 80%;
+    height: 100%;
+    display: flex;
+}
+
+#rightPrice {
+    width: 20%;
+    height: 100%;
+}
+
+#priceDivIcon {
+    margin-left: 60%;
+    width: 40%;
+    height: 100%;
+}
+
+.titleAndInputDiv {
+    padding-left: 5%;
+    padding-top: 1%;
+    height: 100%;
+    width: 30%;
+
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+#buttonDiv {
+    padding-top: 2%;
+    height: 100%;
+    width: 20%;
+}
+
+.emptyInputDiv {
+    height: 100%;
+    width: 3%;
+}
+
+#emptyInputDiv3 {
+    height: 100%;
+    width: 14%;
+}
+
+#emptyBtnDiv1 {
+    height: 25%;
+}
+
+#emptyBtnDiv2 {
+    height: 35%;
+}
+
+#btn {
+    width: 60%;
+    height: 40%;
+
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+input {
+    background: #FFFFFF;
+    border: 2px solid #CBD5E1;
+    border-radius: 6px;
+    height: 30%;
+    width: 80%;
+}
+
+#leftPriceDiv1 {
+    width: 13%;
+    height: 100%;
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    padding-left: 6%;
+}
+
+#leftPriceDiv2 {
+    width: 20%;
+    height: 100%;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #0568FD;
+
+}
