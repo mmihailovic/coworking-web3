@@ -18,7 +18,8 @@
 
 #btn1,
 #btn2,
-#btn3 {
+#btn3,
+#brn4 {
     display: flex;
     font-family: 'Roboto Mono';
 }
@@ -42,7 +43,7 @@ button {
     position: absolute;
     top: 10%;
     left: 10%;
-    
+
 }
 
 
@@ -58,7 +59,13 @@ button {
     left: 10%;
 }
 
- /* #btn1:hover,
+#btn4Container {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+}
+
+/* #btn1:hover,
 #btn2:hover,
 #btn3:hover {
     background-color: black;
@@ -75,7 +82,7 @@ button {
     border-radius: 8px;
 } */
 
-.btnActive{
+.btnActive {
     border: 2px solid white;
     border-radius: 8px;
 }
@@ -109,18 +116,21 @@ button {
 }
 
 .inactive:hover {
-    background-color: #FAE6E9;;
+    background-color: #FAE6E9;
+    ;
     border: 2px solid #528990;
     border-radius: 8px;
-} 
+}
 
-.btnContainerActive{
+.btnContainerActive {
     background-color: white;
     border: 2px solid white;
     border-radius: 8px;
 }
-.btnContainerActive:hover{
-    background-color: #FAE6E9;;
+
+.btnContainerActive:hover {
+    background-color: #FAE6E9;
+    ;
     border: 2px solid black;
     border-radius: 8px;
 }
