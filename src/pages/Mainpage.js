@@ -402,21 +402,21 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     });
   }
 
-  const rentPlaces = async () => {
+  const rentPlaces = async (rentCnt, rentPer) => {
     if (typeof window.ethereum !== 'undefined') {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner(0);
       const rentContract = new ethers.Contract(process.env.REACT_APP_rentAddres, Rent.abi, signer);
       const usdc = new ethers.Contract(process.env.REACT_APP_usdcAddress, USDC.abi, signer);
-      console.log(rentPlaceCount);
-      console.log(rentPeriod);
-      var numOfPlacesBN = BigNumber.from(rentPlaceCount);
-      var rentPeriodBN = BigNumber.from(rentPeriod);
+      console.log(rentCnt);
+      console.log(rentPer);
+      var numOfPlacesBN = BigNumber.from(rentCnt);
+      var rentPeriodBN = BigNumber.from(rentPer);
 
       try {
         let price = await rentContract.getAmount();
-        let amount = numOfPlacesBN.mul(rentPeriod).mul(BigNumber.from(price)).div(30);
+        let amount = numOfPlacesBN.mul(rentPeriodBN).mul(BigNumber.from(price)).div(30);
 
         let request = await usdc.approve(rentContract.address, amount);
 
@@ -436,8 +436,8 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
         setShowPopup(true);
         setText(err.reason);
         setpopupTitle('Error');
-        setRentPeriod(0);
-        setRentPlaceCount(0);
+        //setRentPeriod(0);
+        //setRentPlaceCount(0);
       }
     }
   }
@@ -455,7 +455,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
             <Route path="notifications" element={<NotificationCenter setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup} email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
             <Route path="wallet" element={<MyWallet setShowUnstakePopup={setShowUnstakePopup} stakeTokens={StakeTokens} walletAddress={accountAddress} beoTokenBalance={beoTokenBalance} stakedTokes={stakedTokens}></MyWallet>}></Route>
-            <Route path="myDesks" element={<MyDesks></MyDesks>}></Route>
+            <Route path="myDesks" element={<MyDesks rentFunc={rentPlaces}></MyDesks>}></Route>
           </Routes>
         </div>
       </div>

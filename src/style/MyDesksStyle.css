@@ -43,6 +43,7 @@
 
 .infoDivsRightDiv {
     float: right;
+    position: relative;
     width: 30%;
     height: 100%;
 }
@@ -54,8 +55,11 @@
 }
 
 .Icon {
-    margin-left: 15%;
-    margin-top: 43%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    /* margin-left: 15%;
+    margin-top: 43%; */
     width: 85%;
     height: 65%;
 }
