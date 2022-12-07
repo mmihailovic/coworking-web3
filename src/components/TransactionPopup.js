@@ -4,7 +4,7 @@ import '../style/TransactionPopup.css';
 
 import close from '../assets/Close.svg';
  
-const TransactionPopup = ({showPopup, connectFunc, skipFunc, numberOfDesks,period,price}) => {
+const TransactionPopup = ({showPopup, rentFunc, skipFunc, numberOfDesks,period,price}) => {
   return (showPopup)?(
     <div>
         <div className="modalDialog">
@@ -20,7 +20,7 @@ const TransactionPopup = ({showPopup, connectFunc, skipFunc, numberOfDesks,perio
                             <li className='data'>Price:</li><p className='bluetext' id="priceText">{price} Beo</p>
                         </ul>
                     </div>
-                    <button onClick={connectFunc} id='rentingProceed' className="confirmButton">PROCEED WITH RENTING</button>
+                    <button onClick={()=>rentFunc(numberOfDesks,period)} id='rentingProceed' className="confirmButton">PROCEED WITH RENTING</button>
                     <button onClick={()=>skipFunc(false)} className='skipButton' id='rentingSkip'>Back to dashboard</button>   
                 </div>
             </div>

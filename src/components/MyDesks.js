@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 import { BigNumber } from 'ethers';
 
 
-const MyDesks = ({rentFunc}) => {
+const MyDesks = ({setShowPopup,setRentPlaceCount,setPeriod,setPrice}) => {
 
     const [rentCnt, setRentCnt] = useState(0);
     const [rentPer, setRentPer] = useState(0);
@@ -16,9 +16,13 @@ const MyDesks = ({rentFunc}) => {
     async function rent(){
         let isnum = /^\d+$/.test(rentCnt);
         if(isnum){
-            rentFunc(rentCnt,rentPer);
+            //rentFunc(rentCnt,rentPer);
+            setRentPlaceCount(rentCnt);
+            setPeriod(rentPer);
+            setPrice(rentAmount);
+            setShowPopup(true);
         }
-        else{console.log("nije usao")}
+        else{setShowPopup(false); console.log("nije usao")}
     }
 
     function update(){
@@ -105,7 +109,7 @@ const MyDesks = ({rentFunc}) => {
                     <div className='emptyInputDiv'></div>
                     <div className='titleAndInputDiv'>
                         <p>RENTAL PERIOD</p>
-                        <input type="text" onChange={e=>{update()}} id='rentPeriodInput' placeholder='Rnetal period in days'></input>
+                        <input type="text" onChange={e=>{update()}} id='rentPeriodInput' placeholder='Rental period in days'></input>
                     </div>
                     <div className='emptyInputDiv'></div>
                     <div id='buttonDiv'>

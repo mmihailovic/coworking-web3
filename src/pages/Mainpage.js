@@ -51,6 +51,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [stakingValue, setStakingValue] = useState(0);
   const [rentPlaceCount, setRentPlaceCount] = useState(0);
   const [rentPeriod, setRentPeriod] = useState(0);
+  const [rentPrice, setRentPrice] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [text, setText] = useState();
   const [popupTitle, setpopupTitle] = useState();
@@ -64,6 +65,8 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
   const [notificationInNotificationPopup, setNotificationInNotificationPopup] = useState();
   const [showCardPopup, setShowCardPopup] = useState(false);
   const [showUnstakePopup, setShowUnstakePopup] = useState(false);
+  const [showRentPopup, setShowRentPopup] = useState(false);
+  const [showSuccessfulPopup,setShowSuccessfulPopup] = useState(false);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -397,8 +400,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       setShowPopup(true);
       setText('You have successfully rented ' + numOfPlacesBN + ' places for ' + rentPeriodBN + ' days');
       setpopupTitle('Info');
-      setRentPeriod(0);
-      setRentPlaceCount(0);
+      setShowSuccessfulPopup(true);
     });
   }
 
@@ -415,6 +417,7 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
       var rentPeriodBN = BigNumber.from(rentPer);
 
       try {
+        setShowRentPopup(false);
         let price = await rentContract.getAmount();
         let amount = numOfPlacesBN.mul(rentPeriodBN).mul(BigNumber.from(price)).div(30);
 
@@ -442,6 +445,11 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
     }
   }
 
+  const viewTickets = () => {
+    setShowSuccessfulPopup(false);
+    navigate('/main/tickets');
+  }
+
   return (
     <>
       {/* <div> */}
@@ -455,15 +463,15 @@ const Mainpage = ({ accountAddress, userAvatar }) => {
             <Route path="tickets" element={<Tickets onCardClick={shareTicket} cards={available ? tickets : redeemed ? redeemedTickets : expiredTickets} available={available} redeemed={redeemed} expired={expired} setAvailableCards={setAvailable} setRedeemedCards={setRedeemed} setExpiredCards={setExpired} first={first} setFirst={setFirst}></Tickets>} />
             <Route path="notifications" element={<NotificationCenter setCardInNotificationPopup={setCardInNotificationPopup} setNotificationInNotificationPopup={setNotificationInNotificationPopup} setShowCardPopup={setShowCardPopup} email={email} numberOfUnreadNotifications={numberOfUnreadNotifications} setNumberOfUnreadNotifications={setNumberOfUnreadNotifications} setNotificationShow={setNotificationShow}></NotificationCenter>} />
             <Route path="wallet" element={<MyWallet setShowUnstakePopup={setShowUnstakePopup} stakeTokens={StakeTokens} walletAddress={accountAddress} beoTokenBalance={beoTokenBalance} stakedTokes={stakedTokens}></MyWallet>}></Route>
-            <Route path="myDesks" element={<MyDesks rentFunc={rentPlaces}></MyDesks>}></Route>
+            <Route path="myDesks" element={<MyDesks setShowPopup={setShowRentPopup} setRentPlaceCount={setRentPlaceCount} setPeriod = {setRentPeriod} setPrice={setRentPrice}></MyDesks>}></Route>
           </Routes>
         </div>
       </div>
       <CardPopup card={cardInNotificationPopup} notification={notificationInNotificationPopup} showPopup={showCardPopup} skipFunc={setShowCardPopup} func={() => console.log('redeem')}></CardPopup>
       <ConfirmPopup unstakeFunc={UnstakeTokens} buttonColor={"#DA918F"} sell={true} content={"If you proceed, rental credits will be deducted from your account."} buttonText={"SELL CREDITS"} inputTitle={"AMOUNT OF CREDITS TO SELL"} title={"Are you sure you want to sell credits?"} showPopup={showUnstakePopup} connectFunc={() => { console.log("Unstake") }} skipFunc={setShowUnstakePopup}></ConfirmPopup>
       {/* <ConfirmPopup buttonColor={"#0568FD"} sell={false} content={"You can share B123459 with existing BeoDesks user - just type in their account username (email address) below."} buttonText={"SHARE TICKET"} inputTitle={"SHARE WITH"} title={"Share ticket to BeoDesk user?"}showPopup={true} connectFunc={()=>{console.log("A")}} skipFunc={()=>{}}></ConfirmPopup> */}
-      {/* <TransactionPopup showPopup={true} numberOfDesks={1} period = {1} price={2}></TransactionPopup> */}
-      {/* <SuccessfullTransactionPopup trigger={true} title={'Renting successful'} content={"You successfully rented 1 desk for 1 month. The tickets are available in your dashboard."}></SuccessfullTransactionPopup> */}
+      <TransactionPopup showPopup={showRentPopup} skipFunc={setShowRentPopup} rentFunc={rentPlaces} numberOfDesks={rentPlaceCount} period = {rentPeriod} price={rentPrice}></TransactionPopup>
+      <SuccessfullTransactionPopup trigger={showSuccessfulPopup} title={'Renting successful'} numberOfDesks={rentPlaceCount} period ={rentPeriod} skipFunc={setShowSuccessfulPopup} viewTickets={viewTickets}></SuccessfullTransactionPopup>
       {/* <PopupWithEmail showPopup={true} email={"pera@altlabs.dev"} shareTicket={true}></PopupWithEmail> */}
       {/* <div className='leftDiv'>
           <div className='d-flex profile-div'>
