@@ -30,8 +30,10 @@ contract Rent is VRFConsumerBaseV2 {
 
 
     mapping(address => uint256) private stakingBalance;
-    mapping(uint256 => RadnoMesto[]) private ulaznice;
-    RadnoMesto[] private radnaMesta;
+    mapping(uint256 => RadnoMesto[]) private ulaznice; // requestId -> radna mesta
+    mapping(uint256 => address) private adresa; // requestid -> adresa vlasnika
+    mapping(address => RadnoMesto[]) private radnaMesta;
+    mapping(address => bool) private hasTransaction;
 
 
     // Chainlink
@@ -48,7 +50,6 @@ contract Rent is VRFConsumerBaseV2 {
 
 
     struct RadnoMesto {
-        address ownerOfSeat;
         uint256 expirationDate;
         bytes32 hashUlaznice;
     }
@@ -69,15 +70,18 @@ contract Rent is VRFConsumerBaseV2 {
 
 
     function fulfillRandomWords(uint256 requestId,uint256[] memory randomWords) internal override {
+        address addr = adresa[requestId];
         RadnoMesto[] storage r = ulaznice[requestId];
         for(uint i = 0; i < r.length; i++) {
             r[i].hashUlaznice = hash(owner,i,r[i].expirationDate,randomWords[i]);
-            radnaMesta.push(r[i]);
+            radnaMesta[addr].push(r[i]);
         }
+        hasTransaction[addr] = false;
         emit RentPlaceEvent();
     }
 
     function stakeTokens(uint256 _amount) external {
+        require(hasTransaction[msg.sender] == false, "Sacekaj kraj rentiranja");
         require(_amount > 0, "Izaberi veci od 0");
         require(token.balanceOf(msg.sender) >= _amount, "Nemas toliko tokena!");
         token.transferFrom(msg.sender, address(this), _amount);
@@ -85,6 +89,7 @@ contract Rent is VRFConsumerBaseV2 {
     }
 
     function unstakeTokens(uint256 _amount) external {
+        require(hasTransaction[msg.sender] == false, "Sacekaj kraj rentiranja");
         require(_amount > 0," Izaberi veci od 0");
         require(stakingBalance[msg.sender] >= _amount, "Nemas toliko stakeovanih tokena!");
         uint rentedPlaces = numberOfRentedPlacesForAddress(msg.sender);
@@ -106,8 +111,8 @@ contract Rent is VRFConsumerBaseV2 {
     function numberOfRentedPlacesForAddress(address _address) public view returns (uint) {
         // Koliko je mesta iznajmio
         uint cnt = 0;
-        for(uint i = 0;i < radnaMesta.length; i++) {
-            if(radnaMesta[i].ownerOfSeat == _address && radnaMesta[i].expirationDate >= block.timestamp)
+        for(uint i = 0;i < radnaMesta[_address].length; i++) {
+            if(radnaMesta[_address][i].expirationDate >= block.timestamp)
                 cnt++;
         }
         return cnt;
@@ -118,6 +123,8 @@ contract Rent is VRFConsumerBaseV2 {
     }
 
     function rentSeat(uint number_of_places, uint numberOfDays) payable public {
+        require(hasTransaction[msg.sender] == false, "Sacekaj kraj rentiranja");
+        require(number_of_places < 10, "Najvise mozes 10 mesta po transakciji!");
         require(numberOfDays > 0, "Izaberi vise od 0 dana");
         require(number_of_places > 0, "Izaberi vise od 0 mesta");
         require(numberOfFreePlacesForAddress(msg.sender) >= number_of_places , "Nije moguce rentirati toliko mesta"); //provera da li je broj mesta za rezervaciju veci od 0
@@ -135,9 +142,11 @@ contract Rent is VRFConsumerBaseV2 {
             callbackGasLimit,
             numPlaces
         );
+        hasTransaction[msg.sender] = true;
         for(uint i = 0;i < number_of_places;i++){
-            ulaznice[s_requestId].push(RadnoMesto(msg.sender, time,0));
+            ulaznice[s_requestId].push(RadnoMesto(time,0));
         }
+        adresa[s_requestId] = msg.sender;
     }
 
     function hash(address ownerOfSeat, uint counter , uint256 expirationDate,uint256 randomWord) private view returns(bytes32)
@@ -150,10 +159,10 @@ contract Rent is VRFConsumerBaseV2 {
     {
         bytes32 [] memory h = new bytes32[](numberOfRentedPlacesForAddress(msg.sender));
         uint256 cnt=0;
-        for(uint i =0 ; i< radnaMesta.length ;i++)
+        for(uint i =0 ; i< radnaMesta[msg.sender].length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate >= block.timestamp){
-                h[cnt] = radnaMesta[i].hashUlaznice;
+             if(radnaMesta[msg.sender][i].expirationDate >= block.timestamp){
+                h[cnt] = radnaMesta[msg.sender][i].hashUlaznice;
                 cnt = cnt + 1;
              }
         }
@@ -161,10 +170,10 @@ contract Rent is VRFConsumerBaseV2 {
     }
 
     function getExpireDate(uint cnt) public view returns(uint){
-        for(uint i = 0;i < radnaMesta.length;i++) {
-            if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate >= block.timestamp) {
+        for(uint i = 0;i < radnaMesta[msg.sender].length;i++) {
+            if(radnaMesta[msg.sender][i].expirationDate >= block.timestamp) {
                 if(cnt == 0)
-                    return radnaMesta[i].expirationDate;
+                    return radnaMesta[msg.sender][i].expirationDate;
                 cnt--;
             }
         }
@@ -173,18 +182,18 @@ contract Rent is VRFConsumerBaseV2 {
     function getUserHashOfExpiredTickets() public view returns(bytes32[] memory)
     {
         uint cnt = 0;
-        for(uint i =0 ; i< radnaMesta.length ;i++)
+        for(uint i =0 ; i< radnaMesta[msg.sender].length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate < block.timestamp){
+             if(radnaMesta[msg.sender][i].expirationDate < block.timestamp){
                 cnt = cnt + 1;
              }
         }
         bytes32 [] memory h = new bytes32[](cnt);
         uint256 index = 0;
-        for(uint i =0 ; i< radnaMesta.length ;i++)
+        for(uint i =0 ; i< radnaMesta[msg.sender].length ;i++)
         {
-             if(radnaMesta[i].ownerOfSeat== msg.sender && radnaMesta[i].expirationDate < block.timestamp){
-                h[index] = radnaMesta[i].hashUlaznice;
+             if(radnaMesta[msg.sender][i].expirationDate < block.timestamp){
+                h[index] = radnaMesta[msg.sender][i].hashUlaznice;
                 index = index + 1;
              }
         }
@@ -192,10 +201,10 @@ contract Rent is VRFConsumerBaseV2 {
     }
 
     function getExpireDateOfExpiredTickets(uint cnt) public view returns(uint) {
-        for(uint i = 0;i < radnaMesta.length;i++) {
-            if(radnaMesta[i].ownerOfSeat == msg.sender && radnaMesta[i].expirationDate < block.timestamp) {
+        for(uint i = 0;i < radnaMesta[msg.sender].length;i++) {
+            if(radnaMesta[msg.sender][i].expirationDate < block.timestamp) {
                 if(cnt == 0)
-                    return radnaMesta[i].expirationDate;
+                    return radnaMesta[msg.sender][i].expirationDate;
                 cnt--;
             }
         }
